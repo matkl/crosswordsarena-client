@@ -5,7 +5,7 @@
     <author email="matthias@klein.pw" href="http://matthiasklein.me">Matthias Klein</author>
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="org.apache.cordova.media" />
-    <gap:plugin name="cordova-plugin-whitelist" />
+    <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
