@@ -1,0 +1,2124 @@
+@import 'normalize'
+@import 'colors'
+@import 'nib'
+
+/* Transitions and Animations
+ * -----------------------------------------------
+ *
+ *
+ * Animations should be fast. Our standard animation duration is 0.2s.
+ */
+
+/* Z-Indexes
+ * -----------------------------------------------
+ * 
+ * .rack .tile 10
+ * .rack .tile.dragging or :hover 11
+ * .cursor 12
+ * .unit-frame 20
+ * #remaining 20
+ * .game-message 30
+ * #rotate-screen 40
+ * #pass-overlay 40/  / desktop: auto
+ * #chat-overlay 41  // desktop: auto
+ * #chat 42
+ * #overlay 50
+ * #dust 60
+ * #update 99
+ *
+ */
+
+
+/* Geometry
+-------------------------------------------------- */
+tile-size = 40px
+rack-bottom-height = 10px
+desktop-unit-frame-picture-size = 52px
+desktop-unit-frame-picture-size = 46px
+desktop-unit-frame-line-height = 28px
+desktop-unit-frame-margin-vertical = (tile-size - desktop-unit-frame-line-height) * 0.5 + rack-bottom-height
+desktop-unit-frame-margin-horizontal = desktop-unit-frame-margin-vertical - ((desktop-unit-frame-picture-size - desktop-unit-frame-line-height) * 0.5)
+
+/* Shadows
+-------------------------------------------------- */
+/*raise(z)
+  if z == 1
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.32), 0 2px 10px 0 rgba(0, 0, 0, 0.24)
+  else if z == 2
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.40), 0 6px 20px 0 rgba(0, 0, 0, 0.38)
+  else if z == 3
+    box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.48), 0 17px 50px 0 rgba(0, 0, 0, 0.38)
+  else if z == 4
+    box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.44), 0 25px 55px 0 rgba(0, 0, 0, 0.42)
+  else if z == 5
+    box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.40), 0 40px 77px 0 rgba(0, 0, 0, 0.44)
+*/
+
+raise(z)
+  if z == 1
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  else if z == 2
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  else if z == 3
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
+  else if z == 4
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
+  else if z == 5
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)
+
+raiseLight(z)
+  if z == 1
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.12)
+  else if z == 2
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.12);
+  else if z == 3
+    box-shadow: 0 10px 20px rgba(0,0,0,0.10), 0 6px 6px rgba(0,0,0,0.12)
+  else if z == 4
+    box-shadow: 0 14px 28px rgba(0,0,0,0.13), 0 10px 10px rgba(0,0,0,0.11)
+  else if z == 5
+    box-shadow: 0 19px 38px rgba(0,0,0,0.15), 0 15px 12px rgba(0,0,0,0.11)
+
+filter(n)
+  -webkit-filter: n
+  filter: n
+
+roundedCorners()
+  border-radius: 2px
+
+/* Scrollbar
+-------------------------------------------------- */
+.window-content
+#chat-messages
+  &::-webkit-scrollbar
+    width: 10px
+    height: 10px
+  &::-webkit-scrollbar-thumb
+    roundedCorners()
+    background-color: rgba(255,255,255,0.12)
+    border: 3px solid transparent
+    background-clip: padding-box
+    &:hover
+      background-color: rgba(255,255,255,0.24)
+    &:active
+      background-color: rgba(255,255,255,0.48)
+  &::-webkit-scrollbar-corner
+    background-color: transparent
+
+/* Android Fix
+-------------------------------------------------- */
+*
+  text-size-adjust: none !important
+
+/* Animations
+-------------------------------------------------- */
+@keyframes fadeIn
+  from
+    opacity: 0
+  to
+    opacity: 1
+@keyframes slideInTop
+  from
+    transform: translateY(-100%)
+  to
+    transform: translateY(0)
+@keyframes bounceIn
+  0%, 20%, 40%, 60%, 80%, 100%
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000)
+  0%
+    opacity: 0
+    transform: scale3d(.3, .3, .3)
+  20%
+    transform: scale3d(1.1, 1.1, 1.1)
+  40%
+    transform: scale3d(.9, .9, .9)
+  60%
+    opacity: 1
+    transform: scale3d(1.03, 1.03, 1.03)
+  80%
+    transform: scale3d(.97, .97, .97)
+  100%
+    opacity: 1
+    transform: scale3d(1, 1, 1)
+@keyframes bounceInFadeOut
+  0%
+    opacity: 0
+    transform: scale(0.3)
+  5%
+    opacity: 1
+    transform: scale(1.05)
+  7%
+    transform: scale(0.9)
+  10%
+    transform: scale(1)
+  90%
+    opacity: 1
+    transform: scale(1)
+  100%
+    opacity: 0
+    transform: scale(1.5)
+@keyframes scaleIn
+  from
+    opacity: 0
+    transform: translateY(-100px) rotateX(45deg)
+  to
+    opacity: 1
+    transform: translateY(0) rotateX(0)
+@keyframes zoomInDown {
+  0% {
+    opacity: 0;
+    transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes fadeOutLeft
+  from
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+    opacity: 1
+    transform: translateX(100px)
+  60%
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+    opacity: 1
+    transform: translateX(0) scale(1)
+  to
+    opacity: 0
+    transform: translateX(0) scale(2)
+@keyframes fadeOut
+  from
+    opacity: 1
+  to
+    opacity: 0
+  
+@keyframes shiftLeft
+  from
+    opacity: 1
+    transform: translateX(0)
+  to
+    opacity: 0
+    transform: translateX(calc(-10px - 100%))
+@keyframes dustWave
+  from
+    opacity: 1
+    transform: scale(0.5)
+  to
+    opacity: 0
+    transform: scale(2)
+@keyframes rotateInLeft
+  from
+    opacity: 0
+    transform: rotateY(90deg)
+  to
+    opacity: 1
+    transform: rotateY(0deg)
+@keyframes superNova
+  from
+    box-shadow: 0 0 0em
+    opacity: 0
+  20%
+    opacity: 1
+  40%
+    box-shadow: 0 0 4em
+  to
+    box-shadow: 0 0 4em
+    opacity: 0
+@keyframes miniNova
+  from
+    box-shadow: 0 0 0em
+    opacity: 0
+  to
+    box-shadow: 0 0 1em
+    opacity: 0.5
+
+/* Base Styles
+-------------------------------------------------- */
+html
+  background: black
+  color: color-text
+  cursor: default
+  font-size: 14px
+  font-family: 'Lato', 'Open Sans', 'Roboto', 'Arial', sans-serif
+  font-weight: 400
+  overflow-y: hidden
+  perspective: 1000px
+  user-select: none
+  
+.hide
+  display: none !important
+.notransition *
+  transition: none !important
+
+/* Typography
+-------------------------------------------------- */
+// Font scale is 1.25
+font-size-tiny = 7px
+font-size-smaller = 8px
+font-size-small = 10px
+font-size-normal = 13px
+font-size-large = 16px
+font-size-larger = 20px
+font-size-huge = 25px
+font-size-full-screen-message = 39px
+
+font-size-tiny = 7px
+font-size-smaller = 9px
+font-size-small = 11px
+font-size-normal = 14px
+font-size-large = 18px
+font-size-larger = 22px
+font-size-huge = 27px
+font-size-full-screen-message = 43px
+
+// scale 1.125
+font-size-small = 12px
+font-size-normal = 14px
+font-size-large = 16px
+font-size-larger = 18px
+font-size-huge = 20px
+font-size-full-screen-message = 40px
+font-size-title = 48px
+
+h1
+  font-size: font-size-huge
+  font-weight: 700
+  line-height: 20px
+  margin: 0
+  margin-bottom: 20px
+h2
+  font-size: font-size-huge
+  font-weight: 700
+  line-height: 20px
+  margin: 0
+  margin-bottom: 20px
+small
+  font-size: font-size-small
+ol, ul
+  margin: 0
+  margin-bottom: 20px
+  li
+    line-height: 20px
+p
+  line-height: 20px
+  margin: 0
+  margin-bottom: 20px
+.secondary
+  color: color-secondary-text
+.large
+  font-size: font-size-large
+.thin
+  font-weight: 300
+
+/* Tables
+-------------------------------------------------- */
+caption
+  @extend h2
+  margin-top: 0
+  text-align: left
+table
+  margin: 0
+  margin-bottom: 20px
+tr
+  border-bottom: 1px solid rgba(255,255,255,0.05)
+th, td
+  line-height: 20px
+  padding: 0 10px
+
+/* Links
+-------------------------------------------------- */
+a
+  color: color-accent
+  text-decoration: none
+  transition: color 0.1s
+  &:hover
+    color: lighten(@color, 20%)
+    text-decoration: underline
+
+/* Buttons
+-------------------------------------------------- */
+.button
+  background-color: rgba(255,255,255,0.06)
+  border: none
+  border-radius: 2px
+  color: color-text
+  cursor: pointer
+  display: inline-block
+  font-size: font-size-small
+  font-weight: 400
+  height: 36px
+  line-height: 36px
+  outline: none
+  overflow: hidden
+  margin: 2px 0
+  padding: 0 30px
+  text-overflow: ellipsis
+  text-transform: uppercase
+  transition: background-color 0.1s, box-shadow 0.1s
+  white-space: nowrap
+  .disabled.button-text
+    display: none
+  &:focus
+    background-color: rgba(255,255,255,0.09)
+  &:hover
+    background-color: rgba(255,255,255,0.18)
+    color: color-text
+  &:active
+    background-color: rgba(0,0,0,0.12)
+    color: color-text
+  &:disabled
+    background-color: @background-color !important
+    background-image: none !important
+    box-shadow: none !important
+    color: color-disabled-text !important
+    cursor: default
+    .enabled.button-text
+      display: none
+    .disabled.button-text
+      display: inline
+.button-primary
+  background-color: color-accent
+  color: color-text
+  font-weight: 700
+  position: relative
+  &:focus
+    background-color: tint(@background-color, 12%)
+  &:hover
+    background-color: tint(@background-color, 24%)
+  &:active
+    background-color: shade(@background-color, 24%)
+  &:disabled:after
+    display: none
+.donate
+  display: flex
+  margin-bottom: 0
+  a
+    background-color: #FFA926
+    background-image: linear-gradient(transparent 72%, #FFF1DB)
+    border: 1px solid #FF9933
+    border-radius: 12px
+    color: #003366
+    display: inline-block
+    font-family: 'Arial', 'Helvetica', sans-serif
+    font-size: 15px
+    font-style: italic
+    font-weight: 700
+    line-height: 24px
+    margin: 0 5px
+    padding: 0 20px
+    position: relative
+    overflow: hidden
+    transition: box-shadow 0.4s
+    &:hover
+      box-shadow: 0 0 1em white
+      text-decoration: none
+    &:before
+      background-image: linear-gradient(#FFFDF8, #FEDFA1)
+      border-bottom: 1px solid #FED284
+      border-radius: 13px
+      content: ''
+      height: 13px
+      left: 2px
+      position: absolute
+      top: 0
+      right: 2px
+  span
+    position: relative
+    z-index: 1
+
+/* Toggles
+-------------------------------------------------- */
+.toggle
+  .toggle-enabled
+  .toggle-disabled
+    margin-left: 2px
+  .toggle-enabled
+    color: color-accent
+  .toggle-disabled
+    color: color-accent-three
+  .toggle-enabled
+    display: none
+  &.is-enabled
+    .toggle-enabled
+      display: inline
+    .toggle-disabled
+      display: none
+
+/* Tabs
+-------------------------------------------------- */
+.tabs
+  list-style-type: none
+  margin: 0
+  padding: 0
+  li
+    display: inline-block
+    margin-right: 20px
+    &:last-child
+      margin-right: 0
+  button
+    background: none
+    border: none
+    box-shadow: none
+    color: color-text
+    font-size: font-size-small
+    font-weight: 400
+    line-height: 30px
+    margin-bottom: 10px
+    outline: none
+    padding: 0
+    text-transform: uppercase
+    transition: box-shadow 0.1s
+    &:hover
+      box-shadow: inset 0 -2px color-disabled-text
+    &:disabled
+      display: none
+    &.selected
+      box-shadow: inset 0 -2px color-accent
+
+/* Forms
+-------------------------------------------------- */
+form
+  margin: 0
+  margin-bottom: 20px
+input[type='email']
+input[type='number']
+input[type='search']
+input[type='text']
+input[type='tel']
+input[type='url']
+input[type='password']
+textarea
+select
+  background-color: rgba(0,0,0,0.24)
+  border: none
+  border-radius: 2px
+  //box-shadow: inset 0 1px 3px rgba(0,0,0,0.24)
+  box-sizing: border-box
+  color: color-text
+  height: 20px*1.8
+  margin: 20px*0.1 0
+  padding: 20px*0.1 20px*0.3
+  resize: vertical
+  transition: background-color 0.1s
+  width: 100%
+  &:focus
+    outline: none
+    background-color: rgba(0,0,0,0.24)
+input[type='email']
+input[type='number']
+input[type='search']
+input[type='text']
+input[type='tel']
+input[type='url']
+input[type='password']
+textarea
+  appearance: none
+textarea
+  min-height: 65px
+  padding-top: 6px
+  padding-bottom: 6px
+label
+legend
+  color: color-secondary-text
+  display: block
+  font-weight: 400
+  line-height: 20px
+  margin-top: 10px
+  text-transform: uppercase
+  font-size: font-size-small
+
+/* Flex
+-------------------------------------------------- */
+.row
+  display: flex
+  flex-wrap: wrap
+  &.valign-baseline
+    align-items: baseline
+
+/* Windows
+-------------------------------------------------- */
+.window
+  raise(5)
+  roundedCorners()
+  animation: zoomIn 0.4s
+  backface-visibility: hidden
+  box-sizing: border-box
+  color: color-text
+  display: flex
+  flex-direction: column
+  flex: 0 1 auto
+  max-width: 600px
+  overflow: hidden
+  position: relative
+  .button
+    color: color-text
+.window-header
+  background: hsla(hue, 8%, 32%, 0.8)
+  display: flex
+  flex: 0 0 auto
+  justify-content: flex-end
+  h1
+    color: inherit
+    font-weight: 700
+    font-size: font-size-small
+    flex: 1 0 auto
+    line-height: 30px
+    margin: 0
+    margin-left: 60px
+    text-align: center
+    text-transform: uppercase
+.window-content
+  background: hsla(hue, 8%, 16%, 0.8)
+  cursor: auto
+  flex: 1 1 auto
+  overflow: hidden
+  overflow-y: auto
+  padding: 20px
+  padding-bottom: 0
+  user-select: auto
+.window-actions
+  margin-top: 10px
+.window-footer
+  border-top: 1px solid color-divider
+  color: color-secondary-text
+  font-size: font-size-small
+  line-height: 20px
+  margin: 0
+  margin-top: 30px
+  padding: 20px 0
+  padding-top: 10px
+#overlay
+  align-items: center
+  background: rgba(0,0,0,0.5)
+  bottom: 0
+  display: flex
+  flex-direction: column
+  justify-content: center
+  left: 0
+  outline: none
+  padding: 5px
+  position: absolute
+  right: 0
+  top: 0
+  z-index: 50
+.window-button-group
+  margin-bottom: 20px
+  .button
+    margin-right: 20px * 0.5
+.window-close
+  @extend .button
+  background: none
+  border: none
+  border-radius: 0
+  box-shadow: none
+  color: inherit
+  flex: 0 0 auto
+  font-size: font-size-small
+  line-height: 30px
+  height: 30px
+  margin: 0
+  outline: none
+  padding: 0
+  text-align: center
+  width: 60px
+#pass-overlay
+  align-items: center
+  animation: fadeIn 0.2s
+  background: rgba(0,0,0,0.5)
+  bottom: 0
+  display: flex
+  flex-direction: column
+  justify-content: center
+  left: 0
+  position: absolute
+  right: 0
+  top: 0
+  z-index: 40
+.game-window
+  margin: 0
+  flex: 0 0 auto
+  .rack:before
+    display: none
+#update
+  animation: fadeIn 0.2s
+  align-items: center
+  background-color: rgba(0,0,0,0.9)
+  bottom: 0
+  color: color-accent-two
+  display: flex
+  flex-direction: column
+  justify-content: center
+  left: 0
+  padding: 20px
+  position: fixed
+  right: 0
+  text-align: center
+  top: 0
+  z-index: 99
+  p
+    max-width: 640px
+  button
+    margin-right: 10px
+    &:last-child
+      margin-right: 0
+  
+
+/* Lists
+-------------------------------------------------- */
+.list
+  list-style-type: none
+  padding: 0
+  li
+    line-height: 40px
+    border-bottom: 1px solid rgba(255,255,255,0.1)
+    &:first-child
+      border-top: 1px solid rgba(255,255,255,0.1)
+  .button
+    line-height: 20px * 1.4
+    height: 20px * 1.4
+
+/* Layout
+-------------------------------------------------- */
+#main
+  display: flex
+  flex-direction: column
+  height: 100vh
+  width: 100vw
+  &.blur
+    filter: blur(10px)
+.page
+  animation: fadeIn 0.5s
+  background-color: hsl(219, 35%, 22%)
+  background-image: url('../images/themes/blue/squared_metal.png')
+  display: flex
+  flex: 1 1 auto
+  flex-direction: column
+  overflow: auto
+.page-container
+  margin: 0 auto
+  max-width: 900px
+.page-header
+  margin-bottom: 20px
+  p
+    color: color-text
+    margin-bottom: 0
+.page-content
+  flex: 1 1 auto
+
+/* App Bar
+-------------------------------------------------- */
+#app-bar
+  background: color-ui-0
+  box-sizing: border-box
+  display: flex
+  flex: 0 0 auto
+  justify-content: space-between
+  list-style-type: none
+  margin: 0
+  padding: 10px 5px
+  width: 100%
+  li
+    margin: 0
+    padding: 0
+  .button
+    margin: 0 5px
+    padding-left: 15px
+    padding-right: 15px
+#app-bar-lobby
+  align-items: center
+  display: flex
+  overflow: hidden
+  justify-content: flex-end
+#app-bar-game
+  display: flex
+  overflow: hidden
+#app-bar-challenges
+  &.important
+    animation: bounceIn 0.4s
+    background-color: color-accent-two
+    color: color-text
+    &:hover
+      background-color: lighten(color-accent-two, 10%)
+    &:active
+      background-color: shade(color-accent-two, 20%)
+#more
+  &.updated
+    background-color: color-accent
+
+/* Menu
+-------------------------------------------------- */
+#menu
+  box-sizing: border-box
+  flex: 0 1 auto
+  transform: translateX(0)
+  transition: transform 0.2s
+  width: 240px
+  h1
+    margin-left: 0
+    text-transform: uppercase
+  ul
+    list-style-type: none
+    margin-bottom: 10px
+    padding: 0
+  button
+    border: none
+    padding: 0 10px
+    width: 100%
+  .window-header
+    text-align: center
+  .window-content
+    border-radius: 2px
+    padding: 10px
+    padding-bottom: 0
+    user-select: none
+#menu-key-bindings
+  display: none
+
+/* Start Page
+-------------------------------------------------- */
+#start
+  display: flex
+  flex-direction: column
+  overflow-y: auto
+#start-content
+  display: flex
+  flex: 1 0 auto
+  flex-direction: column
+  justify-content: center
+  padding: 0 10px
+#start-logo
+  color: color-text
+  flex: 0 0 auto
+  font-size: 31px
+  font-weight: 700
+  text-transform: uppercase
+  line-height: 1.3
+  margin: 0 auto
+  margin-bottom: 40px
+  margin-top: 20px
+  text-align: center
+  //text-shadow: 1px 1px #888, 2px 2px #888
+  letter-spacing: 0.1em
+.start-display
+  align-items: center
+  color: color-accent-two
+  display: flex
+  flex: 0 0 100px
+  flex-direction: column
+  justify-content: center
+  text-align: center
+  margin-bottom: 40px
+#start-login
+  color: color-text
+  align-items: center
+  display: flex
+  flex: 0 0 auto
+  flex-direction: column
+  .row
+    align-items: baseline
+    flex-wrap: nowrap
+    margin-bottom: 0
+    padding: 0 20px
+    > *
+      margin-right: 20px
+      &:last-child
+        margin-right: 0
+  #start-user-login
+  #start-guest-login-beta
+    align-items: flex-end
+    animation: rotateInLeft 0.8s
+    background-color: hsla(216, 8%, 12%, 0.3)
+    border-radius: 10px
+    padding: 20px
+  label
+    margin-top: 0
+    text-align: left
+#start-register-button
+  background-color: darken(#dd4b39, 5%)
+  color: color-text
+  &:hover
+    background-color: tint(@background-color, 10%)
+    text-shadow: none
+  &:active
+    background-color: shade(@background-color, 10%)
+    text-shadow: none
+#start-overlay
+  align-items: center
+  background: rgba(0,0,0,0.5)
+  bottom: 0
+  display: flex
+  flex-direction: column
+  justify-content: center
+  left: 0
+  overflow: auto
+  position: absolute
+  right: 0
+  top: 0
+#start-guest-login
+  width: 400px
+  p
+    font-size: font-size-large
+#start-guest-login-form
+  align-items: flex-end
+  display: flex
+  flex-direction: row
+  div
+    flex: 1 1 auto
+    margin-right: 20px
+  label
+    margin-top: 0
+  button
+    flex: 0 0 auto
+.page-bottom
+  align-items: baseline
+  background-color: rgba(0,0,0,0.12)
+  color: color-secondary-text
+  display: flex
+  font-size: font-size-small
+  flex: 0 0 auto
+  flex-direction: row
+  justify-content: center
+  margin: 0
+  padding: 20px 0
+  ul
+    align-items: center
+    display: flex
+    flex-wrap: wrap
+    justify-content: center
+    list-style-type: none
+    margin: 0
+    padding: 0
+    &:after
+      padding-left: 20px
+      margin-right: 20px
+      content: '·'
+    &:last-child
+      margin-right: 0
+      padding-right: 0
+      &:after
+        content: none
+  li
+    display: inline
+    margin-right: 20px
+    &:last-child
+      margin-right: 0
+  .donate
+    display: none
+  a
+    text-transform: uppercase
+    &:hover
+      text-decoration: none
+  .donate a
+    text-transform: none
+    vertical-align: middle
+#start-news
+  color: color-secondary-text
+  flex: 0 0 auto
+  text-align: center
+  time
+    font-weight: 700
+
+/* Lobby Page
+-------------------------------------------------- */
+#lobby
+  display: flex
+  flex-direction: column
+  overflow-y: auto
+  h1
+    font-size: font-size-huge
+    font-weight: 400
+    margin: 20px auto 40px
+    text-align: center
+  p
+    font-size: font-size-large
+    margin-top: 0
+    text-align: center
+#lobby-content
+  flex: 1 0 auto
+  padding: 0 10px
+  padding-top: 20px
+#lobby-bottom
+  flex: 0 0 auto
+.lobby-clients
+  flex-wrap: wrap
+  margin-bottom: 40px
+.lobby-client
+  flex: 1 1 300px
+  height: 100px
+  margin: 0 auto 10px auto
+  max-width: 300px
+  outline: none
+  position: relative
+  transition: box-shadow 0.2s, transform 0.4s
+  transform-style: preserve-3d
+  &.is-inspected
+    transform: rotateY(180deg)
+  .lobby-client-challenge
+    display: none
+  .lobby-client-unchallenge
+    display: none
+  .lobby-client-accept
+    display: none
+.lobby-client-picture
+  background-color: #eee
+  border-radius: 50%
+  color: #222
+  flex: 0 0 auto
+  font-size: 40px
+  height: 80px
+  line-height: 80px
+  margin: 10px
+  pointer-events: none
+  text-align: center
+  width: 80px
+img.lobby-client-picture
+  background: rgba(0,0,0,0.5)
+.lobby-client-content
+  background: rgba(0,0,0,0.1)
+  border-left: 1px solid rgba(0,0,0,0.3)
+  display: flex
+  flex: 1 1 auto
+  flex-direction: column
+  justify-content: space-between
+  overflow: hidden
+  padding: 10px
+.lobby-client-name
+  color: color-text
+  font-size: font-size-large
+  line-height: 20px
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+.lobby-client-status
+  color: color-secondary-text
+  font-size: font-size-small
+  line-height: 20px
+  overflow: hidden
+  text-overflow: ellipsis
+  text-transform: uppercase
+  white-space: nowrap
+.lobby-client-button
+  flex: 0 0 auto
+  height: 30px
+  line-height: 100%
+  padding: 0 5px
+.lobby-client-unchallenge
+  background-color: color-accent
+  &:hover
+    background-color: lighten(color-accent, 10%)
+  &:active
+    background-color: shade(color-accent, 20%)
+.lobby-client-accept
+  background-color: color-accent-two
+  &:hover
+    background-color: lighten(color-accent-two, 10%)
+  &:active
+    background-color: shade(color-accent-two, 20%)
+.lobby-client.available
+  .lobby-client-challenge
+    display: block
+  &.self
+    .lobby-client-challenge
+      display: none
+.lobby-client.challenged
+  .lobby-client-face
+    background-color: rgba(darken(color-accent, 50%), 0.8)
+  .lobby-client-challenge
+    display: none
+  .lobby-client-unchallenge
+    display: block
+  .lobby-client-accept
+    display: none
+.lobby-client.challenger
+  .lobby-client-face
+    background-color: rgba(darken(color-accent-two, 50%), 0.8)
+  .lobby-client-challenge
+    display: none
+  .lobby-client-unchallenge
+    display: none
+  .lobby-client-accept
+    display: block
+.lobby-client-face
+  raise(2)
+  //background: color-ui-0
+  //background: linear-gradient(90deg, hsl(216, 8%, 12%), hsla(216, 8%, 12%, 0.5))
+  background-color: rgba(color-ui-0, 0.8)
+  border-radius: 8px
+  //box-shadow: 0 0 10px rgba(0,0,0,0.5)
+  //box-shadow: 0 2px 5px rgba(0,0,0,0.25)
+  transition: background-color 0.2s
+.lobby-client-front
+  backface-visibility: hidden
+  bottom: 0
+  display: flex
+  position: absolute
+  left: 0
+  right: 0
+  top: 0
+  transform: rotateY(0)
+.lobby-client-back
+  backface-visibility: hidden
+  bottom: 0
+  position: absolute
+  left: 0
+  padding: 10px
+  right: 0
+  top: 0
+  transform: rotateY(180deg)
+  
+/* Game Page
+-------------------------------------------------- */
+#game
+  align-items: stretch
+  display: flex
+  flex-direction: column
+  outline: none
+#canvas
+  //background-image: linear-gradient(rgba(0,0,0,0.5), transparent 60px), linear-gradient(0deg, rgba(0,0,0,0.5), transparent 60px)
+  display: flex
+  flex: 1 1 auto
+  flex-direction: column
+  overflow: hidden
+  &.blur
+    filter: blur(10px)
+#dust
+  animation: dustWave 1.2s forwards
+  backface-visibility: hidden
+  box-shadow: inset 0 0 0.5em rgba(255,255,255,0.2)
+  border-radius: 100%
+  height: 2em
+  pointer-events: none
+  position: absolute
+  transform: scale(1)
+  width: 2em
+  z-index: 60
+.table
+  align-items: stretch
+  display: flex
+  flex: 1 1 auto
+  flex-direction: column
+  justify-content: space-between
+  overflow: hidden
+  position: relative
+.table-top
+  align-items: center
+  display: flex
+  flex-direction: column
+  flex: 0 0 auto
+.table-center
+  align-items: center
+  display: flex
+  flex: 1 1 auto
+  flex-direction: column
+  justify-content: center
+  overflow: hidden
+.table-bottom
+  align-items: center
+  display: flex
+  flex: 0 0 auto
+  flex-direction: column
+  width: 100%
+.board
+  //background-color: rgba(255,255,255,0.2)
+  //background-blend-mode: color-burn
+  //background-color: hsl(219, 10%, 40%)
+  //background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/light_alu.png)
+  background-image: url('../images/themes/blue/light_alu.png')
+  background-size: 20%
+  border-radius: 0.4em
+  box-shadow: inset 1px 1px rgba(255,255,255,0.1),inset -1px -1px rgba(0,0,0,0.3), 0 0 1em rgba(0,0,0,0.24)
+  flex: 0 0 auto
+  height: 30em
+  width: 30em
+  padding: 0.5em
+/*.dpr2 .board
+  transform: scale(0.5)*/
+.squares-container
+  //background-blend-mode: color-burn
+  background-color: color-square
+  //background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/cream_dust.png)
+  background-image: url('../images/themes/blue/board_cream_dust.png')
+  border-left: 1px solid rgba(255,255,255,0.05)
+  border-top: 1px solid rgba(255,255,255,0.05)
+  height: 30em
+  position: absolute
+  width: 30em
+.squares
+  left: 0
+  bottom: 0
+  position: absolute
+  right: 0
+  top: 0
+  z-index: 1
+.square
+  box-shadow: inset -1px -1px rgba(255,255,255,0.05)
+  height: 2em
+  position: absolute
+  width: 2em
+.square
+  &:nth-child(15n+2)
+    left: 2em
+  &:nth-child(15n+3)
+    left: 4em
+  &:nth-child(15n+4)
+    left: 6em
+  &:nth-child(15n+5)
+    left: 8em
+  &:nth-child(15n+6)
+    left: 10em
+  &:nth-child(15n+7)
+    left: 12em
+  &:nth-child(15n+8)
+    left: 14em
+  &:nth-child(15n+9)
+    left: 16em
+  &:nth-child(15n+10)
+    left: 18em
+  &:nth-child(15n+11)
+    left: 20em
+  &:nth-child(15n+12)
+    left: 22em
+  &:nth-child(15n+13)
+    left: 24em
+  &:nth-child(15n+14)
+    left: 26em
+  &:nth-child(15n+15)
+    left: 28em
+  &:nth-child(n+16):nth-child(-n+30)
+    top: 2em
+  &:nth-child(n+31):nth-child(-n+45)
+    top: 4em
+  &:nth-child(n+46):nth-child(-n+60)
+    top: 6em
+  &:nth-child(n+61):nth-child(-n+75)
+    top: 8em
+  &:nth-child(n+76):nth-child(-n+90)
+    top: 10em
+  &:nth-child(n+91):nth-child(-n+105)
+    top: 12em
+  &:nth-child(n+106):nth-child(-n+120)
+    top: 14em
+  &:nth-child(n+121):nth-child(-n+135)
+    top: 16em
+  &:nth-child(n+136):nth-child(-n+150)
+    top: 18em
+  &:nth-child(n+151):nth-child(-n+165)
+    top: 20em
+  &:nth-child(n+166):nth-child(-n+180)
+    top: 22em
+  &:nth-child(n+181):nth-child(-n+195)
+    top: 24em
+  &:nth-child(n+196):nth-child(-n+210)
+    top: 26em
+  &:nth-child(n+211):nth-child(-n+225)
+    top: 28em
+.bonus-marker
+  color: rgba(255,255,255,0.8) !important
+  border-radius: 100%
+  color: color-text
+  font-weight: 400
+  height: 60%
+  left: 50%
+  margin-left: -30%
+  margin-top: -30%
+  position: absolute
+  top: 50%
+  width: 60%
+.bonus.tw
+  .bonus-marker
+    background-color: hsl(16, 100%, 50%)
+  .bonus-text
+    color: rgba(255,255,255,0.9)
+.bonus.dw
+  .bonus-marker
+    background-color: color-accent
+  .bonus-text
+    color: rgba(255,255,255,0.9)
+.bonus.dl
+  .bonus-marker
+    background-color: hsl(hue, 10%, 20%)
+  .bonus-text
+    color: color-secondary-text
+.bonus.tl
+  .bonus-marker
+    background-color: hsl(hue, 10%, 85%)
+  .bonus-text
+    color: #222
+.bonus.start
+  .bonus-marker
+    background-color: #F3B501
+  .bonus-text
+    color: #222
+.bonus-text-container
+  align-items: center
+  bottom: 0
+  display: flex
+  justify-content: center
+  left: 0
+  position: absolute
+  right: 0
+  top: 0
+.bonus-text
+  font-size: 0.55em
+  text-align: center
+  font-weight: 400
+.tile
+  //background: color-tile
+  //background-blend-mode: color-burn
+  //background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/light_alu.png)
+  background-color: hsl(218, 11%, 28%)
+  background-image: url('../images/themes/blue/brushed.png')
+  //background-size: 100%
+  box-shadow: inset -1px -1px rgba(0,0,0,0.2),inset 1px 1px rgba(255,255,255,0.05)
+  font-weight: 400
+  height: 2em
+  line-height: 1.8
+  outline: none
+  position: relative
+  text-align: center
+  text-shadow: 0 0 1px rgba(0,0,0,0.5)
+  transform-origin: 0 0
+  transition: transform 0.3s
+  width: 2em
+  //will-change: transform
+  &:after
+    background-color: transparent
+    content: ''
+    bottom: 0
+    left: 0
+    opacity: 0.5
+    position: absolute
+    right: 0
+    top: 0
+    transition: background-color 0.1s
+    z-index: -2
+  &.one
+    color: #F4ECDE
+  &.two
+    color: #FA9F2B
+  &.three
+    color: #1CB9FF
+  &.four
+    color: #FF4646
+  &[data-position='0']
+    transform: translateX(0em)
+  &[data-position='1']
+    transform: translateX(2em)
+  &[data-position='2']
+    transform: translateX(4em)
+  &[data-position='3']
+    transform: translateX(6em)
+  &[data-position='4']
+    transform: translateX(8em)
+  &[data-position='5']
+    transform: translateX(10em)
+  &[data-position='6']
+    transform: translateX(12em)
+  &[data-target]
+    //background-color: lighten(@background, 15%)
+    &:after
+      background-color: rgba(255,255,255,0.2)
+    //background-color: hsl(0,0%,12%)
+  &.is-submitted
+    //background-color: color-tile-submitted
+    //background-color: hsl(219, 40%, 6%)
+    &:after
+      animation: miniNova 2.5s 2.5s forwards
+  &.is-factored-in
+    &:before
+      animation: superNova 5s
+      bottom: 0
+      content: ''
+      left: 0
+      position: absolute
+      right: 0
+      top: 0
+      z-index: -1
+  /*&:after
+    background-image: linear-gradient(transparent, rgba(0,0,0,0.24))
+    bottom: 0
+    content: ''
+    left: 0
+    position: absolute
+    right: 0
+    top: 0
+  */
+.tile-text
+  line-height: 1.8
+.tile-value
+  bottom: 0.1em
+  height: 1em
+  opacity: 0.8
+  left: 0
+  line-height: 1
+  overflow: hidden
+  position: absolute
+  right: 0
+  text-align: center
+.rack
+  font-size: 20px
+  height: 2em
+  margin-bottom: 5px
+  position: relative
+  width: 14em
+  &:before
+    raise(1)
+    //background-color: color-square
+    //background-color: rgba(255,255,255,0.2)
+    background-image: url('../images/themes/blue/light_alu.png')
+    box-shadow: inset -1px -1px rgba(0,0,0,0.3),inset 1px 1px  rgba(255,255,255,0.12)
+    border-top-left-radius: .4em
+    border-top-right-radius: .4em
+    bottom: -10px
+    box-sizing: border-box
+    content: ''
+    height: 10px
+    left: -20px
+    position: absolute
+    right: -20px
+  .tile
+    animation: 0.4s fadeIn
+    backface-visibility: hidden
+    position: absolute
+    z-index: 10
+    &.dragging
+      raise(2)
+      transition: none
+      z-index: 11
+.opponent-rack
+  margin-bottom: 0
+  margin-top: -30px
+  &:before
+    display: none
+#rack .tile
+  cursor: pointer
+  &:hover
+    z-index: 11
+    //background-color: lighten(color-tile, 10%)
+    //background-color: hsl(219, 10%, 6%)
+    &:after
+      transition: box-shadow 0.1s
+      background-color: rgba(255,255,255,0.1)
+.game-actions
+  display: none
+.game-message
+  animation: bounceInFadeOut 2.25s forwards
+  font-size: font-size-full-screen-message
+  font-weight: 700
+  left: 0
+  line-height: 1.2
+  margin-top: font-size-full-screen-message * @line-height * -0.5 - 10px
+  pointer-events: none
+  position: absolute
+  text-align: center
+  text-shadow: 0 0 1px black, 0 0 20px black
+  top: 50%
+  width: 100%
+  //will-change: transform
+  z-index: 30
+  span
+    color: color-text
+    display: inline-block
+    border-radius: 0.4em
+    padding: 10px 0.4em
+#remaining
+  color: color-text
+  font-size: font-size-small
+  font-weight: 700
+  line-height: 30px
+  pointer-events: none
+  position: absolute
+  text-transform: uppercase
+  top: 30px
+  right: 20px
+  z-index: 20
+#remaining-number
+  font-weight: 700
+  margin-right: 0.1em
+.unit-frame
+  align-items: center
+  background: color-ui-0
+  display: flex
+  font-size: font-size-large
+  flex: 0 0 auto
+  left: 0
+  line-height: 30px
+  margin: 0
+  pointer-events: none
+  position: relative
+  transition: background-color 0.2s
+  width: 100%
+  z-index: 20
+  > *
+    flex: 0 0 auto
+  .main
+    display: flex
+    flex: 1 1 auto
+    padding: 0 20px
+  .name
+    flex: 1 1 auto
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+  .score
+    font-weight: 700
+    margin: 0
+    position: relative
+    text-align: right
+  .delta
+    animation: fadeOut 2s 2s forwards
+    background-color: color-accent-three
+    border-radius: 2px
+    color: #333
+    flex: 0 1 auto
+    font-weight: 700
+    line-height: 24px
+    margin-top: 3px
+    padding: 0 10px
+    position: absolute
+    right: 60px
+    top: 0
+    text-align: center
+    &.negative
+      background-color: darken(color-accent-two, 25%)
+      color: color-text
+    &.preliminary
+      animation: none
+      background-color: rgba(255,255,255,0.1)
+      color: color-secondary-text
+  .status
+    background-color: darken(color-accent-two, 25%)
+    padding: 0 20px
+  &.active
+    //background: alpha(desaturate(shade(color-accent, 20%), 20%), 0.5)
+    //background: rgba(color-accent, 0.5)
+    background: desaturate(darken(color-accent, 50%), 50%)
+
+.unit-frame-picture
+  background-color: #eee
+  background-position: 50% 50%
+  background-size: 100% auto
+  border-radius: 100%
+  box-shadow: 0 0 1px black
+  color: #222
+  font-size: 30px
+  height: 60px
+  line-height: 60px
+  margin: -15px -10px -15px 10px
+  text-align: center
+  width: 60px
+#player
+  border-bottom: none
+  .unit-frame-picture
+    display: none
+
+#chat
+  animation: zoomIn 0.4s
+  background: color-ui-0
+  bottom: 0
+  display: flex
+  flex: 0 0 auto
+  flex-direction: column
+  left: 0
+  margin: 5px
+  position: fixed
+  right: 0
+  top: 0
+  z-index: 42
+#chat-overlay
+  background: rgba(0,0,0,0.5)
+  bottom: 0
+  display: flex
+  left: 0
+  position: fixed
+  right: 0
+  top: 0
+  z-index: 41
+#game-control
+  display: none
+.chat-section
+  flex: 0 0 auto
+  padding: 0 10px
+  &:last-child
+    border-bottom: none
+#chat-header
+  display: flex
+  padding: 0
+  justify-content: flex-end
+#chat-form
+  display: flex
+  margin: 0
+  padding: 10px
+#chat-form-input
+  flex: 1 1 auto
+  padding: 0 10px
+#chat-form-button
+  flex: 0 0 auto
+  margin-left: 20px*0.5
+  padding: 0 12px
+  
+#chat-messages-wrapper
+  flex: 1 1 auto
+  margin: 10px
+  margin-bottom: 0
+  position: relative
+  user-select: auto
+#chat-messages
+  bottom: 0
+  left: 0
+  overflow: hidden
+  overflow-y: auto
+  padding: 10px
+  padding-bottom: 0
+  position: absolute
+  right: 0
+  top: 0
+  a
+    font-weight: 700
+  p
+    color: color-secondary-text
+    cursor: text
+  b
+    color: color-text
+    display: block
+    font-weight: 700
+  .result
+    border-bottom: 1px solid rgba(255,255,255,0.1)
+    border-top: 1px solid rgba(255,255,255,0.1)
+    color: color-text
+    font-weight: 700
+    padding: 5px 0
+    position: relative
+    text-align: center
+    z-index: 0
+  .end
+    color: color-text
+    font-weight: 700
+
+/* Cursor
+-------------------------------------------------- */
+cursor-color = #f0f0f0
+
+@keyframes cursorBlink
+  from
+    box-shadow: inset 0 0 0 0.1em cursor-color, inset 0 0 0.5em cursor-color
+  to
+    box-shadow: inset 0 0 0 0.1em darken(cursor-color, 30%), inset 0 0 0.5em cursor-color
+
+.cursor
+  background-color: rgba(color-accent-two, 0.5)
+  //box-shadow: inset -1px -1px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.05)
+  box-shadow: inset -1px -1px rgba(0,0,0,0.3),inset 1px 1px 2px rgba(255,255,255,0.12)
+  height: 2em
+  pointer-events: none
+  position: absolute
+  transform: translateX(0) translateY(0)
+  transition: transform 0.2s, left 0.2s, top 0.2s
+  width: 2em
+  will-change: transform, left, top
+  z-index: 12
+  .cursor-angle
+    background-image: url('../images/cursor.svg') //, radial-gradient(color-accent, transparent)
+    background-size: 50%
+    background-position: 50%
+    background-repeat: no-repeat
+    height: 100%
+    left: 0
+    position: absolute
+    top: 0
+    transform: scale(1.25)
+    transition: opacity 0.3s, transform 0.3s
+    width: 100%
+    will-change: opacity, transform
+  &.vertical
+    .cursor-angle
+      transform: rotateZ(90deg) scale(1.25)
+  &.subtle
+    .cursor-angle
+      opacity: 0
+
+/* Other Stuff
+-------------------------------------------------- */
+.word-list
+  display: flex
+  flex-wrap: wrap
+  list-style-type: none
+  margin: 0
+  margin-bottom: 10px
+  margin-right: -10px
+  padding: 0
+  li
+    //box-shadow: 0 2px 5px rgba(0,0,0,0.37)
+    display: flex
+    margin: 0
+    margin-bottom: 10px
+    margin-right: 10px
+  .tile
+    background: none
+    background-color: rgba(255,255,255,0.1)
+    line-height: 2
+    &:first-child
+      margin-right: 1px
+
+#rotate-screen
+  align-items: center
+  display: none
+  font-size: font-size-large
+  left: 0
+  bottom: 0
+  justify-content: center  
+  position: absolute
+  right: 0
+  top: 0
+  text-align: center
+  z-index: 40
+  i
+    font-size: font-size-huge
+    margin-bottom: 1.5rem
+    
+/* About Window
+-------------------------------------------------- */
+#about
+  max-width: 800px
+    
+/* Feedback Window
+-------------------------------------------------- */
+#feedback-success
+  margin-top: 15px
+  font-weight: 700
+  color: #0f0
+
+/* Leaderboard Window
+-------------------------------------------------- */
+#leaderboard-header
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  margin-bottom: 20px
+  ul
+    margin-right: 20px
+    &:last-child
+      margin-right: 0
+  button:disabled
+    color: #666
+#leaderboard
+  flex: 1 1 auto
+  width: 100%
+  table
+    margin: 0 20px 20px 0
+    width: 100%
+  th
+    color: color-secondary-text
+    font-size: font-size-small
+    font-weight: 400
+    text-align: left
+    text-transform: uppercase
+  tr
+    animation: fadeIn 0.2s
+  .window-content
+    overflow-y: scroll
+
+/* Two-Letter-Words Window
+-------------------------------------------------- */
+#two-letter-words
+  max-width: 700px
+  .window-content
+    cursor: default
+    user-select: none
+  .tile
+    box-shadow: none
+    color: color-text
+
+/* Challenges Window
+-------------------------------------------------- */
+#challenges
+  max-width: 480px
+
+/* Keyboard Window
+-------------------------------------------------- */
+#keyboard
+  table
+    margin-bottom: 10px
+  tr
+    border: none
+  th, td
+    padding: 0 20px 10px 0
+  td:first-child
+    white-space: nowrap
+  td:last-child
+    padding-right: 0
+  kbd
+    background: none
+    //border: 1px solid rgba(255,255,255,0.1)
+    border: none
+    box-sizing: border-box
+    color: color-text
+    display: inline-block
+    font-size: font-size-small
+    font-weight: 700
+    line-height: 20px
+    margin: 0
+    min-width: 30px
+    padding: 5px 10px
+    text-align: center
+    &:last-child
+      margin-right: 0
+  .window-content
+    cursor: default
+    user-select: none
+
+/* Challenges Window
+-------------------------------------------------- */
+.challenges-client
+  align-items: center
+  display: flex
+  &.disabled
+    .challenges-client-name
+      text-decoration: line-through
+.challenges-client-name
+  flex: 1 1 auto
+  font-size: font-size-large
+.challenges-client-status
+  flex: 1 1 auto
+.challenges-client-buttons
+  display: flex
+  flex: 0 0 auto
+
+/* Players Window
+-------------------------------------------------- */
+.players-client
+  align-items: center
+  display: flex
+.players-client-name
+  flex: 1 1 auto
+  font-size: font-size-large
+.players-client-status
+  flex: 1 1 auto
+.players-client-buttons
+  flex: 0 0 auto
+
+
+/* Pass Dialog
+-------------------------------------------------- */
+#pass-dialog
+  .window-content
+    cursor: default
+    user-select: none
+  p
+    text-align: center
+  .tiles
+    background: rgba(0,0,0,0.2)
+    font-size: 20px
+    height: 40px
+    margin: 0 auto
+    margin-bottom: 20px
+    margin-left: -20px
+    margin-right: -20px
+    padding: 20px
+    position: relative
+    width: 280px
+  .tile
+    cursor: pointer
+    position: absolute
+    &:before
+      roundedCorners()
+      background-color: transparent
+      transition: background-color 0.2s
+      bottom: -8px
+      content: ''
+      cursor: default
+      height: 5px
+      left: 0
+      pointer-events: none
+      position: absolute
+      right: 1px
+      top: auto
+    &:focus
+      //background-color: lighten(color-tile, 5%)
+      &:after
+        background-color: rgba(255,255,255,0.05)
+    &:hover
+      &:after
+        background-color: rgba(255,255,255,0.1)
+      //background-color: lighten(color-tile, 10%)
+    &.selected:before
+      background-color: color-accent-three
+  .window-button-group
+    display: flex
+    .button
+      flex: 1 1 auto
+      &:last-child
+        margin-right: 0
+
+/* Themes
+-------------------------------------------------- */
+color-wood = #25201E
+
+.theme-wood
+  .page
+    background-color: hsl(23, 43%, 16%)
+    background-image: url('../images/themes/wood/background.png')
+    background-position: 50% 50%
+    background-size: cover
+  .board
+    background-image: hsl(22, 46%, 31%)
+    background: linear-gradient(rgba(0,0,0,0.3), transparent, rgba(0,0,0,0.3)), url('../images/themes/wood/wood.png')
+    background-size: auto, 194px 251px
+    box-shadow: 0 0 10px rgba(0,0,0,0.8), inset 0 0 0.5em rgba(0,0,0,0.5)
+  .squares-container
+    background-color: hsl(12, 9%, 10%)
+    background-image: url('../images/themes/wood/wood_3.png')
+    background-size: 50%
+  .tile
+    background-color: hsl(15, 7%, 22%)
+    background-image: url('../images/themes/wood/wood_2.png')
+    background-position: 50%
+    background-size: 400%
+    /*&[data-target]
+      background-color: tint(color-wood, 25%)
+    &.is-submitted
+      background-color: #2a527b*/
+  #rack
+    &:before
+      background-color: hsl(22, 46%, 31%)
+      background-image: url('../images/themes/wood/wood.png')
+      background-size: 194px 251px
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5)
+    /*.tile:hover
+      background-color: tint(color-wood, 20%)*/
+  .bonus
+    &.dw
+      .bonus-marker
+        background-color: lighten(color-wood, 80%)
+      .bonus-text
+        color: #222
+    &.dl
+      .bonus-marker
+        background-color: lighten(color-wood, 10%)
+      .bonus-text
+        color: lighten(color-wood, 60%)
+    &.tl
+      .bonus-marker
+        background-color: lighten(color-wood, 30%)
+      .bonus-text
+        color: lighten(color-wood, 70%)
+
+/* Larger than desktop */
+@media (min-width: 1000px)
+  .theme-wood
+    #chat
+      box-shadow: 0 0 10px rgba(0,0,0,0.5)
+
+/* Media Queries
+-------------------------------------------------- */
+
+@media (min-width: 360px)
+  #pass-dialog .tiles
+    border-radius: 4px
+    margin-left: 0
+    margin-right: 0
+
+/* Larger than mobile */
+@media (min-width: 400px) {}
+
+/* Larger than phablet */
+@media (min-width: 550px) {}
+
+/* Larger than tablet */
+@media (min-width: 750px)
+  .lobby-clients
+    display: flex
+    margin: 0 auto
+    width: 640px
+  .lobby-client
+    margin: 0
+    margin-right: 20px
+    margin-bottom: 20px
+
+/* Larger than desktop */
+@media (min-width: 1000px)
+  #start-logo
+    font-size: font-size-title
+  #lobby
+    h1
+      font-size: font-size-full-screen-message
+      line-height: 40px
+      margin-top: 60px
+      margin-bottom: 60px
+  .lobby-clients
+    padding-left: 20px
+
+  #chat-overlay
+    display: none
+    z-index: auto
+  #chat
+    animation: none
+    background-color: rgba(23, 23, 23, 0.5)
+    background-color: color-ui-0
+    border-radius: 0
+    //raise(2)
+    display: flex !important
+    margin: 0
+    padding-top: 50px
+    position: static
+    width: 340px
+    z-index: 0
+    &.collapsed
+      transform: none
+  #chat-header
+    .window-close
+      display: none
+  #overlay
+    animation: fadeIn 0.4s
+    padding: 20px 0
+  .window-group
+    display: flex
+    .window
+      margin: 0 10px
+  .page-bottom
+    .donate
+      display: block
+  .page-container
+    max-width: 900px
+  .lobby-clients
+    width: 960px
+  #game
+    flex-direction: row
+  .rack
+    margin-bottom: 20px*0.5
+  .opponent-rack
+    margin-top: 20px*-1
+  #more
+    display: none
+  .unit-frame
+    background: none
+    border: none
+    box-shadow: none
+    font-size: font-size-normal
+    left: desktop-unit-frame-margin-horizontal
+    line-height: desktop-unit-frame-line-height
+    position: absolute
+    width: auto
+    .main
+      raise(2)
+      background: color-ui-0
+      border-radius: 2px
+      margin-left: desktop-unit-frame-picture-size - 15px
+      padding: 0
+      padding-left: 10px
+      transition: background 0.2s
+    .name
+      flex: 0 1 auto
+      max-width: 120px
+      padding: 0 15px 0 (10px + desktop-unit-frame-picture-size * 0.5)
+      padding: 0
+      padding: 0 15px
+    .score
+      background: rgba(255,255,255,0.06)
+      margin: 0
+      padding: 0
+      text-align: center
+      width: 50px
+    .delta, .status
+      raise(2)
+      border-radius: 2px
+      line-height: desktop-unit-frame-line-height
+      margin: 0
+      margin-left: 10px
+      padding: 0 10px
+      position: static
+      text-align: center
+    .delta
+      animation: shiftLeft 0.5s 2.5s forwards
+      padding: 0
+      width: 45px
+      &.preliminary
+        background: rgba(96,96,96,0.5)
+        color: color-secodary-text
+    &.active
+      background: none
+      .main
+        //background: alpha(darken(color-accent, 20%), 0.5)
+        //background: alpha(desaturate(shade(color-accent, 20%), 20%), 0.5)
+        //background: rgba(color-accent, 0.5)
+        background: darken(color-accent, 50%)
+
+  .unit-frame-picture
+    raise(2)
+    border-radius: 100%
+    font-size: desktop-unit-frame-picture-size * 0.5
+    height: desktop-unit-frame-picture-size
+    left: 0
+    line-height: desktop-unit-frame-picture-size
+    margin: 0
+    margin-top: desktop-unit-frame-picture-size * -0.5
+    position: absolute
+    top: 50%
+    width: desktop-unit-frame-picture-size
+  #player
+    bottom: 50px
+    .unit-frame-picture
+      display: block
+  #opponent
+    top: desktop-unit-frame-margin-vertical
+  #remaining
+    line-height: tile-size
+    top: 10px
+  #app-bar
+    background: none
+    border: none
+    box-shadow: none
+    padding: 10px 5px
+    position: fixed
+    right: 0
+    top: 0
+    width: auto
+    .button
+      margin: 2px 5px
+  #app-bar-lobby
+    display: none
+  #app-bar-game
+    bottom: 10px
+    display: block
+    overflow: visible
+    position: fixed
+    right: 355px
+    .button
+      height: auto
+      line-height: 40px
+      margin: 0 5px
+  #app-bar-common
+    display: flex
+    flex-direction: row-reverse
+  #menu
+    width: 280px
+  #menu-key-bindings
+    display: block
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px)
+  .app-bar
+    padding: 0
+    button
+      padding: 0 20px
+
+@media (min-width: 1300px)
+  #player
+    bottom: desktop-unit-frame-margin-vertical
+
+@media (max-height: 400px)
+  #rotate-screen
+    display: flex
+    
