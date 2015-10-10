@@ -1,9 +1,13 @@
 <!DOCTYPE html><script src="cordova.js"></script><script>(function() {
+  alert('run');
   var languages = [ 'en', 'de' ];
-  
+
   document.addEventListener('deviceready', function(event) {
+    alert('deviceready');
     navigator.globalization.getPreferredLanguage(function(language) {
+      alert('preferredLanguage');
       var code = language.value.substr(0, 2);
+      alert(code);
 
       if (languages.indexOf(code) == -1) {
         // unsupported language, fall back to default (English)
@@ -12,6 +16,7 @@
 
       var url = 'index-' + code + '.html';
 
+      alert('run replace');
       window.location.replace(url);
     }, function() {
       alert('Error getting language');
