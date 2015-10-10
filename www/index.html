@@ -1,1 +1,20 @@
-<!DOCTYPE html><script src="cordova.js"></script><script>window.location.replace('index-en.html');</script>
+<!DOCTYPE html><script src="cordova.js"></script><script>(function() {
+  var languages = [ 'en', 'de' ];
+  
+  document.addEventListener('deviceready', function(event) {
+    navigator.globalization.getPreferredLanguage(function(language) {
+      var code = language.value.substr(0, 2);
+
+      if (languages.indexOf(code) == -1) {
+        // unsupported language, fall back to default (English)
+        code = languages[0];
+      }
+
+      var url = 'index-' + code + '.html';
+
+      window.location.replace(url);
+    }, function() {
+      alert('Error getting language');
+    });
+  });
+}());</script>
