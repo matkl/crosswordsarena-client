@@ -3,7 +3,6 @@
     <name>Crosswords Arena</name>
     <description>Free word game for two players. Play online against friends or the computer.</description>
     <author email="matthias@klein.pw" href="http://matthiasklein.me">Matthias Klein</author>
-    <preference name="permissions" value="none"/>
     <gap:plugin name="org.apache.cordova.media" />
     <gap:plugin name="cordova-plugin-inappbrowser" source="npm" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1" />
