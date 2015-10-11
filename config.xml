@@ -1,12 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.crosswordsarena" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.crosswordsarena" version="2.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Crosswords Arena</name>
     <description>Free word game for two players. Play online against friends or the computer.</description>
     <author email="matthias@klein.pw" href="http://matthiasklein.me">Matthias Klein</author>
-    <gap:plugin name="org.apache.cordova.media" />
+
+    <preference name="permissions" value="none" />
+
     <gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.0.1" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
     <gap:plugin name="cordova-plugin-globalization" source="npm" version="1.0.1" />
+    <gap:plugin name="cordova-plugin-media" source="npm" version="1.0.1" />
+
+    <engine name="android" spec="^4.0.2" />
+
+    <gap:config-file platform="android" parent="/manifest" mode="delete">
+        <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    </gap:config-file>
+
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -18,6 +28,4 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <feature name="http://api.phonegap.com/1.0/media" />
-    <engine name="android" spec="^4.0.2" />
 </widget>
