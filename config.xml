@@ -10,7 +10,7 @@
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
     <gap:plugin name="cordova-plugin-globalization" source="npm" version="1.0.1" />
     <gap:plugin name="cordova-plugin-media" source="npm" version="1.0.1" />
-    <gap:plugin name="cordova-plugin-vibration" source="npm" version="2.0.0-dev" />
+    <gap:plugin name="cordova-plugin-vibration" source="npm" version="1.2.0" />
 
     <gap:config-file platform="android" parent="/manifest" mode="delete">
         <uses-permission android:name="android.permission.RECORD_AUDIO" />
