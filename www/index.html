@@ -4,7 +4,6 @@
   document.addEventListener('deviceready', function(event) {
     navigator.globalization.getPreferredLanguage(function(language) {
       var code = language.value.substr(0, 2);
-      alert(code);
 
       if (languages.indexOf(code) == -1) {
         // unsupported language, fall back to default (English)
