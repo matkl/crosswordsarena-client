@@ -12,8 +12,6 @@
     <gap:plugin name="cordova-plugin-media" source="npm" version="1.0.1" />
     <gap:plugin name="cordova-plugin-vibration" source="npm" version="2.0.0-dev" />
 
-    <engine name="android" spec="^4.0.2" />
-
     <gap:config-file platform="android" parent="/manifest" mode="delete">
         <uses-permission android:name="android.permission.RECORD_AUDIO" />
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
