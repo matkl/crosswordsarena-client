@@ -3,6 +3,10 @@
     <name>Crosswords Arena</name>
     <description>Free word game for two players. Play online against friends or the computer.</description>
     <author email="matthias@klein.pw" href="http://matthiasklein.me">Matthias Klein</author>
+    <gap:plugin name="org.apache.cordova.media" />
+    <gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.0.1" />
+    <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
+    <gap:plugin name="cordova-plugin-globalization" source="npm" version="1.0.1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -16,8 +20,4 @@
     </platform>
     <feature name="http://api.phonegap.com/1.0/media" />
     <engine name="android" spec="^4.0.2" />
-    <plugin name="cordova-plugin-media" spec="https://git-wip-us.apache.org/repos/asf/cordova-plugin-media.git" />
-    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
-    <plugin name="cordova-plugin-inappbrowser" spec="https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git" />
-    <plugin name="cordova-plugin-globalization" spec="^1.0.1" />
 </widget>
