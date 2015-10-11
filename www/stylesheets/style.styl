@@ -29,6 +29,29 @@
  */
 
 
+/* Fonts
+-------------------------------------------------- */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Lato-Regular.eot');
+  src: url('../fonts/Lato-Regular.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/Lato-Regular.woff2') format('woff2'),
+       url('../fonts/Lato-Regular.woff') format('woff'),
+       url('../fonts/Lato-Regular.ttf') format('truetype'),
+       url('../fonts/Lato-Regular.svg#Lato') format('svg');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/Lato-Bold.woff2') format('woff2'),
+       url('../fonts/Lato-Bold.woff') format('woff'),
+       url('../fonts/Lato-Bold.ttf') format('truetype');
+}
+
 /* Geometry
 -------------------------------------------------- */
 tile-size = 40px
@@ -319,8 +342,6 @@ p
   color: color-secondary-text
 .large
   font-size: font-size-large
-.thin
-  font-weight: 300
 
 /* Tables
 -------------------------------------------------- */
@@ -374,6 +395,7 @@ a
     background-color: rgba(255,255,255,0.09)
   &:hover
     background-color: rgba(255,255,255,0.18)
+    text-decoration: none
     color: color-text
   &:active
     background-color: rgba(0,0,0,0.12)
@@ -923,12 +945,32 @@ legend
   .donate a
     text-transform: none
     vertical-align: middle
-#start-news
+#start-blog
   color: color-secondary-text
+  display: flex
   flex: 0 0 auto
+  flex-direction: column
+  min-height: 60px
+  justify-content: flex-end
+  padding: 0 10px
   text-align: center
+.start-blog-post
+  animation: fadeIn 0.4s
+  margin-bottom: 20px
+  header
+    display: inline-block
   time
     font-weight: 700
+    margin-right: 10px
+  h1
+    display: inline-block
+    font-size: inherit
+    font-weight: inherit
+    margin: 0
+    margin-right: 10px
+  p
+    display: inline-block
+    margin: 0
 
 /* Lobby Page
 -------------------------------------------------- */
@@ -1554,6 +1596,7 @@ img.lobby-client-picture
   &:last-child
     border-bottom: none
 #chat-header
+  background: hsla(hue, 8%, 32%, 0.8)
   display: flex
   padding: 0
   justify-content: flex-end
@@ -1717,7 +1760,9 @@ cursor-color = #f0f0f0
   flex: 1 1 auto
   width: 100%
   table
-    margin: 0 20px 20px 0
+    margin: 0
+    margin-bottom: 20px
+    table-layout: fixed
     width: 100%
   th
     color: color-secondary-text
@@ -1725,10 +1770,35 @@ cursor-color = #f0f0f0
     font-weight: 400
     text-align: left
     text-transform: uppercase
+  th, td
+    overflow: hidden
+    padding: 0
+    padding-right: 5px
+    text-overflow: ellipsis
+    white-space: nowrap
+    &:last-child
+      padding: 0
   tr
     animation: fadeIn 0.2s
   .window-content
     overflow-y: scroll
+  .leaderboard-words
+    th, td
+      &:nth-child(1)
+      &:nth-child(4)
+        width: 15%
+      &:nth-child(2)
+      &:nth-child(3)
+        width: 35%
+    td:nth-child(2)
+      color: color-accent-three
+  .leaderboard-games
+    th, td
+      width: 15%
+      &:nth-child(2)
+        width: 70%
+    td:nth-child(2)
+      color: color-accent-three
 
 /* Two-Letter-Words Window
 -------------------------------------------------- */

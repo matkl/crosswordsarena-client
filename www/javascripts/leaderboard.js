@@ -41,9 +41,9 @@ var leaderboard = {
 
       data.forEach(function(row, index) {
         if (group == 'games') {
-          self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.score ]);
+          self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.score ], [ null, row.name, null ]);
         } else if (group == 'words') {
-          self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.text, row.value ]);
+          self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.text, row.value ], [ null, row.name, row.text, null ]);
         }
       });
 
@@ -112,13 +112,15 @@ leaderboard.view = {
   hide: function() {
     this.element.classList.add('hide');
   },
-  insertTableRow: function(tableGroup, tableName, values) {
+  insertTableRow: function(tableGroup, tableName, values, titles) {
     var table = this.tables[tableGroup][tableName];
     var row = table.tBodies[0].insertRow();
+    titles = titles || [];
 
     values.forEach(function(value, index) {
       var cell = row.insertCell();
       cell.textContent = value;
+      if (titles[index]) cell.setAttribute('title', titles[index]);
     });
   },
   removeAllTableRows: function(tableGroup, tableName) {

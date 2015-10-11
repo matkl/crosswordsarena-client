@@ -4,6 +4,7 @@ var start = {
     this.view.init();
     this.view.toggleMessage(t('Connecting to server...'))
     this.view.setGuestName(storage.getItem('guest-name') || '');
+    this.fetchNewestBlogPost();
   },
   show: function() {
     this.hideOverlay();
@@ -113,6 +114,14 @@ var start = {
   },
   hideOverlay: function() {
     this.view.hideOverlay();
+  },
+  fetchNewestBlogPost: function() {
+    var self = this;
+    utils.getJSON('http://crosswordsarena.com/api/blog/newest', function(err, post) {
+      if (err) return;
+      if (!post || typeof post != 'object') return;
+      self.view.setNewestBlogPost(post);
+    });
   }
 };
 
@@ -123,6 +132,8 @@ start.view = {
     this.guestLoginForm = document.getElementById('start-guest-login-form');
     this.reconnectButton = document.getElementById('start-reconnect-button');
     this.guestLoginBeta = document.getElementById('start-guest-login-beta');
+    this.blog = document.getElementById('start-blog');
+    this.blogContent = document.getElementById('start-blog-content');
     this.login = document.getElementById('start-login');
     this.message = document.getElementById('start-message');
     this.end = document.getElementById('start-end');
@@ -233,5 +244,40 @@ start.view = {
   },
   hideOverlay: function() {
     this.overlay.classList.add('hide');
+  },
+  setNewestBlogPost: function(post) {
+    function createBlogPost(post) {
+      var article = document.createElement('article');
+      article.className = 'start-blog-post';
+      
+      var header = document.createElement('header');
+      article.appendChild(header);
+      
+      var time = document.createElement('time');
+      time.setAttribute('datetime', post.date);
+      time.textContent = new Date(post.date).toDateString();
+      header.appendChild(time);
+
+      var h1 = document.createElement('h1');
+      h1.textContent = post.title;
+      header.appendChild(h1);
+
+      var p = document.createElement('p');
+      //p.textContent = post.excerpt + ' ';
+      article.appendChild(p);
+
+      var a = document.createElement('a');
+      a.href = post.permalink;
+      a.textContent = 'Read more…';
+      p.appendChild(a);
+
+      return article;
+    }
+
+    this.blogContent.innerHTML = '';
+    var article = createBlogPost(post);
+    this.blogContent.appendChild(article);
+
+    this.blog.classList.remove('hide');
   }
 };

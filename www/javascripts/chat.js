@@ -64,7 +64,9 @@ chat.view = {
   addMessage: function(data) {
     function createMessage(data) {
       var message = document.createElement('p');
-      message.className = data.className;
+      if (data.className) {
+        message.className = data.className;
+      }
 
       var name = document.createElement('b');
       name.textContent = data.name;

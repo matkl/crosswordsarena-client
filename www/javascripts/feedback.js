@@ -11,8 +11,8 @@ var feedback = {
   },
   post: function(data) {
     var self = this;
-    console.log(data);
-    utils.post('/feedback', data, function(err, response) {
+    var host = app.getHost();
+    utils.post(host + '/feedback', data, function(err, response) {
       if (err) return;
       self.view.showSuccess();
     });
