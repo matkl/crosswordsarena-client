@@ -32,6 +32,14 @@ var app = {
     // Load settings from local storage
     this.loadSettings();
   },
+  cordovaInit: function() {
+    // quick and dirty
+    this.setHost('http://' + document.getElementById('host').innerHTML);
+
+    this.init();
+
+    this.view.addCordovaEventListeners();
+  },
   showOverlay: function(name, pop) {
     this.hideOverlay(true);
     this.view.showOverlay();
@@ -56,6 +64,11 @@ var app = {
       history.pushState({
       }, '');
     }*/
+  },
+  back: function() {
+    this.hideOverlay();
+    sideBar.hide();
+    game.hidePassDialog();
   },
   setMute: function(value) {
     sound.setMute(value);
@@ -278,6 +291,12 @@ app.view = {
       app.hideOverlay();
     });*/
   },
+  addCordovaEventListeners: function() {
+    document.addEventListener('backbutton', function(event) {
+      event.preventDefault();
+      var handled = app.back();
+    });
+  },
   getLanguage: function() {
     return document.documentElement.lang;
   },
@@ -338,12 +357,9 @@ app.state = {
 };
 
 if (window.cordova) {
-  document.addEventListener('deviceready', onDeviceReady, false);
-  function onDeviceReady() {
-    // quick and dirty
-    app.setHost('http://' + document.getElementById('host').innerHTML);
-    app.init();
-  }
+  document.addEventListener('deviceready', function() {
+    app.cordovaInit();
+  });
 } else {
   window.addEventListener('DOMContentLoaded', function() {
     app.init();

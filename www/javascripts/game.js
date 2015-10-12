@@ -692,6 +692,9 @@ var game = {
 
     this.view.setPlayerScore(playerIndex, player.score);
     this.view.setPlayerDelta(playerIndex, total);
+  },
+  hidePassDialog: function() {
+    this.view.hidePassDialog();
   }
 };
 

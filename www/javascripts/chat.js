@@ -40,6 +40,7 @@ chat.view = {
   },
   addEventListeners: function() {
     var self = this;
+
     this.form.addEventListener('submit', function(event) {
       event.preventDefault();
       if (this.elements.text.value == '') return;
@@ -49,12 +50,15 @@ chat.view = {
       sound.play('button');
       self.scrollToBottom();
     });
+
     this.form.addEventListener('keypress', function(event) {
       event.stopPropagation();
     });
+
     this.form.addEventListener('keydown', function(event) {
       event.stopPropagation();
     });
+
     this.input.addEventListener('focus', function(event) {
       window.setTimeout(function() {
         chat.scrollToBottom();

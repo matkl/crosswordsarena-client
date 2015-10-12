@@ -1,3 +1,5 @@
+// TODO: merge this with 'chat'
+
 var sideBar = {
   init: function() {
     this.view.init();
@@ -27,6 +29,7 @@ sideBar.view = {
     this.close.addEventListener('click', function() {
       sideBar.hide();
     });
+
     this.overlay.addEventListener('click', function() {
       sideBar.hide();
     });
