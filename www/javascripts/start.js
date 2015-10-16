@@ -267,7 +267,7 @@ start.view = {
       article.appendChild(p);
 
       var a = document.createElement('a');
-      a.href = 'http://crosswordsarena.com/' + post.permalink;
+      a.href = 'http://crosswordsarena.com' + post.permalink;
       a.textContent = 'Read more…';
 
       if (window.cordova) {
