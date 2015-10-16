@@ -388,6 +388,7 @@ a
   text-overflow: ellipsis
   text-transform: uppercase
   transition: background-color 0.1s, box-shadow 0.1s
+  vertical-align: middle
   white-space: nowrap
   .disabled.button-text
     display: none
@@ -423,6 +424,9 @@ a
     background-color: shade(@background-color, 24%)
   &:disabled:after
     display: none
+.button-group
+  .button
+    margin-right: 10px
 .donate
   display: flex
   margin-bottom: 0
@@ -678,7 +682,7 @@ legend
   align-items: center
   background-color: rgba(0,0,0,0.9)
   bottom: 0
-  color: color-accent-two
+  //color: color-accent-two
   display: flex
   flex-direction: column
   justify-content: center
@@ -714,6 +718,7 @@ legend
 /* Layout
 -------------------------------------------------- */
 #main
+  background: color-ui-0
   display: flex
   flex-direction: column
   height: 100vh
@@ -2015,6 +2020,8 @@ color-wood = #25201E
 
 /* Larger than desktop */
 @media (min-width: 1000px)
+  #main
+    flex-direction: row
   #start-logo
     font-size: font-size-title
   #lobby
