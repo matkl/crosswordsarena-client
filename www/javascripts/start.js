@@ -267,8 +267,16 @@ start.view = {
       article.appendChild(p);
 
       var a = document.createElement('a');
-      a.href = post.permalink;
+      a.href = 'http://crosswordsarena.com/' + post.permalink;
       a.textContent = 'Read more…';
+
+      if (window.cordova) {
+        a.addEventListener('click', function(event) {
+          event.preventDefault();
+          window.open(this.getAttribute('href'), '_system');
+        });
+      }
+
       p.appendChild(a);
 
       return article;

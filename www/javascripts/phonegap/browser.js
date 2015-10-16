@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', function() {
     if (link.hasAttribute('data-phonegap')) return;
     
     link.addEventListener('click', function(event) {
+      event.preventDefault();
       window.open(this.getAttribute('href'), '_system');
     });
   });
