@@ -78,9 +78,13 @@ lobby.view = {
   init: function() {
     this.element = document.getElementById('lobby');
     this.clients = document.getElementById('clients');
+    this.addEventListeners();
+  },
+  addEventListeners: function() {
   },
   show: function() {
     this.element.classList.remove('hide');
+    this.element.scrollTop = 0;
   },
   hide: function() {
     this.element.classList.add('hide');

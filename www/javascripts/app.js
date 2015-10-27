@@ -13,6 +13,7 @@ var app = {
 
     menu.init();
     sideBar.init();
+    appBar.init();
 
     // Initialize screen presenters
     start.init();
@@ -20,6 +21,7 @@ var app = {
     game.init();
 
     // Initialize overlay presenters
+    options.init();
     about.init();
     leaderboard.init();
     twoLetterWords.init();
@@ -33,7 +35,7 @@ var app = {
     this.loadSettings();
   },
   cordovaInit: function() {
-    // quick and dirty
+    // quick and dirty: set the host for our websocket connection
     this.setHost('http://' + document.getElementById('host').innerHTML);
 
     this.init();
@@ -52,7 +54,7 @@ var app = {
     }*/
   },
   hideOverlay: function(pop) {
-    var overlays = [ menu, about, leaderboard, twoLetterWords, keyboard, feedback, challenges ];
+    var overlays = [ menu, options, about, leaderboard, twoLetterWords, keyboard, feedback, challenges ];
     overlays.forEach(function(overlay) {
       overlay.hide();
     });
@@ -73,12 +75,12 @@ var app = {
   setMute: function(value) {
     sound.setMute(value);
     storage.setItem('mute', value);
-    menu.setMute(value);
+    options.setMute(value);
   },
   setMuteMusic: function(value) {
     music.setMute(value);
     storage.setItem('muteMusic', value);
-    menu.setMuteMusic(value);
+    options.setMuteMusic(value);
   },
   getMute: function() {
     return sound.getMute();
@@ -92,12 +94,12 @@ var app = {
   toggleMuteMusic: function() {
     this.setMuteMusic(!this.getMuteMusic());
   },
-  toggleWoodTheme: function() {
-    var className = 'theme-wood';
-    document.body.classList.toggle(className);
-    var value = document.body.classList.contains(className);
-    storage.setItem('woodTheme', value);
-    menu.setWoodTheme(value);
+  setTheme: function(value) {
+    document.body.classList.toggle('theme-glass', value == 'glass');
+    document.body.classList.toggle('theme-wood', value == 'wood');
+    document.body.classList.toggle('theme-blue', value == 'blue');
+    storage.setItem('theme', value);
+    options.setTheme(value);
   },
   setGuestName: function(name) {
     var name = name || '';
@@ -125,13 +127,13 @@ var app = {
     var defaults = {
       mute: false,
       muteMusic: false,
-      woodTheme: false
+      theme: 'glass'
     };
 
     var settings = {};
     settings.mute = storage.getItem('mute');
     settings.muteMusic = storage.getItem('muteMusic');
-    settings.woodTheme = storage.getItem('woodTheme');
+    settings.theme = storage.getItem('theme');
     settings.guestName = storage.getItem('guestName');
 
     if (!settings.guestName) {
@@ -152,11 +154,7 @@ var app = {
     this.setMute(settings.mute);
     this.setMuteMusic(settings.muteMusic);
     this.setGuestName(settings.guestName);
-
-    if (settings.woodTheme) {
-      document.body.classList.add('theme-wood');
-    }
-    menu.setWoodTheme(settings.woodTheme);
+    this.setTheme(settings.theme);
   },
   setClients: function(clients) {
     this.state.clients = clients;
@@ -177,6 +175,8 @@ var app = {
   setClient: function(client) {
     this.client = client;
     lobby.setClientId(client ? client.id : null);
+    menu.setLoggedIn(!!client);
+    menu.update();
   },
   getClientId: function() {
     return this.client ? this.client.id : null;
@@ -197,19 +197,19 @@ var app = {
     start.show();
     lobby.hide();
     game.hide();
-    this.view.hideAppBar();
+    appBar.show();
   },
   showLobby: function() {
     start.hide();
     lobby.show();
     game.hide();
-    this.view.showAppBar();
+    appBar.show();
   },
   showGame: function() {
     start.hide();
     lobby.hide();
     game.show();
-    this.view.showAppBar({ game: true });
+    appBar.show('game');
   },
   isFullscreenSupported: function() {
     return this.view.isFullscreenSupported();
@@ -308,16 +308,6 @@ app.view = {
   hideOverlay: function() {
     this.main.classList.remove('blur');
     this.overlay.classList.add('hide');
-  },
-  showAppBar: function(options) {
-    options = options || {};
-
-    this.appBar.classList.remove('hide');
-    this.appBarGame.classList.toggle('hide', !options.game);
-    this.appBarLobby.classList.toggle('hide', options.game);
-  },
-  hideAppBar: function() {
-    this.appBar.classList.add('hide');
   },
   isFullscreenSupported: function() {
     return document.fullscreenEnabled || document.webkitFullscreenEnabled || document.webkitFullScreenEnabled || document.mozFullscreenEnabled || document.mozFullScreenEnabled;

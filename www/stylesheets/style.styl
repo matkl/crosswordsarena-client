@@ -112,6 +112,7 @@ roundedCorners()
 -------------------------------------------------- */
 .window-content
 #chat-messages
+.page
   &::-webkit-scrollbar
     width: 10px
     height: 10px
@@ -259,6 +260,17 @@ roundedCorners()
   to
     box-shadow: 0 0 4em
     opacity: 0
+@keyframes superNovaWhite
+  from
+    box-shadow: 0 0 0em white
+    opacity: 0
+  20%
+    opacity: 1
+  40%
+    box-shadow: 0 0 4em white
+  to
+    box-shadow: 0 0 4em white
+    opacity: 0
 @keyframes miniNova
   from
     box-shadow: 0 0 0em
@@ -266,6 +278,17 @@ roundedCorners()
   to
     box-shadow: 0 0 1em
     opacity: 0.5
+@keyframes themeGlassMiniNova
+  from
+    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24), 0 0.2em 0em transparent
+  to
+    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24), 0 0.2em 0.6em rgba(255,255,255,0.5)
+@keyframes tileTextGlow
+  from
+    text-shadow: 0 0 0, 0 0 0 black
+  to
+    text-shadow: 0 0 1em, 0 0 0.1em black
+
 
 /* Base Styles
 -------------------------------------------------- */
@@ -274,7 +297,7 @@ html
   color: color-text
   cursor: default
   font-size: 14px
-  font-family: 'Lato', 'Open Sans', 'Roboto', 'Arial', sans-serif
+  font-family: 'Source Sans Pro', 'Lato', 'Open Sans', 'Roboto', 'Arial', sans-serif
   font-weight: 400
   overflow-y: hidden
   perspective: 1000px
@@ -313,7 +336,7 @@ font-size-large = 16px
 font-size-larger = 18px
 font-size-huge = 20px
 font-size-full-screen-message = 40px
-font-size-title = 48px
+font-size-title = 45px
 
 h1
   font-size: font-size-huge
@@ -378,7 +401,7 @@ a
   cursor: pointer
   display: inline-block
   font-size: font-size-small
-  font-weight: 400
+  font-weight: 700
   height: 36px
   line-height: 36px
   outline: none
@@ -564,6 +587,8 @@ legend
   margin-top: 10px
   text-transform: uppercase
   font-size: font-size-small
+option
+  border-radius: 2px
 
 /* Flex
 -------------------------------------------------- */
@@ -733,6 +758,7 @@ legend
   flex: 1 1 auto
   flex-direction: column
   overflow: auto
+  position: relative
 .page-container
   margin: 0 auto
   max-width: 900px
@@ -792,6 +818,10 @@ legend
   transform: translateX(0)
   transition: transform 0.2s
   width: 240px
+  i.fa
+    margin-left: 5px
+  i.fa.fa-external-link
+    color: tint(color-0,50%)
   h1
     margin-left: 0
     text-transform: uppercase
@@ -799,9 +829,12 @@ legend
     list-style-type: none
     margin-bottom: 10px
     padding: 0
-  button
+  .button
     border: none
+    box-sizing: border-box
+    font-weight: 400
     padding: 0 10px
+    text-align: center
     width: 100%
   .window-header
     text-align: center
@@ -826,18 +859,28 @@ legend
   justify-content: center
   padding: 0 10px
 #start-logo
-  color: color-text
   flex: 0 0 auto
-  font-size: 31px
-  font-weight: 700
-  text-transform: uppercase
-  line-height: 1.3
   margin: 0 auto
   margin-bottom: 40px
   margin-top: 20px
   text-align: center
   //text-shadow: 1px 1px #888, 2px 2px #888
-  letter-spacing: 0.1em
+  h1
+    color: color-text
+    font-size: 25px
+    font-weight: 700
+    letter-spacing: 0.1em
+    margin: 0
+    margin-right: -0.1em
+    line-height: 1.3
+    text-transform: uppercase
+  div
+    font-size: font-size-smaller
+    font-weight: 300
+    letter-spacing: 0.5em
+    margin-right: -0.5em
+    text-transform: uppercase
+    
 .start-display
   align-items: center
   color: color-accent-two
@@ -1050,11 +1093,10 @@ img.lobby-client-picture
   white-space: nowrap
 .lobby-client-status
   color: color-secondary-text
-  font-size: font-size-small
+  font-size: font-size-normal
   line-height: 20px
   overflow: hidden
   text-overflow: ellipsis
-  text-transform: uppercase
   white-space: nowrap
 .lobby-client-button
   flex: 0 0 auto
@@ -1081,7 +1123,7 @@ img.lobby-client-picture
       display: none
 .lobby-client.challenged
   .lobby-client-face
-    background-color: rgba(darken(color-accent, 50%), 0.8)
+    background-color: rgba(darken(color-accent, 50%), 0.5)
   .lobby-client-challenge
     display: none
   .lobby-client-unchallenge
@@ -1090,7 +1132,7 @@ img.lobby-client-picture
     display: none
 .lobby-client.challenger
   .lobby-client-face
-    background-color: rgba(darken(color-accent-two, 50%), 0.8)
+    background-color: rgba(darken(color-accent-two, 50%), 0.5)
   .lobby-client-challenge
     display: none
   .lobby-client-unchallenge
@@ -1329,9 +1371,7 @@ img.lobby-client-picture
   background-image: url('../images/themes/blue/brushed.png')
   //background-size: 100%
   box-shadow: inset -1px -1px rgba(0,0,0,0.2),inset 1px 1px rgba(255,255,255,0.05)
-  font-weight: 400
   height: 2em
-  line-height: 1.8
   outline: none
   position: relative
   text-align: center
@@ -1403,9 +1443,13 @@ img.lobby-client-picture
     top: 0
   */
 .tile-text
-  line-height: 1.8
+  font-size: 1.125em
+  font-weight: 400
+  line-height: 1.778
 .tile-value
-  bottom: 0.1em
+  bottom: 0
+  font-size: 1.25em
+  font-weight: 300
   height: 1em
   opacity: 0.8
   left: 0
@@ -1441,7 +1485,7 @@ img.lobby-client-picture
     position: absolute
     z-index: 10
     &.dragging
-      raise(2)
+      //raise(2)
       transition: none
       z-index: 11
 .opponent-rack
@@ -1735,7 +1779,45 @@ cursor-color = #f0f0f0
   i
     font-size: font-size-huge
     margin-bottom: 1.5rem
+
+/* Options Window
+-------------------------------------------------- */
+#options
+  min-width: 280px
+  .window-content
+    user-select: none
+    margin-left: -6px
+    margin-right: -6px
+  input[type='checkbox']
+    margin-left: 6px
+    width: 1em
+    height: 1em
+    margin-right: 4px
+  label
+    margin: 0
+    margin-left: 6px
+  select
+    height: auto
+    overflow: hidden
+    padding: 6px
+    resize: none
+  ul
+    list-style-type: none
+    margin: 0
+    margin-bottom: 20px
+    padding: 0
+    &:last-child
+      margin-bottom: 0
+  li
+    margin-bottom: 10px
+    &:last-child
+      margin-bottom: 0
+.options-row
+  align-items: center
+  display: flex
+  
     
+
 /* About Window
 -------------------------------------------------- */
 #about
@@ -1986,11 +2068,247 @@ color-wood = #25201E
       .bonus-text
         color: lighten(color-wood, 70%)
 
+theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
+
+.theme-glass
+  font-family: 'Source Sans Pro', 'Lato', 'Open Sans', 'Roboto', 'Arial', sans-serif
+  .button
+    //background-image: radial-gradient(at 50% 0, rgba(255,255,255,0.06), transparent)
+    background-color: rgba(255,255,255,0.12)
+    background-image: linear-gradient(transparent, rgba(0,0,0,0.24))
+    &:focus
+      background-color: rgba(255,255,255,0.14)
+    &:hover
+      background-color: rgba(255,255,255,0.16)
+    &:active
+      //background-color: rgba(0,0,0,0.48)
+      background-color: rgba(255,255,255,0.12)
+      background-image: linear-gradient(rgba(0,0,0,0.24), transparent)
+  .button-primary
+    background-color: color-accent
+    &:focus
+      background-color: tint(@background-color, 6%)
+    &:hover
+      background-color: tint(@background-color, 12%)
+    //&:active
+    //  background-color: shade(@background-color, 24%)
+  #main
+    background-color: hsl(0, 0%, 3%)
+    background-image: radial-gradient(at 50% 0, hsla(219,30%,50%,0.5), transparent)
+  .page
+    //background-color: #0E282D
+    //background: hsl(190, 53%, 12%)
+    //background: hsl(190, 70%, 10%)
+    //background-image: radial-gradient(#614660, transparent)
+    //background-image: radial-gradient(#614660, transparent)
+    //background-image: radial-gradient(hsl(302, 21%, 31%), rgba(0,0,0,0.2))
+    background: none
+  #start
+    background-image: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px)
+  #lobby
+    background-image: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px)
+  .page-bottom a
+    font-weight: 700
+  .table
+    //background-image: radial-gradient(circle at 50% 0, hsl(219,30%,50%), transparent 50%)
+    //background-image: radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, hsla(219, 30%, 50%,0.5), transparent)
+    background-image: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent)
+  .board
+    //background-color: hsla(0, 0%, 50%, 0.06)
+    //background-image: none
+    //background: none
+    //background: hsla(0, 0%, 50%, 0.2)
+    //background: hsla(219, 10%, 20%, 0.4)
+    background: rgba(255,255,255,0.1)
+    //box-shadow: none
+    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
+    border-radius: 0
+    //box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
+  .squares-container
+    border: none
+    //background: rgba(255,255,255,0.06)
+    background: rgba(0,0,0,0.3)
+  .square
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1)
+  .bonus-text
+    font-size: 0.6em
+    font-weight: 400
+  .bonus-marker
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.24)
+  .bonus.dl
+    .bonus-marker
+      //background: none
+      //background: rgba(0,0,0,0.06)
+      box-shadow: none
+      background: none
+    .bonus-text
+      color: #f1f2f4
+  .bonus.tl
+    .bonus-marker
+      //background: none
+      //box-shadow: 0 0 0 1px rgba(255,255,255,0.2)
+      // background: rgba(0,0,0,0.24)
+      background: none
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2)
+    .bonus-text
+      color: #f1f2f4
+  .bonus.dw
+    .bonus-marker
+      //background: rgba(255,255,255,0.2)
+      //background: hsl(199, 30%, 50%)
+      background: #589CBA
+    .bonus-text
+      color: #f1f2f4
+  .bonus.tw
+    .bonus-marker
+      //background: white
+      //background: hsl(0, 50%, 55%)
+      background: #E65655
+    .bonus-text
+      //color: rgba(0,0,0,0.8)
+      color: #f1f2f4
+  .bonus.start
+    .bonus-marker
+      //background: hsl(34, 60%, 60%)
+      background: white
+    .bonus-text
+      //color: #f1f2f4
+      color: #222
+  .tile
+    //background-color: #1B1C1B
+    //background-color: color-ui-0
+    //background-color: hsl(220, 10%, 18%)
+    background-color: theme-glass-tile-bgcolor
+    //background-image: radial-gradient(circle at 50% 0, rgba(255,255,255,0.12), transparent 70%)
+    background-image: none
+    //box-shadow: none
+    //box-shadow: inset 0 -1px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(0,0,0,0.12)
+    box-shadow: inset 0 -1px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(0,0,0,0.18)
+    text-shadow: none
+    //&:after
+    //  box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.24)
+    //  opacity: 1
+    &.is-submitted
+      //animation: tileTextGlow 2.5s backwards
+      //text-shadow: 0 0 0.1em black, 0 0 1em
+      transition: transform 0.3s, background-color 0.4s
+      &:after
+        animation: none
+        //animation: themeGlassMiniNova 2.5s 2.5s forwards
+    &.is-factored-in
+      &:before
+        animation: superNova 5s
+  .tile.one
+    //color: hsl(38, 0%, 80%)
+    //color: hsl(0, 0%, 70%)
+    //color: #BCBBBC
+    color: #444
+    .tile-value
+      color: tint(@color, 50%)
+  .tile.two
+    //color: hsl(34, 60%, 60%)
+    //color: hsl(34, 50%, 50%)
+    //color: hsl(34, 74%, 84%)
+    //color: #D18F34
+    color: hsl(35, 63%, 41%)
+    .tile-value
+      color: tint(@color, 50%)
+  .tile.three
+    //color: hsl(199, 80%, 55%)
+    //color: hsl(199, 50%, 50%)
+    //color: hsl(199, 74%, 84%)
+    //color: #38A5D7
+    color: hsl(199, 67%, 43%)
+    .tile-value
+      color: tint(@color, 50%)
+  .tile.four
+    //color: hsl(0, 70%, 60%)
+    //color: hsl(0, 50%, 55%)
+    //color: hsl(0, 64%, 91%)
+    //color: #E65353
+    color: hsl(0, 75%, 71%)
+    .tile-value
+      color: tint(@color, 50%)
+  .tile-text
+    font-size: 1.25em
+    font-weight: 900
+    line-height: 1.6
+  .tile-value
+    bottom: 0
+    font-size: 1.25em
+    font-weight: 300
+    line-height: 1
+    opacity: 1
+  .tile[data-target]
+    //background-color: shade(theme-glass-tile-bgcolor, 15%)
+    &:after
+      box-shadow: 0 0 1em white
+  .tile[data-target]:after
+    background-color: transparent
+  .tile.one.is-factored-in
+    &:before
+      animation: superNovaWhite 5s
+  .tile.is-submitted
+    background-color: tint(theme-glass-tile-bgcolor, 50%)
+  //  background-color: rgba(255,255,255,0.06)
+  .cursor
+    //box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.24)
+    box-shadow: none
+  #rack:before
+    background: rgba(255,255,255,0.06)
+    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
+  #rack .tile:hover:after
+    background-color: transparent
+  //  background-color: rgba(255,255,255,0.03)
+  //#rack .tile:after
+  //  box-shadow: none
+  #rack .tile:hover
+    background-color: lighten(theme-glass-tile-bgcolor, 60%)
+  //#rack .tile[data-target]:after
+  //#rack .tile[data-dragging]:after
+  //  box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
+  #pass-dialog .tiles
+    background-color: rgba(0,0,0,0.12)
+    background-image: linear-gradient(rgba(0,0,0,0.24), transparent 20%)
+  .game-message span
+    color: white
+  #two-letter-words
+    .tile
+      //background: hsla(hue, 8%, 32%, 0.8)
+      color: #444
+
+  .lobby-client-unchallenge
+    background-color: color-accent
+    &:focus
+      background-color: lighten(color-accent, 5%)
+    &:hover
+      background-color: lighten(color-accent, 10%)
+    &:active
+      background-color: shade(color-accent, 20%)
+  .lobby-client-accept
+    background-color: color-accent-two
+    &:focus
+      background-color: lighten(color-accent-two, 5%)
+    &:hover
+      background-color: lighten(color-accent-two, 10%)
+    &:active
+      background-color: shade(color-accent-two, 20%)
+
+
+
 /* Larger than desktop */
 @media (min-width: 1000px)
   .theme-wood
     #chat
       box-shadow: 0 0 10px rgba(0,0,0,0.5)
+  .theme-glass
+    #chat
+      box-shadow: 0 4px 12px rgba(0,0,0,0.24)
+    .unit-frame .main
+      background: hsla(219, 10%, 25%, 0.5)
+    .unit-frame.active .main
+      background: hsla(219, 60%, 30%, 1)
+
 
 /* Media Queries
 -------------------------------------------------- */
@@ -2005,7 +2323,12 @@ color-wood = #25201E
 @media (min-width: 400px) {}
 
 /* Larger than phablet */
-@media (min-width: 550px) {}
+@media (min-width: 550px)
+  #start-logo
+    h1
+      font-size: font-size-title
+    div
+      font-size: font-size-normal
 
 /* Larger than tablet */
 @media (min-width: 750px)
@@ -2022,8 +2345,6 @@ color-wood = #25201E
 @media (min-width: 1000px)
   #main
     flex-direction: row
-  #start-logo
-    font-size: font-size-title
   #lobby
     h1
       font-size: font-size-full-screen-message
@@ -2129,7 +2450,7 @@ color-wood = #25201E
         background: darken(color-accent, 50%)
 
   .unit-frame-picture
-    raise(2)
+    raise(3)
     border-radius: 100%
     font-size: desktop-unit-frame-picture-size * 0.5
     height: desktop-unit-frame-picture-size

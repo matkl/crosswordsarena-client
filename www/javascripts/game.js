@@ -1452,8 +1452,9 @@ game.view = {
       self.board.style.fontSize = fontSize + 'px';
 
       // bigger padding for larger screen sizes
-      var padding = fontSize < 20 ? Math.floor(0.75 * fontSize) : fontSize;
-      self.board.style.padding = padding + 'px ' + (padding + 1) + 'px ' + (padding + 1) + 'px ' + padding + 'px';
+      //var padding = fontSize < 20 ? Math.floor(0.75 * fontSize) : fontSize;
+      //self.board.style.padding = padding + 'px ' + (padding + 1) + 'px ' + (padding + 1) + 'px ' + padding + 'px';
+      
       self.fontSize = fontSize;
 
       // snap board to full pixels

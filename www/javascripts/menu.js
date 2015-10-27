@@ -10,21 +10,13 @@ var menu = {
     this.view.hide();
   },
   update: function() {
-    this.state.fullscreenSupported = app.isFullscreenSupported();
-    this.state.fullscreen = app.isInFullscreen();
     this.view.update();
-  },
-  setMute: function(value) {
-    this.view.setMute(value);
-  },
-  setMuteMusic: function(value) {
-    this.view.setMuteMusic(value);
-  },
-  setWoodTheme: function(value) {
-    this.view.setWoodTheme(value);
   },
   setInGame: function(inGame) {
     this.state.inGame = inGame;
+  },
+  setLoggedIn: function(loggedIn) {
+    this.state.loggedIn = loggedIn;
   },
   setGameRunning: function(gameRunning) {
     this.state.gameRunning = gameRunning;
@@ -40,16 +32,13 @@ menu.view = {
 
     this.openMenu = document.getElementById('app-bar-menu');
 
+    this.options = document.getElementById('menu-options');
+
     this.about = document.getElementById('menu-about');
     this.leaderboard = document.getElementById('menu-leaderboard');
     this.twoLetterWords = document.getElementById('menu-two-letter-words');
     this.keyBindings = document.getElementById('menu-key-bindings');
     this.feedback = document.getElementById('menu-feedback');
-
-    this.sound = document.getElementById('menu-sound');
-    this.music = document.getElementById('menu-music');
-    this.fullscreen = document.getElementById('menu-fullscreen');
-    this.woodTheme = document.getElementById('menu-wood-theme');
 
     this.concede = document.getElementById('menu-concede');
     this.claimVictory = document.getElementById('menu-claim-victory');
@@ -65,6 +54,12 @@ menu.view = {
       ga('send', 'event', 'menu', 'click', 'open');
 
       app.showOverlay('menu');
+    });
+
+    this.options.addEventListener('click', function() {
+      ga('send', 'event', 'menu', 'click', 'options');
+
+      app.showOverlay('options');
     });
 
     this.about.addEventListener('click', function() {
@@ -95,35 +90,6 @@ menu.view = {
       ga('send', 'event', 'menu', 'click', 'feedback');
 
       app.showOverlay('feedback');
-    });
-
-    this.sound.addEventListener('click', function() {
-      ga('send', 'event', 'menu', 'click', 'mute');
-
-      app.toggleMute();
-    });
-
-    this.music.addEventListener('click', function() {
-      ga('send', 'event', 'menu', 'click', 'muteMusic');
-
-      app.toggleMuteMusic();
-    });
-
-    this.fullscreen.addEventListener('click', function() {
-      ga('send', 'event', 'menu', 'click', 'fullScreen');
-
-      if (menu.state.fullscreen) {
-        app.exitFullscreen();
-      } else {
-        app.requestFullscreen();
-      }
-      menu.update();
-    });
-
-    this.woodTheme.addEventListener('click', function() {
-      ga('send', 'event', 'menu', 'click', 'woodTheme');
-
-      app.toggleWoodTheme();
     });
 
     this.concede.addEventListener('click', function() {
@@ -173,28 +139,16 @@ menu.view = {
   hide: function() {
     this.element.classList.add('hide');
   },
-  setMute: function(value) {
-    this.sound.classList.toggle('is-enabled', !value);
-  },
-  setMuteMusic: function(value) {
-    this.music.classList.toggle('is-enabled', !value);
-  },
-  setWoodTheme: function(value) {
-    this.woodTheme.classList.toggle('is-enabled', value);
-  },
   update: function() {
-    this.fullscreen.classList.toggle('hide', !menu.state.fullscreenSupported);
     this.concede.classList.toggle('hide', !(menu.state.inGame && menu.state.gameRunning));
     this.leaveGame.classList.toggle('hide', !menu.state.inGame);
-    this.fullscreen.classList.toggle('is-enabled', menu.state.fullscreen);
     this.claimVictory.classList.toggle('hide', !menu.state.inGame || !menu.state.gameRunning || !menu.state.enableClaimVictory);
+    this.logout.classList.toggle('hide', !menu.state.loggedIn);
   }
 };
 
 menu.state = {
   inGame: false,
   gameRunning: false,
-  fullscreen: false,
-  fullscreenSupported: false,
   enableClaimVictory: false
 };
