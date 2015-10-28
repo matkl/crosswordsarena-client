@@ -34,14 +34,6 @@ var app = {
     // Load settings from local storage
     this.loadSettings();
   },
-  cordovaInit: function() {
-    // quick and dirty: set the host for our websocket connection
-    this.setHost('http://' + document.getElementById('host').innerHTML);
-
-    this.init();
-
-    this.view.addCordovaEventListeners();
-  },
   showOverlay: function(name, pop) {
     this.hideOverlay(true);
     this.view.showOverlay();
@@ -291,12 +283,6 @@ app.view = {
       app.hideOverlay();
     });*/
   },
-  addCordovaEventListeners: function() {
-    document.addEventListener('backbutton', function(event) {
-      event.preventDefault();
-      var handled = app.back();
-    });
-  },
   getLanguage: function() {
     return document.documentElement.lang;
   },
@@ -346,12 +332,3 @@ app.state = {
   host: ''
 };
 
-if (window.cordova) {
-  document.addEventListener('deviceready', function() {
-    app.cordovaInit();
-  });
-} else {
-  window.addEventListener('DOMContentLoaded', function() {
-    app.init();
-  });
-}

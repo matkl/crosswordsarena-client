@@ -15,6 +15,9 @@ var socket = {
   open: function() {
     this.primus.open();
   },
+  end: function() {
+    this.primus.end();
+  },
   write: function() {
     this.primus.write.apply(this.primus, arguments);
   },
