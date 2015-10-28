@@ -1768,6 +1768,7 @@ cursor-color = #f0f0f0
 
 #rotate-screen
   align-items: center
+  background: color-ui-0
   display: none
   font-size: font-size-large
   left: 0
@@ -1893,6 +1894,7 @@ cursor-color = #f0f0f0
     cursor: default
     user-select: none
   .tile
+    background: hsla(hue, 8%, 32%, 0.8)
     box-shadow: none
     color: color-text
 
@@ -2269,16 +2271,17 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
   //#rack .tile[data-target]:after
   //#rack .tile[data-dragging]:after
   //  box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
-  #pass-dialog .tiles
-    background-color: rgba(0,0,0,0.12)
-    background-image: linear-gradient(rgba(0,0,0,0.24), transparent 20%)
+  #pass-dialog
+    .tiles
+      background-color: rgba(0,0,0,0.12)
+      background-image: linear-gradient(rgba(0,0,0,0.24), transparent 20%)
+    .tile
+      &:focus
+        background-color: lighten(theme-glass-tile-bgcolor, 40%)
+      &:hover
+        background-color: lighten(theme-glass-tile-bgcolor, 60%)
   .game-message span
     color: white
-  #two-letter-words
-    .tile
-      //background: hsla(hue, 8%, 32%, 0.8)
-      color: #444
-
   .lobby-client-unchallenge
     background-color: color-accent
     &:focus
