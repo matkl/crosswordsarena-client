@@ -10,6 +10,7 @@ var options = {
   },
   update: function() {
     this.state.fullscreenSupported = app.isFullscreenSupported();
+    this.state.inFullscreen = app.isInFullscreen();
     this.view.update();
   },
   setMute: function(value) {
@@ -68,6 +69,13 @@ options.view = {
       app.setTheme(event.target.value);
     });
 
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function(eventName) {
+      document.addEventListener(eventName, onFullscreenchange);
+    });
+
+    function onFullscreenchange(event) {
+      options.update();
+    }
   },
   show: function() {
     this.element.classList.remove('hide');
@@ -86,10 +94,12 @@ options.view = {
   },
   update: function() {
     this.fullscreen.disabled = !options.state.fullscreenSupported;
+    this.fullscreen.checked = options.state.inFullscreen;
   }
 };
 
 options.state = {
-  fullscreenSupported: false
+  fullscreenSupported: false,
+  inFullscreen: false
 };
 

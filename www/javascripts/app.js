@@ -323,7 +323,7 @@ app.view = {
     }
   },
   exitFullscreen: function() {
-    var exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen || document.webkitExitFullScreen || document.mozExitFullscreen || document.mozExitFullScreen;
+    var exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen || document.webkitExitFullScreen || document.mozExitFullscreen || document.mozExitFullScreen || document.mozCancelFullScreen;
 
     if (exitFullscreen) {
       exitFullscreen.call(document);
