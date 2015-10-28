@@ -54,6 +54,7 @@ var sound = {
 var music = {
   init: function() {
     this.mute = false;
+    this.playing = false;
 
     function getPhoneGapPath() {
       var path = window.location.pathname;
@@ -70,15 +71,26 @@ var music = {
     var media = this.element = new Media(getPhoneGapPath() + 'sounds/mystical-film-score-soundscape-wonder.m4a', null, null, loop);
   },
   play: function() {
-    this.element.play();
+    if (!this.mute) {
+      this.element.play();
+    }
+    this.playing = true;
   },
   stop: function() {
     this.element.pause();
     this.element.seekTo(0);
+    this.playing = false;
   },
   setMute: function(value) {
     this.mute = value;
-    if (this.mute) this.stop();
+    if (this.mute) {
+      this.element.pause();
+      this.element.seekTo(0);
+    } else {
+      if (this.playing) {
+        this.element.play();
+      }
+    }
   },
   getMute: function() {
     return this.mute;
