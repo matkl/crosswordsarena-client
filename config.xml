@@ -34,6 +34,8 @@
     </platform>
 
     <preference name="permissions" value="none" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="Orientation" value="portrait" />
 
     <gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.0.1" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
