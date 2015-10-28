@@ -313,7 +313,7 @@ var game = {
     this.view.toggleStartButtonDisabled(true);
   },
   requestConcede: function(callback) {
-    if (this.view.confirm(t('Are you sure?'))) {
+    if (this.view.confirm(t('Are you sure you want to concede?'))) {
       this.lock();
       socket.write({ type: 'action', action: 'concede' });
       if (callback) callback();
@@ -324,7 +324,7 @@ var game = {
     socket.write({ type: 'action', action: 'claimVictory' });
   },
   requestLeave: function(callback) {
-    if (!this.state.running || this.view.confirm(t('Are you sure?'))) {
+    if (!this.state.running || this.view.confirm(t('Are you sure you want to leave this game?'))) {
       socket.write({ type: 'action', action: 'leave' });
       if (callback) callback();
     }
