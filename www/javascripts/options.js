@@ -1,6 +1,7 @@
 var options = {
   init: function() {
     this.view.init();
+    this.update();
   },
   show: function() {
     this.view.show();
@@ -93,6 +94,7 @@ options.view = {
     this.theme.value = value;
   },
   update: function() {
+    this.fullscreen.parentNode.classList.toggle('hide', !options.state.fullscreenSupported);
     this.fullscreen.disabled = !options.state.fullscreenSupported;
     this.fullscreen.checked = options.state.inFullscreen;
   }

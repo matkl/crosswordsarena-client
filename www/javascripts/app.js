@@ -296,7 +296,7 @@ app.view = {
     this.overlay.classList.add('hide');
   },
   isFullscreenSupported: function() {
-    return document.fullscreenEnabled || document.webkitFullscreenEnabled || document.webkitFullScreenEnabled || document.mozFullscreenEnabled || document.mozFullScreenEnabled;
+    return !window.cordova && (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.webkitFullScreenEnabled || document.mozFullscreenEnabled || document.mozFullScreenEnabled);
   },
   requestFullscreen: function() {
     var body = document.body;
