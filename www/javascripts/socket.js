@@ -22,8 +22,10 @@ var socket = {
     this.primus.write.apply(this.primus, arguments);
   },
   onClose: function() {
+    app.setClient(null);
     app.showStart();
     start.showClose();
+    menu.setInGame(false);
   },
   onData: function(data) {
     if (!data.type) return;

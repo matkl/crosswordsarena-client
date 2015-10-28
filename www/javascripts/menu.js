@@ -14,12 +14,15 @@ var menu = {
   },
   setInGame: function(inGame) {
     this.state.inGame = inGame;
+    this.update();
   },
   setLoggedIn: function(loggedIn) {
     this.state.loggedIn = loggedIn;
+    this.update();
   },
   setGameRunning: function(gameRunning) {
     this.state.gameRunning = gameRunning;
+    this.update();
   },
   toggleClaimVictory: function(value) {
     this.state.enableClaimVictory = value;
