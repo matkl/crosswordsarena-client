@@ -14,6 +14,7 @@ var game = {
   },
   hide: function() {
     this.view.hide();
+    music.stop();
   },
   load: function(data) {
     this.view.hideMessage();
