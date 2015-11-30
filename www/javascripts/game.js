@@ -865,7 +865,9 @@ game.view = {
       var y = Math.floor((lastClientY - squaresRect.top) / squaresRect.height * 15);
 
       if (!(x >= 0 && x < 15 && y >= 0 && y < 15)) {
-        var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 20) / 40)));
+        //var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 20) / 40)));
+        // TODO: test this
+        var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 22) / 44)));
         self.fanTiles(0, pos);
         tile.setAttribute('data-position', pos);
       }
