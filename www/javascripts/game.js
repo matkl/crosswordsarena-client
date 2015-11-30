@@ -74,6 +74,7 @@ var game = {
 
     this.view.setPlayerDelta(0, 0);
     this.view.setPlayerDelta(1, 0);
+    this.view.clearSubmitted();
 
     music.play({ loop: -1 });
   },
@@ -705,6 +706,7 @@ game.view = {
     this.element = document.getElementById('game');
     this.table = document.getElementById('table');
     this.canvas = document.getElementById('canvas');
+    this.tableContent = document.getElementById('table-content');
     this.dust = document.getElementById('dust');
     this.boardContainer = document.getElementById('board-container');
     this.board = document.getElementById('board');
@@ -835,9 +837,7 @@ game.view = {
       tile.classList.add('dragging');
       tile.setAttribute('data-dragging', true);
 
-      if (window.navigator.vibrate) {
-        window.navigator.vibrate(20);
-      }
+      app.vibrate(20);
 
       moveDistance = 0;
       lastClientX = clientX;
@@ -1227,8 +1227,9 @@ game.view = {
       if (squareIndex != null) {
         var tile = tiles[tileIndex];
 
-        this.squares.children[squareIndex].appendChild(tile);
-        tile.classList.add('is-submitted');
+        var square = this.squares.children[squareIndex];
+        square.appendChild(tile);
+        square.classList.add('is-submitted');
         tile.style.transform = '';
         tile.style.WebkitTransform = '';
         tile.style.MsTransform = '';
@@ -1240,23 +1241,15 @@ game.view = {
   },
   factorInSquares: function(squareIndices) {
     Array.prototype.forEach.call(this.squares.children, function(square, squareIndex) {
-      var tile = square.querySelector('.tile');
-
-      if (tile) {
-        tile.classList.remove('is-factored-in');
-      }
+      square.classList.remove('is-factored-in');
     });
 
     var self = this;
     window.requestAnimationFrame(function() {
       Array.prototype.forEach.call(self.squares.children, function(square, squareIndex) {
-        var tile = square.querySelector('.tile');
-
-        if (tile) {
-          var isFactoredIn = squareIndices.indexOf(squareIndex) >= 0;
-          if (isFactoredIn) {
-            tile.classList.add('is-factored-in');
-          }
+        var isFactoredIn = squareIndices.indexOf(squareIndex) >= 0;
+        if (isFactoredIn) {
+          square.classList.add('is-factored-in');
         }
       });
     });
@@ -1309,9 +1302,10 @@ game.view = {
     }
   },
   clearSubmitted: function() {
-    var tiles = this.squares.querySelectorAll('.tile');
-    Array.prototype.forEach.call(tiles, function(tile) {
-      tile.classList.remove('is-submitted');
+    var squares = this.squares.children;
+    Array.prototype.forEach.call(this.squares.children, function(square) {
+      square.classList.remove('is-submitted');
+      square.classList.remove('is-factored-in');
     });
   },
   addBoardTile: function(squareIndex, letter, value) {
@@ -1436,21 +1430,17 @@ game.view = {
 
     window.requestAnimationFrame(function() {
       var rect = self.boardContainer.getBoundingClientRect();
-      var width = rect.width - minBorderWidth;
-      var height = rect.height - minBorderWidth;
+      var width = rect.width - minBorderWidth - 15;
+      var height = rect.height - minBorderWidth - 15;
       var devicePixelRatio = window.devicePixelRatio || 1;
 
       self.board.classList.remove('hide');
 
-      //var fontSize = Math.floor(Math.min(20, Math.min(width, height) / 31.5));
-      //var fontSize = Math.floor(Math.min(20, Math.min(width, height) / 30));
-      var fontSize = Math.floor(Math.min(20, Math.min(width/30, height/31.75)));
-      //if (devicePixelRatio >= 2) {
-      //  fontSize *= 2;
-      //}
-      //document.documentElement.classList.toggle('dpr2', devicePixelRatio >= 2);
+      var fontSize = Math.min(22, Math.min(width/30, height/31.75));
+      fontSize = Math.floor(fontSize * 2) / 2;
 
       self.board.style.fontSize = fontSize + 'px';
+      self.board.style.padding = Math.floor(fontSize / 2) + 'px';
 
       // bigger padding for larger screen sizes
       //var padding = fontSize < 20 ? Math.floor(0.75 * fontSize) : fontSize;
@@ -1463,8 +1453,6 @@ game.view = {
       var offsetLeft = boardRect.left % 1;
       var offsetTop = boardRect.top % 1;
       self.board.style.position = 'relative';
-      //self.board.style.left = '-0.5px';
-      //self.board.style.left = '-0.5px';
       self.board.style.left = -offsetLeft + 'px';
       self.board.style.top = -offsetTop + 'px';
 
@@ -1472,7 +1460,6 @@ game.view = {
       if (devicePixelRatio > 1) {
         dpOffset = -0.5;
       }
-      //self.board.style.transform = dpOffset < 0 ? 'translateX(' + dpOffset + 'px)' : '';
 
       // snap racks to full pixels
       self.players.forEach(function(player) {
@@ -1484,7 +1471,6 @@ game.view = {
         rack.style.left = -offsetLeft + 'px';
         rack.style.top = -offsetTop + 'px';
       });
-
 
       // rearrange player tiles on board
       self.players.forEach(function(player) {
@@ -1575,11 +1561,11 @@ game.view = {
     }
   },
   showPassDialog: function() {
-    this.canvas.classList.add('blur');
+    this.tableContent.classList.add('blur');
     this.passOverlay.classList.remove('hide');
   },
   hidePassDialog: function() {
-    this.canvas.classList.remove('blur');
+    this.tableContent.classList.remove('blur');
     this.passOverlay.classList.add('hide');
     this.focus();
   },
@@ -1754,8 +1740,8 @@ Cursor.prototype.update = function() {
     this.element.style.MsTransform = transform;
   */
 
-  this.element.style.left = this.state.x * 2 + 'em';
-  this.element.style.top = this.state.y * 2 + 'em';
+  this.element.style.left = 'calc(' + (this.state.x * 2) + 'em + ' + (this.state.x + 1) + 'px)';
+  this.element.style.top = 'calc(' + (this.state.y * 2) + 'em + ' + (this.state.y + 1) + 'px)';
 
   this.element.classList.toggle('vertical', this.state.vertical);
   this.element.classList.toggle('hide', !this.state.visible);

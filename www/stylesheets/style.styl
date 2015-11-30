@@ -16,7 +16,8 @@
  * .rack .tile.dragging or :hover 11
  * .cursor 12
  * .unit-frame 20
- * #remaining 20
+ * #remaining 20 // mobile: 21
+ * #app-bar auto, 20 (desktop)
  * .game-message 30
  * #rotate-screen 40
  * #pass-overlay 40/  / desktop: auto
@@ -25,264 +26,73 @@
  * #overlay 50
  * #dust 60
  * #update 99
- *
  */
 
 
 /* Fonts
 -------------------------------------------------- */
-/* BEGIN Light */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/Light/OpenSans-Light.eot?v=1.1.0");
   src: url("../fonts/OpenSans/Light/OpenSans-Light.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/Light/OpenSans-Light.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/Light/OpenSans-Light.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/Light/OpenSans-Light.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/Light/OpenSans-Light.svg?v=1.1.0#Light") format("svg");
   font-weight: 300;
   font-style: normal; }
-/* END Light */
-/* BEGIN Light Italic */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/LightItalic/OpenSans-LightItalic.eot?v=1.1.0");
   src: url("../fonts/OpenSans/LightItalic/OpenSans-LightItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/LightItalic/OpenSans-LightItalic.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/LightItalic/OpenSans-LightItalic.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/LightItalic/OpenSans-LightItalic.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/LightItalic/OpenSans-LightItalic.svg?v=1.1.0#LightItalic") format("svg");
   font-weight: 300;
   font-style: italic; }
-/* END Light Italic */
-/* BEGIN Regular */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/Regular/OpenSans-Regular.eot?v=1.1.0");
   src: url("../fonts/OpenSans/Regular/OpenSans-Regular.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/Regular/OpenSans-Regular.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/Regular/OpenSans-Regular.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/Regular/OpenSans-Regular.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/Regular/OpenSans-Regular.svg?v=1.1.0#Regular") format("svg");
   font-weight: normal;
   font-style: normal; }
-/* END Regular */
-/* BEGIN Italic */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/Italic/OpenSans-Italic.eot?v=1.1.0");
   src: url("../fonts/OpenSans/Italic/OpenSans-Italic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/Italic/OpenSans-Italic.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/Italic/OpenSans-Italic.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/Italic/OpenSans-Italic.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/Italic/OpenSans-Italic.svg?v=1.1.0#Italic") format("svg");
   font-weight: normal;
   font-style: italic; }
-/* END Italic */
-/* BEGIN Semibold */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/Semibold/OpenSans-Semibold.eot?v=1.1.0");
   src: url("../fonts/OpenSans/Semibold/OpenSans-Semibold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/Semibold/OpenSans-Semibold.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/Semibold/OpenSans-Semibold.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/Semibold/OpenSans-Semibold.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/Semibold/OpenSans-Semibold.svg?v=1.1.0#Semibold") format("svg");
   font-weight: 600;
   font-style: normal; }
-/* END Semibold */
-/* BEGIN Semibold Italic */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/SemiboldItalic/OpenSans-SemiboldItalic.eot?v=1.1.0");
   src: url("../fonts/OpenSans/SemiboldItalic/OpenSans-SemiboldItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/SemiboldItalic/OpenSans-SemiboldItalic.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/SemiboldItalic/OpenSans-SemiboldItalic.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/SemiboldItalic/OpenSans-SemiboldItalic.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/SemiboldItalic/OpenSans-SemiboldItalic.svg?v=1.1.0#SemiboldItalic") format("svg");
   font-weight: 600;
   font-style: italic; }
-/* END Semibold Italic */
-/* BEGIN Bold */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/Bold/OpenSans-Bold.eot?v=1.1.0");
   src: url("../fonts/OpenSans/Bold/OpenSans-Bold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/Bold/OpenSans-Bold.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/Bold/OpenSans-Bold.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/Bold/OpenSans-Bold.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/Bold/OpenSans-Bold.svg?v=1.1.0#Bold") format("svg");
   font-weight: bold;
   font-style: normal; }
-/* END Bold */
-/* BEGIN Bold Italic */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/BoldItalic/OpenSans-BoldItalic.eot?v=1.1.0");
   src: url("../fonts/OpenSans/BoldItalic/OpenSans-BoldItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/BoldItalic/OpenSans-BoldItalic.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/BoldItalic/OpenSans-BoldItalic.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/BoldItalic/OpenSans-BoldItalic.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/BoldItalic/OpenSans-BoldItalic.svg?v=1.1.0#BoldItalic") format("svg");
   font-weight: bold;
   font-style: italic; }
-/* END Bold Italic */
-/* BEGIN Extrabold */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/ExtraBold/OpenSans-ExtraBold.eot?v=1.1.0");
   src: url("../fonts/OpenSans/ExtraBold/OpenSans-ExtraBold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/ExtraBold/OpenSans-ExtraBold.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/ExtraBold/OpenSans-ExtraBold.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/ExtraBold/OpenSans-ExtraBold.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/ExtraBold/OpenSans-ExtraBold.svg?v=1.1.0#ExtraBold") format("svg");
   font-weight: 800;
   font-style: normal; }
-/* END Extrabold */
-/* BEGIN Extrabold Italic */
 @font-face {
   font-family: 'Open Sans';
   src: url("../fonts/OpenSans/ExtraBoldItalic/OpenSans-ExtraBoldItalic.eot?v=1.1.0");
   src: url("../fonts/OpenSans/ExtraBoldItalic/OpenSans-ExtraBoldItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans/ExtraBoldItalic/OpenSans-ExtraBoldItalic.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans/ExtraBoldItalic/OpenSans-ExtraBoldItalic.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans/ExtraBoldItalic/OpenSans-ExtraBoldItalic.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans/ExtraBoldItalic/OpenSans-ExtraBoldItalic.svg?v=1.1.0#ExtraBoldItalic") format("svg");
   font-weight: 800;
   font-style: italic; }
-/* END Extrabold Italic */
 
 
-
-
-
-
-
-/*@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../fonts/Lato-Regular.eot');
-  src: url('../fonts/Lato-Regular.eot?#iefix') format('embedded-opentype'),
-       url('../fonts/Lato-Regular.woff2') format('woff2'),
-       url('../fonts/Lato-Regular.woff') format('woff'),
-       url('../fonts/Lato-Regular.ttf') format('truetype'),
-       url('../fonts/Lato-Regular.svg#Lato') format('svg');
-}
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  src: url('../fonts/Lato-Bold.woff2') format('woff2'),
-       url('../fonts/Lato-Bold.woff') format('woff'),
-       url('../fonts/Lato-Bold.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 200;
-    font-style: normal;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-ExtraLight.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-ExtraLight.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-ExtraLight.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-ExtraLight.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-ExtraLight.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 200;
-    font-style: italic;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-ExtraLightIt.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-ExtraLightIt.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-ExtraLightIt.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-ExtraLightIt.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-ExtraLightIt.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 300;
-    font-style: normal;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-Light.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-Light.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-Light.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-Light.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-Light.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 300;
-    font-style: italic;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-LightIt.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-LightIt.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-LightIt.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-LightIt.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-LightIt.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 400;
-    font-style: normal;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-Regular.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-Regular.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-Regular.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-Regular.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-Regular.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 400;
-    font-style: italic;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-It.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-It.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-It.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-It.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-It.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 600;
-    font-style: normal;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-Semibold.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-Semibold.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-Semibold.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-Semibold.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-Semibold.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 600;
-    font-style: italic;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-SemiboldIt.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-SemiboldIt.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-SemiboldIt.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-SemiboldIt.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-SemiboldIt.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 700;
-    font-style: normal;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-Bold.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-Bold.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-Bold.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-Bold.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-Bold.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 700;
-    font-style: italic;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-BoldIt.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-BoldIt.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-BoldIt.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-BoldIt.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-BoldIt.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 900;
-    font-style: normal;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-Black.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-Black.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-Black.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-Black.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-Black.ttf') format('truetype');
-}
-
-@font-face{
-    font-family: 'Source Sans Pro';
-    font-weight: 900;
-    font-style: italic;
-    font-stretch: normal;
-    src: url('../fonts/SourceSansPro/EOT/SourceSansPro-BlackIt.eot') format('embedded-opentype'),
-         url('../fonts/SourceSansPro/WOFF2/TTF/SourceSansPro-BlackIt.ttf.woff2') format('woff2'),
-         url('../fonts/SourceSansPro/WOFF/OTF/SourceSansPro-BlackIt.otf.woff') format('woff'),
-         url('../fonts/SourceSansPro/OTF/SourceSansPro-BlackIt.otf') format('opentype'),
-         url('../fonts/SourceSansPro/TTF/SourceSansPro-BlackIt.ttf') format('truetype');
-}
-*/
 
 /* Geometry
 -------------------------------------------------- */
@@ -294,21 +104,38 @@ desktop-unit-frame-line-height = 28px
 desktop-unit-frame-margin-vertical = (tile-size - desktop-unit-frame-line-height) * 0.5 + rack-bottom-height
 desktop-unit-frame-margin-horizontal = desktop-unit-frame-margin-vertical - ((desktop-unit-frame-picture-size - desktop-unit-frame-line-height) * 0.5)
 
+/* Colors
+-------------------------------------------------- */
+hue = 219
+color-0 = hsl(hue, 100%, 50%)
+color-1 = spin(color-0, 120deg)
+color-2 = spin(color-0, 240deg)
+color-3 = spin(color-0, 180deg)
+
+color-ui-0 = hsl(219, 8%, 12%)
+
+//color-tile = hsl(39, 90%, 91%)
+//color-tile = hsl(39, 90%, 91%)
+//color-tile = hsl(39, 54%, 85%)
+//color-tile = hsl(39, 30%, 85%)
+color-tile = hsl(39, 20%, 75%)
+
+// TODO REMOVE
+color-accent = hsl(hue, 100%, 60%)
+color-accent-two = #FF4500
+color-accent-three = #FFBE00
+
+color-text = hsl(0, 0%, 95%)
+color-text = white
+color-secondary-text = hsla(0, 0%, 95%, 0.7)
+color-disabled-text = hsla(0, 0%, 95%, 0.3)
+
+color-divider = rgba(255,255,255,0.12)
+color-secondary-text-dark = rgba(0,0,0,0.54)
+color-divider-dark = rgba(0,0,0,0.12)
+
 /* Shadows
 -------------------------------------------------- */
-/*raise(z)
-  if z == 1
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.32), 0 2px 10px 0 rgba(0, 0, 0, 0.24)
-  else if z == 2
-    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.40), 0 6px 20px 0 rgba(0, 0, 0, 0.38)
-  else if z == 3
-    box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.48), 0 17px 50px 0 rgba(0, 0, 0, 0.38)
-  else if z == 4
-    box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.44), 0 25px 55px 0 rgba(0, 0, 0, 0.42)
-  else if z == 5
-    box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.40), 0 40px 77px 0 rgba(0, 0, 0, 0.44)
-*/
-
 raise(z)
   if z == 1
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
@@ -320,18 +147,6 @@ raise(z)
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
   else if z == 5
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)
-
-raiseLight(z)
-  if z == 1
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.12)
-  else if z == 2
-    box-shadow: 0 3px 6px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.12);
-  else if z == 3
-    box-shadow: 0 10px 20px rgba(0,0,0,0.10), 0 6px 6px rgba(0,0,0,0.12)
-  else if z == 4
-    box-shadow: 0 14px 28px rgba(0,0,0,0.13), 0 10px 10px rgba(0,0,0,0.11)
-  else if z == 5
-    box-shadow: 0 19px 38px rgba(0,0,0,0.15), 0 15px 12px rgba(0,0,0,0.11)
 
 filter(n)
   -webkit-filter: n
@@ -483,43 +298,30 @@ roundedCorners()
     transform: rotateY(0deg)
 @keyframes superNova
   from
-    box-shadow: 0 0 0em
-    opacity: 0
-  20%
+    box-shadow: 0 0 0em black, 0 0 0em hsl(39, 100%, 70%)
+  50%
+    box-shadow: 0 0 0.5em black, 0 0 2em hsl(39, 100%, 70%)
     opacity: 1
-  40%
-    box-shadow: 0 0 4em
   to
-    box-shadow: 0 0 4em
     opacity: 0
-@keyframes superNovaWhite
+@keyframes bonusStart
   from
-    box-shadow: 0 0 0em white
-    opacity: 0
-  20%
+    opacity: 0.2
+  to
     opacity: 1
-  40%
-    box-shadow: 0 0 4em white
-  to
-    box-shadow: 0 0 4em white
-    opacity: 0
-@keyframes miniNova
+@keyframes droppedTile
   from
-    box-shadow: 0 0 0em
-    opacity: 0
+    opacity: 1
   to
-    box-shadow: 0 0 1em
-    opacity: 0.5
-@keyframes themeGlassMiniNova
+    opacity: 0.7
+@keyframes tileSubmitted
   from
-    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24), 0 0.2em 0em transparent
+    background-color: white
+    background-image: none
   to
-    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24), 0 0.2em 0.6em rgba(255,255,255,0.5)
-@keyframes tileTextGlow
-  from
-    text-shadow: 0 0 0, 0 0 0 black
-  to
-    text-shadow: 0 0 1em, 0 0 0.1em black
+    background-color: hsl(39, 80%, 72%)
+    background-image: radial-gradient(circle at 50% 0, hsla(39, 80%, 80%, 1), transparent 100%)
+
 
 
 /* Base Styles
@@ -640,7 +442,7 @@ th, td
 a
   color: color-accent
   text-decoration: none
-  transition: color 0.1s
+  //transition: color 0.1s
   &:hover
     color: lighten(@color, 20%)
     text-decoration: underline
@@ -648,7 +450,9 @@ a
 /* Buttons
 -------------------------------------------------- */
 .button
-  background-color: rgba(255,255,255,0.06)
+  background-color: rgba(255,255,255,0.12)
+  background-image: linear-gradient(transparent, rgba(0,0,0,0.24))
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05)
   border: none
   border-radius: 2px
   color: color-text
@@ -664,19 +468,22 @@ a
   padding: 0 30px
   text-overflow: ellipsis
   text-transform: uppercase
-  transition: background-color 0.1s, box-shadow 0.1s
+  //transition: background-color 0.1s
   vertical-align: middle
   white-space: nowrap
   .disabled.button-text
     display: none
   &:focus
-    background-color: rgba(255,255,255,0.09)
+    background-color: rgba(255,255,255,0.14)
   &:hover
-    background-color: rgba(255,255,255,0.18)
+    background-color: rgba(255,255,255,0.16)
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1)
     text-decoration: none
     color: color-text
   &:active
-    background-color: rgba(0,0,0,0.12)
+    background-color: rgba(255,255,255,0.06)
+    background-image: linear-gradient(rgba(0,0,0,0.24), transparent)
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1)
     color: color-text
   &:disabled
     background-color: @background-color !important
@@ -694,11 +501,11 @@ a
   font-weight: 600
   position: relative
   &:focus
-    background-color: tint(@background-color, 12%)
+    background-color: tint(@background-color, 6%)
   &:hover
-    background-color: tint(@background-color, 24%)
+    background-color: tint(@background-color, 12%)
   &:active
-    background-color: shade(@background-color, 24%)
+    background-color: shade(@background-color, 18%)
   &:disabled:after
     display: none
 .button-group
@@ -783,10 +590,9 @@ a
     padding: 0
     text-transform: uppercase
     transition: box-shadow 0.1s
-    &:hover
-      box-shadow: inset 0 -2px color-disabled-text
     &:disabled
       display: none
+    &:hover
     &.selected
       box-shadow: inset 0 -2px color-accent
 
@@ -859,6 +665,8 @@ option
   roundedCorners()
   animation: zoomIn 0.4s
   backface-visibility: hidden
+  background: hsla(hue, 8%, 16%,0.8)
+  border: 1px solid rgba(255,255,255,0.05)
   box-sizing: border-box
   color: color-text
   display: flex
@@ -871,6 +679,7 @@ option
     color: color-text
 .window-header
   background: hsla(hue, 8%, 32%, 0.8)
+  //background: hsl(hue,8%,32%)
   display: flex
   flex: 0 0 auto
   justify-content: flex-end
@@ -885,7 +694,7 @@ option
     text-align: center
     text-transform: uppercase
 .window-content
-  background: hsla(hue, 8%, 16%, 0.8)
+  //background: hsla(hue, 8%, 16%, 0.8)
   cursor: auto
   flex: 1 1 auto
   overflow: hidden
@@ -997,7 +806,8 @@ option
 /* Layout
 -------------------------------------------------- */
 #main
-  background: color-ui-0
+  //background: color-ui-0
+  background: none
   display: flex
   flex-direction: column
   height: 100vh
@@ -1005,9 +815,11 @@ option
   &.blur
     filter: blur(10px)
 .page
-  animation: fadeIn 0.5s
-  background-color: hsl(hue, 35%, 22%)
-  background-image: url('../images/themes/blue/squared_metal.png')
+  animation: fadeIn 1s
+  background-color: hsl(hue, 30%, 22%)
+  //background-image: linear-gradient(hsl(219, 30%, 30%), black 110%)
+  //background-image: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(hsl(219, 30%, 15%), black)
+  //background-image: url('../images/themes/blue/squared_metal.png')
   display: flex
   flex: 1 1 auto
   flex-direction: column
@@ -1086,7 +898,6 @@ option
   .button
     border: none
     box-sizing: border-box
-    font-weight: 400
     padding: 0 10px
     text-align: center
     width: 100%
@@ -1277,6 +1088,7 @@ option
 /* Lobby Page
 -------------------------------------------------- */
 #lobby
+  background: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(hsl(219, 30%, 15%), black)
   display: flex
   flex-direction: column
   overflow-y: auto
@@ -1398,6 +1210,7 @@ img.lobby-client-picture
   //background: color-ui-0
   //background: linear-gradient(90deg, hsl(216, 8%, 12%), hsla(216, 8%, 12%, 0.5))
   background-color: rgba(color-ui-0, 0.8)
+  //background-color: hsl(hue, 8%, 18%)
   //background-color: rgba(255,255,255,0.05)
   border-radius: 8px
   //box-shadow: 0 0 10px rgba(0,0,0,0.5)
@@ -1435,8 +1248,6 @@ img.lobby-client-picture
   flex: 1 1 auto
   flex-direction: column
   overflow: hidden
-  &.blur
-    filter: blur(10px)
 #dust
   animation: dustWave 1.2s forwards
   backface-visibility: hidden
@@ -1448,14 +1259,20 @@ img.lobby-client-picture
   transform: scale(1)
   width: 2em
   z-index: 60
-.table
-  align-items: stretch
-  display: flex
+#table
   flex: 1 1 auto
-  flex-direction: column
-  justify-content: space-between
   overflow: hidden
   position: relative
+#table-content
+  bottom: 0
+  display: flex
+  flex-direction: column
+  left: 0
+  position: absolute
+  right: 0
+  top: 0
+  &.blur
+    filter: blur(10px)
 .table-top
   align-items: center
   display: flex
@@ -1479,26 +1296,34 @@ img.lobby-client-picture
   //background-blend-mode: color-burn
   //background-color: hsl(219, 10%, 40%)
   //background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/light_alu.png)
-  background-image: url('../images/themes/blue/light_alu.png')
+  background-color: hsl(hue, 20%, 30%)
+  //background-image: url('../images/themes/blue/light_alu.png')
   background-size: 20%
-  border-radius: 0.4em
-  box-shadow: inset 1px 1px rgba(255,255,255,0.1),inset -1px -1px rgba(0,0,0,0.3), 0 0 1em rgba(0,0,0,0.24)
+  border: 1px solid rgba(255,255,255,0.05)
+  border-radius: 2px
+  //box-shadow: inset 1px 1px rgba(255,255,255,0.1),inset -1px -1px rgba(0,0,0,0.3), 0 0 1em rgba(0,0,0,0.24)
+  box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
   flex: 0 0 auto
-  height: 30em
-  width: 30em
+  //height: 30em
+  height: calc(30em + 16px)
+  //width: 30em
+  width: calc(30em + 16px)
   padding: 0.5em
 /*.dpr2 .board
   transform: scale(0.5)*/
 .squares-container
   //background-blend-mode: color-burn
-  background-color: color-square
+  background-color: tint(hsl(hue, 8%, 12%), 5%)
+  background-color: hsl(hue, 8%, 12%)
   //background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/cream_dust.png)
-  background-image: url('../images/themes/blue/board_cream_dust.png')
-  border-left: 1px solid rgba(255,255,255,0.05)
-  border-top: 1px solid rgba(255,255,255,0.05)
-  height: 30em
+  //background-image: url('../images/themes/blue/board_cream_dust.png')
+  //border-left: 1px solid rgba(255,255,255,0.05)
+  //border-top: 1px solid rgba(255,255,255,0.05)
+  //height: 30em
+  height: calc(30em + 16px)
   position: absolute
-  width: 30em
+  //width: 30em
+  width: calc(30em + 16px)
 .squares
   left: 0
   bottom: 0
@@ -1507,104 +1332,99 @@ img.lobby-client-picture
   top: 0
   z-index: 1
 .square
-  box-shadow: inset -1px -1px rgba(255,255,255,0.05)
+  //background-image: radial-gradient(at 50% 67%, rgba(0,0,0,0.16),transparent 100%)
+  box-shadow: 0 0 0 1px tint(hsl(hue, 8%, 12), 5%)
   height: 2em
   position: absolute
   width: 2em
-.square
+  &:nth-child(15n+1)
+    left: calc(1px)
   &:nth-child(15n+2)
-    left: 2em
+    left: calc(2em + 2px)
   &:nth-child(15n+3)
-    left: 4em
+    left: calc(4em + 3px)
   &:nth-child(15n+4)
-    left: 6em
+    left: calc(6em + 4px)
   &:nth-child(15n+5)
-    left: 8em
+    left: calc(8em + 5px)
   &:nth-child(15n+6)
-    left: 10em
+    left: calc(10em + 6px)
   &:nth-child(15n+7)
-    left: 12em
+    left: calc(12em + 7px)
   &:nth-child(15n+8)
-    left: 14em
+    left: calc(14em + 8px)
   &:nth-child(15n+9)
-    left: 16em
+    left: calc(16em + 9px)
   &:nth-child(15n+10)
-    left: 18em
+    left: calc(18em + 10px)
   &:nth-child(15n+11)
-    left: 20em
+    left: calc(20em + 11px)
   &:nth-child(15n+12)
-    left: 22em
+    left: calc(22em + 12px)
   &:nth-child(15n+13)
-    left: 24em
+    left: calc(24em + 13px)
   &:nth-child(15n+14)
-    left: 26em
+    left: calc(26em + 14px)
   &:nth-child(15n+15)
-    left: 28em
+    left: calc(28em + 15px)
+  &:nth-child(n+1):nth-child(-n+15)
+    top: calc(1px)
   &:nth-child(n+16):nth-child(-n+30)
-    top: 2em
+    top: calc(2em + 2px)
   &:nth-child(n+31):nth-child(-n+45)
-    top: 4em
+    top: calc(4em + 3px)
   &:nth-child(n+46):nth-child(-n+60)
-    top: 6em
+    top: calc(6em + 4px)
   &:nth-child(n+61):nth-child(-n+75)
-    top: 8em
+    top: calc(8em + 5px)
   &:nth-child(n+76):nth-child(-n+90)
-    top: 10em
+    top: calc(10em + 6px)
   &:nth-child(n+91):nth-child(-n+105)
-    top: 12em
+    top: calc(12em + 7px)
   &:nth-child(n+106):nth-child(-n+120)
-    top: 14em
+    top: calc(14em + 8px)
   &:nth-child(n+121):nth-child(-n+135)
-    top: 16em
+    top: calc(16em + 9px)
   &:nth-child(n+136):nth-child(-n+150)
-    top: 18em
+    top: calc(18em + 10px)
   &:nth-child(n+151):nth-child(-n+165)
-    top: 20em
+    top: calc(20em + 11px)
   &:nth-child(n+166):nth-child(-n+180)
-    top: 22em
+    top: calc(22em + 12px)
   &:nth-child(n+181):nth-child(-n+195)
-    top: 24em
+    top: calc(24em + 13px)
   &:nth-child(n+196):nth-child(-n+210)
-    top: 26em
+    top: calc(26em + 14px)
   &:nth-child(n+211):nth-child(-n+225)
-    top: 28em
+    top: calc(28em + 15px)
+  &.is-factored-in
+    &:before
+      animation: superNova 4s
+      bottom: 0
+      content: ''
+      left: 0
+      position: absolute
+      right: 0
+      top: 0
+      z-index: 1
+  &.is-submitted
+    .tile
+      animation: tileSubmitted 2s
+      //background-color: lighten(color-tile, 50%)
+      background-color: hsl(39, 80%, 70%) // remember to update animations
+      background-image: radial-gradient(circle at 50% 0, hsla(39, 80%, 80%, 1), transparent 100%)
+      box-shadow: 0 0 0 1px hsl(39, 20%, 50%)
 .bonus-marker
-  color: rgba(255,255,255,0.8) !important
   border-radius: 100%
-  color: color-text
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2)
   font-weight: 400
-  height: 60%
+  height: 66.667%
   left: 50%
-  margin-left: -30%
-  margin-top: -30%
+  margin-left: -33.333%
+  margin-top: -33.333%
   position: absolute
   top: 50%
-  width: 60%
-.bonus.tw
-  .bonus-marker
-    background-color: hsl(16, 100%, 50%)
-  .bonus-text
-    color: rgba(255,255,255,0.9)
-.bonus.dw
-  .bonus-marker
-    background-color: color-accent
-  .bonus-text
-    color: rgba(255,255,255,0.9)
-.bonus.dl
-  .bonus-marker
-    background-color: hsl(hue, 10%, 20%)
-  .bonus-text
-    color: color-secondary-text
-.bonus.tl
-  .bonus-marker
-    background-color: hsl(hue, 10%, 85%)
-  .bonus-text
-    color: #222
-.bonus.start
-  .bonus-marker
-    background-color: #F3B501
-  .bonus-text
-    color: #222
+  width: 66.667%
 .bonus-text-container
   align-items: center
   bottom: 0
@@ -1615,96 +1435,110 @@ img.lobby-client-picture
   right: 0
   top: 0
 .bonus-text
-  font-size: 0.5em
-  text-align: center
+  font-size: 0.556em
   font-weight: 400
+  text-align: center
+  text-shadow: 0 0 0.5em rgba(0,0,0,0.5)
+  
+
+bonus = 0
+dl = bonus + 39
+tl = bonus + 144
+dw = bonus + 210
+tw = bonus
+
+
+.bonus.dl
+  .bonus-marker
+    //box-shadow: inset 0 0 0 1px hsl(30, 30%, 25%)
+    //box-shadow: inset 0 0 0 1px hsl(30, 0%, 40%)
+    box-shadow: inset 0 0 0 1px hsl(dl, 20%, 30%)
+  .bonus-text
+    //color: hsl(30, 30%, 60%)
+    //color: hsl(30, 0%, 80%)
+    color: hsl(dl, 20%, 80%)
+.bonus.tl
+  .bonus-marker
+    //box-shadow: inset 0 0 0 1px hsl(150, 50%, 30%)
+    //box-shadow: inset 0 0 0 1px hsl(150, 0%, 30%)
+    //box-shadow: inset 0 0 0 1px hsl(150, 0%, 48%)
+    box-shadow: inset 0 0 0 1px hsl(tl, 20%, 30%)
+  .bonus-text
+    //color: hsl(150, 50%, 60%)
+    //color: hsl(150, 0%, 96%)
+    color: hsl(tl, 30%, 80%)
+.bonus.dw
+  .bonus-marker
+    background: hsl(dw, 40%, 50%)
+  .bonus-text
+    color: white
+.bonus.tw
+  .bonus-marker
+    background: hsl(tw, 60%, 50%)
+  .bonus-text
+    color: white
+.bonus.start
+  .bonus-marker
+    //animation: bonusStart infinite alternate both 1s
+    background: hsl(bonus + 30, 60%, 50%)
+  .bonus-text
+    color: white
+
+
+
 .tile
-  //background: color-tile
-  //background-blend-mode: color-burn
-  //background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/light_alu.png)
-  background-color: hsl(218, 11%, 28%)
-  background-image: url('../images/themes/blue/brushed.png')
-  //background-size: 100%
-  box-shadow: inset -1px -1px rgba(0,0,0,0.2),inset 1px 1px rgba(255,255,255,0.05)
+  background-color: color-tile
+  //background-image: radial-gradient(circle at 50% 0, rgba(255,255,255,0.8), transparent 60%)
+  background-image: radial-gradient(circle at 50% 0, hsla(39,20%,95%,1), transparent 100%)
+  //background-image: linear-gradient(transparent, rgba(0,0,0,0.12) 33%)
+  //background-image: radial-gradient(circle at 50% 0, white, transparent 40%), linear-gradient(180deg, #fff, transparent 27%), linear-gradient(transparent, rgba(0,0,0,0.2) 33%)
+  //background-image: radial-gradient(circle at 50% 0, rgba(255,255,255,1), transparent 60%)
+  //box-shadow: 0 0 0 1px hsl(39, 21%, 77%)
+  //box-shadow: 0 0 0 1px hsl(39, 20%, 67%)
+  box-shadow: 0 0 0 1px hsl(39, 0%, 54%)
+  color: #444
+  font-weight: 800
   height: 2em
   outline: none
   position: relative
   text-align: center
-  text-shadow: 0 0 1px rgba(0,0,0,0.5)
+  text-shadow: 0 0 1px white
   transform-origin: 0 0
-  transition: transform 0.3s
+  transition: transform 0.3s, fontSize 0.3s
   width: 2em
   //will-change: transform
-  &:after
-    background-color: transparent
-    content: ''
-    bottom: 0
-    left: 0
-    opacity: 0.5
-    position: absolute
-    right: 0
-    top: 0
-    transition: background-color 0.1s
-    z-index: -2
-  &.one
-    color: #F4ECDE
+  z-index: 2
   &.two
-    color: #FA9F2B
+    color: hsl(35, 63%, 41%)
   &.three
-    color: #1CB9FF
+    color: hsl(199, 67%, 43%)
   &.four
-    color: #FF4646
+    color: hsl(0, 75%, 71%)
   &[data-position='0']
-    transform: translateX(0em)
+    transform: translateX(1px)
   &[data-position='1']
-    transform: translateX(2em)
+    transform: translateX(calc(2em + 2px))
   &[data-position='2']
-    transform: translateX(4em)
+    transform: translateX(calc(4em + 3px))
   &[data-position='3']
-    transform: translateX(6em)
+    transform: translateX(calc(6em + 4px))
   &[data-position='4']
-    transform: translateX(8em)
+    transform: translateX(calc(8em + 5px))
   &[data-position='5']
-    transform: translateX(10em)
+    transform: translateX(calc(10em + 6px))
   &[data-position='6']
-    transform: translateX(12em)
+    transform: translateX(calc(12em + 7px))
   &[data-target]
-    //background-color: lighten(@background, 15%)
-    &:after
-      background-color: rgba(255,255,255,0.2)
-    //background-color: hsl(0,0%,12%)
-  &.is-submitted
-    //background-color: color-tile-submitted
-    //background-color: hsl(219, 40%, 6%)
-    &:after
-      animation: miniNova 2.5s 2.5s forwards
-  &.is-factored-in
-    &:before
-      animation: superNova 5s
-      bottom: 0
-      content: ''
-      left: 0
-      position: absolute
-      right: 0
-      top: 0
-      z-index: -1
-  /*&:after
-    background-image: linear-gradient(transparent, rgba(0,0,0,0.24))
-    bottom: 0
-    content: ''
-    left: 0
-    position: absolute
-    right: 0
-    top: 0
-  */
+    //background-color: shade(color-tile, 15%)
+    //background-image: linear-gradient(0deg, white, transparent 67%), linear-gradient(transparent, rgba(0,0,0,0.12) 33%)
+    background-color: white
+    background-image: none
 .tile-text
-  font-size: 1.125em
-  font-weight: 400
-  line-height: 1.778
+  font-size: 1.2em
+  line-height: 1.66666667
 .tile-value
-  bottom: 0
-  font-size: 1.25em
-  font-weight: 300
+  bottom: 0.05em
+  font-weight: 400
   height: 1em
   left: 0
   line-height: 1
@@ -1713,23 +1547,23 @@ img.lobby-client-picture
   right: 0
   text-align: center
 .rack
-  font-size: 20px
+  font-size: 22px
   height: 2em
-  margin-bottom: 5px
+  margin-bottom: 3px
   position: relative
-  width: 14em
+  width: calc(14em + 8px)
   &:before
     raise(1)
     //background-color: color-square
     //background-color: rgba(255,255,255,0.2)
-    background-image: url('../images/themes/blue/light_alu.png')
-    box-shadow: inset -1px -1px rgba(0,0,0,0.3),inset 1px 1px  rgba(255,255,255,0.12)
-    border-top-left-radius: .4em
-    border-top-right-radius: .4em
-    bottom: -10px
+    background: rgba(255,255,255,0.1)
+    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
+    border-top-left-radius: 2px
+    border-top-right-radius: 2px
+    bottom: -8px
     box-sizing: border-box
     content: ''
-    height: 10px
+    height: 7px
     left: -20px
     position: absolute
     right: -20px
@@ -1750,12 +1584,10 @@ img.lobby-client-picture
 #rack .tile
   cursor: pointer
   &:hover
+    background-color: lighten(color-tile, 70%)
     z-index: 11
     //background-color: lighten(color-tile, 10%)
     //background-color: hsl(219, 10%, 6%)
-    &:after
-      transition: box-shadow 0.1s
-      background-color: rgba(255,255,255,0.1)
 .game-actions
   display: none
 .game-message
@@ -1768,7 +1600,7 @@ img.lobby-client-picture
   pointer-events: none
   position: absolute
   text-align: center
-  text-shadow: 0 0 1px black, 0 0 20px black
+  text-shadow: 0 0 6px black, 0 10px 10px black
   top: 50%
   width: 100%
   //will-change: transform
@@ -1779,22 +1611,33 @@ img.lobby-client-picture
     border-radius: 0.4em
     padding: 10px 0.4em
 #remaining
-  color: color-text
+  background: desaturate(color-tile, 20%)
+  //background-image: radial-gradient(circle at 50% 0, hsla(39,20%,95%,1), transparent 100%)
+  bottom: 56px
+  //box-shadow: inset 0 2px 6px rgba(0,0,0,0.5)
+  box-shadow: inset 0 0 0 1px hsl(39, 0%, 54%)
+  color: #444
   font-size: font-size-small
-  font-weight: 600
+  font-weight: 800
+  height: 30px
   line-height: 30px
   pointer-events: none
-  position: absolute
+  position: fixed
+  text-align: center
+  text-shadow: 0 0 1px white
   text-transform: uppercase
-  top: 30px
-  right: 20px
-  z-index: 20
+  width: 60px
+  z-index: 21
 #remaining-number
-  font-weight: 600
   margin-right: 0.1em
+#remaining-text
+  display: none
 .unit-frame
   align-items: center
-  background: shade(color-ui-0, 20%)
+  //background: shade(color-ui-0, 20%)
+  background: color-ui-0
+  //background-image: linear-gradient(transparent, rgba(0,0,0,0.24) 100%)
+  //box-shadow: 0 0 10px rgba(0,0,0,0.48)
   display: flex
   font-size: font-size-large
   flex: 0 0 auto
@@ -1849,8 +1692,8 @@ img.lobby-client-picture
   &.active
     //background: alpha(desaturate(shade(color-accent, 20%), 20%), 0.5)
     //background: rgba(color-accent, 0.5)
-    background: desaturate(darken(color-accent, 50%), 50%)
-
+    //background: desaturate(darken(color-accent, 50%), 50%)
+    background-color: hsl(219, 60%, 50%)
 .unit-frame-picture
   background-color: #eee
   background-position: 50% 50%
@@ -1868,10 +1711,21 @@ img.lobby-client-picture
   border-bottom: none
   .unit-frame-picture
     display: none
+#player-main
+  padding-left: 80px
+#opponent-status
+  font-size: font-size-small
+  line-height: 20px
+  padding: 0 10px
+  position: fixed
+  right: 20px
+  top: 40px
+
 
 #chat
   animation: zoomIn 0.4s
   background: color-ui-0
+  border: 1px solid rgba(255,255,255,0.05)
   bottom: 0
   display: flex
   flex: 0 0 auto
@@ -1953,6 +1807,12 @@ img.lobby-client-picture
   .end
     color: color-text
     font-weight: 600
+#opponent
+  order: 1
+#canvas
+  order: 2
+#player
+  order: 3
 
 /* Cursor
 -------------------------------------------------- */
@@ -1965,9 +1825,11 @@ cursor-color = #f0f0f0
     box-shadow: inset 0 0 0 0.1em darken(cursor-color, 30%), inset 0 0 0.5em cursor-color
 
 .cursor
-  background-color: rgba(color-accent-two, 0.5)
+  background-color: hsla(16, 100%, 50%, 0.5)
+  background-image: radial-gradient(circle at 50% 0, rgba(255,255,255,0.1), transparent 100%)
   //box-shadow: inset -1px -1px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.05)
-  box-shadow: inset -1px -1px rgba(0,0,0,0.3),inset 1px 1px 2px rgba(255,255,255,0.12)
+  //box-shadow: inset -1px -1px rgba(0,0,0,0.3),inset 1px 1px 2px rgba(255,255,255,0.12)
+  box-shadow: 0 0 0 1px hsla(16, 100%, 20%, 0.5)
   height: 2em
   pointer-events: none
   position: absolute
@@ -2013,8 +1875,8 @@ cursor-color = #f0f0f0
     margin-bottom: 10px
     margin-right: 10px
   .tile
-    background: none
-    background-color: rgba(255,255,255,0.1)
+    //background: none
+    //background-color: rgba(255,255,255,0.1)
     line-height: 2
     &:first-child
       margin-right: 1px
@@ -2042,6 +1904,7 @@ cursor-color = #f0f0f0
   min-width: 280px
   .window-content
     user-select: none
+  form
     margin-left: -6px
     margin-right: -6px
   input[type='checkbox']
@@ -2142,14 +2005,14 @@ cursor-color = #f0f0f0
 /* Two-Letter-Words Window
 -------------------------------------------------- */
 #two-letter-words
-  max-width: 700px
+  max-width: 662px
   .window-content
     cursor: default
     user-select: none
   .tile
-    background: hsla(hue, 8%, 32%, 0.8)
-    box-shadow: none
-    color: color-text
+    //background: hsla(hue, 8%, 32%, 0.8)
+    //box-shadow: none
+    //color: color-text
 
 /* Challenges Window
 -------------------------------------------------- */
@@ -2229,23 +2092,23 @@ cursor-color = #f0f0f0
   p
     text-align: center
   .tiles
-    background: rgba(0,0,0,0.2)
+    //background: rgba(0,0,0,0.2)
     font-size: 20px
     height: 40px
     margin: 0 auto
     margin-bottom: 20px
-    margin-left: -20px
-    margin-right: -20px
-    padding: 20px
+    //margin-left: -20px
+    //margin-right: -20px
+    //padding: 20px
     position: relative
-    width: 280px
+    width: calc(14em + 8px)
   .tile
     cursor: pointer
     position: absolute
     &:before
       roundedCorners()
       background-color: transparent
-      transition: background-color 0.2s
+      transition: background-color 0.1s
       bottom: -8px
       content: ''
       cursor: default
@@ -2256,13 +2119,9 @@ cursor-color = #f0f0f0
       right: 1px
       top: auto
     &:focus
-      //background-color: lighten(color-tile, 5%)
-      &:after
-        background-color: rgba(255,255,255,0.05)
+      background-color: lighten(color-tile, 40%)
     &:hover
-      &:after
-        background-color: rgba(255,255,255,0.1)
-      //background-color: lighten(color-tile, 10%)
+      background-color: lighten(color-tile, 60%)
     &.selected:before
       background-color: color-accent-three
   .window-button-group
@@ -2277,7 +2136,9 @@ cursor-color = #f0f0f0
 color-wood = #25201E
 
 .theme-wood
-  .page
+  #start
+  #lobby
+  #table
     background-color: hsl(23, 43%, 16%)
     background-image: url('../images/themes/wood/background.png')
     background-position: 50% 50%
@@ -2286,279 +2147,157 @@ color-wood = #25201E
     background-image: hsl(22, 46%, 31%)
     background: linear-gradient(rgba(0,0,0,0.3), transparent, rgba(0,0,0,0.3)), url('../images/themes/wood/wood.png')
     background-size: auto, 194px 251px
-    box-shadow: 0 0 10px rgba(0,0,0,0.8), inset 0 0 0.5em rgba(0,0,0,0.5)
+    box-shadow: 0 4px 12px rgba(0,0,0,0.48), inset 0 0 0.2em rgba(0,0,0,0.5)
   .squares-container
-    background-color: hsl(12, 9%, 10%)
-    background-image: url('../images/themes/wood/wood_3.png')
-    background-size: 50%
-  .tile
-    background-color: hsl(15, 7%, 22%)
-    background-image: url('../images/themes/wood/wood_2.png')
-    background-position: 50%
-    background-size: 400%
-    /*&[data-target]
-      background-color: tint(color-wood, 25%)
-    &.is-submitted
-      background-color: #2a527b*/
+    //background-color: hsl(216, 8%, 16%)
+    //background-image: radial-gradient(transparent, rgba(0,0,0,0.5) 150%)
+  .square
+    //background: none
+    //box-shadow: 1px 1px rgba(255,255,255,0.05)
   #rack
     &:before
       background-color: hsl(22, 46%, 31%)
-      background-image: url('../images/themes/wood/wood.png')
+      background: linear-gradient(rgba(0,0,0,0.3), transparent, rgba(0,0,0,0.3)), url('../images/themes/wood/wood.png')
       background-size: 194px 251px
       box-shadow: inset 0 0 10px rgba(0,0,0,0.5)
-    /*.tile:hover
-      background-color: tint(color-wood, 20%)*/
-  .bonus
-    &.dw
-      .bonus-marker
-        background-color: lighten(color-wood, 80%)
-      .bonus-text
-        color: #222
-    &.dl
-      .bonus-marker
-        background-color: lighten(color-wood, 10%)
-      .bonus-text
-        color: lighten(color-wood, 60%)
-    &.tl
-      .bonus-marker
-        background-color: lighten(color-wood, 30%)
-      .bonus-text
-        color: lighten(color-wood, 70%)
-
-theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
-
-.theme-glass
-  .button
-    //background-image: radial-gradient(at 50% 0, rgba(255,255,255,0.06), transparent)
-    background-color: rgba(255,255,255,0.12)
-    background-image: linear-gradient(transparent, rgba(0,0,0,0.24))
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05)
-    &:focus
-      background-color: rgba(255,255,255,0.14)
-    &:hover
-      background-color: rgba(255,255,255,0.16)
-    &:active
-      //background-color: rgba(0,0,0,0.48)
-      background-color: rgba(255,255,255,0.12)
-      background-image: linear-gradient(rgba(0,0,0,0.24), transparent)
-  .button-primary
-    background-color: color-accent
+  .window
+  #chat
+    background-image: hsl(22, 46%, 31%)
+    background: linear-gradient(rgba(0,0,0,0.3), transparent, rgba(0,0,0,0.3)), url('../images/themes/wood/wood.png')
+    background-size: auto, 194px 251px
+    box-shadow: 0 4px 12px rgba(0,0,0,0.24), inset 0 0 4px rgba(0,0,0,0.5)
+  #chat-messages
+    background: #1c1e21
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.24)
+  .window-content
+    background: #1c1e21
+    margin: 10px
+    margin-top: 0
+  .window-header
+    background: none
+  .button, .window-close
+    background-color: hsl(39, 66%, 74%)
+    background-image: linear-gradient(transparent, rgba(0,0,0,0.48))
+    color: #333
     &:focus
       background-color: tint(@background-color, 6%)
     &:hover
       background-color: tint(@background-color, 12%)
-    //&:active
-    //  background-color: shade(@background-color, 24%)
-  #main
-    background: black
-    //background-color: hsl(0, 0%, 3%)
-    //background-image: radial-gradient(at 50% 0, hsla(219,30%,50%,0.5), transparent)
-  .page
-    //background-color: #0E282D
-    //background: hsl(190, 53%, 12%)
-    //background: hsl(190, 70%, 10%)
-    //background-image: radial-gradient(#614660, transparent)
-    //background-image: radial-gradient(#614660, transparent)
-    //background-image: radial-gradient(hsl(302, 21%, 31%), rgba(0,0,0,0.2))
+    &:active
+      background-image: linear-gradient(rgba(0,0,0,0.48), transparent)
+  .window-close
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
+    height: 25px
+    line-height: 25px
+    margin-right: 10px
+  .button-primary
+    background-color: color-accent
+    color: white
+    &:focus
+      background-color: tint(@background-color, 6%)
+    &:hover
+      background-color: tint(@background-color, 12%)
+  #menu
+    width: 260px
+    .window-content
+      margin-top: 10px
+    i.fa.fa-external-link
+      color: inherit
+  #options .window-content
+    margin: 0
     background: none
+  input[type='email']
+  input[type='number']
+  input[type='search']
+  input[type='text']
+  input[type='tel']
+  input[type='url']
+  input[type='password']
+  textarea
+  select
+    background-color: #1c1e21
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.24)
+  #chat-messages .result
+    //background: hsla(39, 20%, 35%, 1)  
+  #more.updated
+    color: #fff
+  #chat-header
+    background: none
+  #two-letter-words
+    max-width: 682px
+
+.theme-glass
   #start
-    //background-image: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px)
-    background-image: radial-gradient(circle at 50% 0%, hsl(219, 30%, 50%), transparent 80%)
-    background: linear-gradient(225deg, hsl(219, 30%, 40%), black)
+    //background-image: radial-gradient(circle at 50% 0%, hsl(219, 30%, 50%), transparent 80%)
+    //background: linear-gradient(225deg, hsl(219, 30%, 40%), black)
+    //background-image: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent),linear-gradient(225deg, hsl(219, 30%, 15%), black)
+    //background: radial-gradient(at 0% 50%, hsl(302, 16%, 33%), transparent 80%), radial-gradient(at 100% 50%, hsl(302, 16%, 33%), transparent 80%), radial-gradient(at 50% 50%, hsl(219,30%,50%), transparent 200%)
+    //background-image: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(225deg, hsl(219, 30%, 15%), black)
   #lobby
-    background-image: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(225deg, hsl(219, 30%, 15%), black)
+    //background: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(225deg, hsl(219, 30%, 15%), black)
+    //background-image: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent),linear-gradient(225deg, hsl(219, 30%, 15%), black)
+    //background: radial-gradient(at 0% 50%, hsl(302, 16%, 33%), transparent 80%), radial-gradient(at 100% 50%, hsl(302, 16%, 33%), transparent 80%), radial-gradient(at 50% 50%, hsl(219,30%,50%), transparent 200%)
   .page-bottom a
     font-weight: 600
-  .table
-    //background-image: radial-gradient(circle at 50% 0, hsl(219,30%,50%), transparent 50%)
-    //background-image: radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, hsla(219, 30%, 50%,0.5), transparent)
-    background-image: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent),linear-gradient(225deg, hsl(219, 30%, 15%), black)
+  #table
+    //background-image: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent),linear-gradient(225deg, hsl(219, 30%, 15%), black)
+    //background: radial-gradient(at 0% 50%, hsl(302, 16%, 33%), transparent 80%), radial-gradient(at 100% 50%, hsl(302, 16%, 33%), transparent 80%), radial-gradient(at 50% 50%, hsl(219,30%,50%), transparent 200%)
+    background: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent), linear-gradient(225deg, hsla(219,30%,15%,1), #000)
+
   .board
-    //background-color: hsla(0, 0%, 50%, 0.06)
-    //background-image: none
-    //background: none
-    //background: hsla(0, 0%, 50%, 0.2)
-    //background: hsla(219, 10%, 20%, 0.4)
     background: rgba(255,255,255,0.1)
-    //box-shadow: none
-    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
+    box-shadow: 0 4px 12px rgba(0,0,0,0.48)
     border-radius: 2px
-    //box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
   .squares-container
-    border: none
-    //background: rgba(255,255,255,0.06)
-    //background: rgba(0,0,0,0.3)
-    background: none
+    //border: none
+    //background: none
+    //background: #1c1e21
   .square
-    background: rgba(0,0,0,0.4)
-    //box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1)
-  .bonus-text
+    //background: rgba(0,0,0,0.4)
+
+
+  /*  .bonus-text
     font-weight: 400
-    //font-family: 'Open Sans Condensed'
-    //font-size: 0.7em
-    //font-size: 0.6em
     text-shadow: 0 0 0.5em rgba(0,0,0,0.5)
-  .bonus-marker
-    //box-shadow: inset 0 1px 3px rgba(0,0,0,0.24)
-    //width: 66.67%
-    //margin-left: -33.33%
   .bonus.dl
     .bonus-marker
-      //background: none
-      //background: rgba(0,0,0,0.06)
-      box-shadow: none
+      //box-shadow: none
+      box-shadow: inset 0 0 0 1px hsl(198,20%,35%)
       background: none
     .bonus-text
-      //color: #f2f2f2
-      color: #d8d8d8
-      color: white
+      //color: #d8d8d8
+      //color: white
+      color: hsl(198, 40%, 70%)
   .bonus.tl
     .bonus-marker
-      //background: none
-      //box-shadow: 0 0 0 1px rgba(255,255,255,0.2)
-      // background: rgba(0,0,0,0.24)
       background: none
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2)
+      //box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2)
+      box-shadow: inset 0 0 0 1px hsl(0, 20%, 35%)
     .bonus-text
-      //color: #f2f2f2
-      color: #d8d8d8
-      color: white
+      //color: #d8d8d8
+      //color: white
+      color: hsl(0, 40%, 70%)
   .bonus.dw
     .bonus-marker
-      //background: rgba(255,255,255,0.2)
-      //background: hsl(199, 30%, 50%)
       background: #589CBA
     .bonus-text
-      //color: #f2f2f2
       color: lighten(#589CBA, 70%)
       color: white
   .bonus.tw
     .bonus-marker
-      //background: white
-      //background: hsl(0, 50%, 55%)
       background: #E65655
     .bonus-text
-      //color: rgba(0,0,0,0.8)
-      //color: #f2f2f2
       color: lighten(#E65655, 70%)
       color: white
   .bonus.start
     .bonus-marker
-      //background: hsl(34, 60%, 60%)
       background: white
     .bonus-text
-      //color: #f1f2f4
       color: #222
-  .tile
-    //background-color: #1B1C1B
-    //background-color: color-ui-0
-    //background-color: hsl(220, 10%, 18%)
-    background-color: theme-glass-tile-bgcolor
-    //background-color: shade(theme-glass-tile-bgcolor, 10%)
-    //background-image: radial-gradient(circle at 50% 0, rgba(255,255,255,0.12), transparent 70%)
-    background-image: none
-    //box-shadow: none
-    //box-shadow: inset 0 -1px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(0,0,0,0.12)
-    //box-shadow: inset 0 -1px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(0,0,0,0.18)
-    text-shadow: none
-    //&:after
-    //  box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.24)
-    //  opacity: 1
-    &.is-submitted
-      //animation: tileTextGlow 2.5s backwards
-      background: white
-      //text-shadow: 0 0 0.1em black, 0 0 1em
-      transition: transform 0.3s, background-color 0.4s
-      &:after
-        animation: none
-        //animation: themeGlassMiniNova 2.5s 2.5s forwards
-    &.is-factored-in
-      &:before
-        animation: superNova 5s
-  .tile.one
-    //color: hsl(38, 0%, 80%)
-    //color: hsl(0, 0%, 70%)
-    //color: #BCBBBC
-    color: #444
-    .tile-value
-      //color: tint(@color, 50%)
-  .tile.two
-    //color: hsl(34, 60%, 60%)
-    //color: hsl(34, 50%, 50%)
-    //color: hsl(34, 74%, 84%)
-    //color: #D18F34
-    color: hsl(35, 63%, 41%)
-    .tile-value
-      //color: tint(@color, 50%)
-  .tile.three
-    //color: hsl(199, 80%, 55%)
-    //color: hsl(199, 50%, 50%)
-    //color: hsl(199, 74%, 84%)
-    //color: #38A5D7
-    color: hsl(199, 67%, 43%)
-    .tile-value
-      //color: tint(@color, 50%)
-  .tile.four
-    //color: hsl(0, 70%, 60%)
-    //color: hsl(0, 50%, 55%)
-    //color: hsl(0, 64%, 91%)
-    //color: #E65353
-    color: hsl(0, 75%, 71%)
-    .tile-value
-      //color: tint(@color, 50%)
-  .tile-text
-    font-size: 1.2em
-    font-weight: 800
-    line-height: 1.66666667
-  .tile-value
-    bottom: 0
-    font-size: 1em
-    font-weight: 400
-    opacity: 1
-  .tile[data-target]
-    background-color: shade(theme-glass-tile-bgcolor, 10%)
-    //background-color: shade(theme-glass-tile-bgcolor, 15%)
-    //background-color: shade(theme-glass-tile-bgcolor, 15%)
-    &:after
-      //box-shadow: 0 0 1em white
-      box-shadow: none
-      background: none
-  .tile[data-target]:after
-    background-color: transparent
-  .tile.one.is-factored-in
-    &:before
-      animation: superNovaWhite 5s
-  //.tile.is-submitted
-  //  background-color: tint(theme-glass-tile-bgcolor, 50%)
-  //  background-color: rgba(255,255,255,0.06)
-  .cursor
-    //box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.24)
-    box-shadow: none
-  #rack:before
-    background: rgba(255,255,255,0.1)
-    border-top-left-radius: 2px
-    border-top-right-radius: 2px
-    box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
-  #rack .tile:hover:after
-    background-color: transparent
-  //  background-color: rgba(255,255,255,0.03)
-  //#rack .tile:after
-  //  box-shadow: none
-  #rack .tile:hover
-    background-color: lighten(theme-glass-tile-bgcolor, 60%)
-  //#rack .tile[data-target]:after
-  //#rack .tile[data-dragging]:after
-  //  box-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
-  #pass-dialog
-    .tiles
-      background-color: rgba(0,0,0,0.12)
-      background-image: linear-gradient(rgba(0,0,0,0.24), transparent 20%)
-    .tile
-      &:focus
-        background-color: lighten(theme-glass-tile-bgcolor, 40%)
-      &:hover
-        background-color: lighten(theme-glass-tile-bgcolor, 60%)
-  .lobby-client-unchallenge
+  */
+
+  /*  .lobby-client-unchallenge
     background-color: color-accent
     &:focus
       background-color: lighten(color-accent, 5%)
@@ -2574,22 +2313,7 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
       background-color: lighten(color-accent-two, 10%)
     &:active
       background-color: shade(color-accent-two, 20%)
-
-
-
-/* Larger than desktop */
-@media (min-width: 1000px)
-  .theme-wood
-    #chat
-      box-shadow: 0 0 10px rgba(0,0,0,0.5)
-  .theme-glass
-    #chat
-      box-shadow: 0 4px 12px rgba(0,0,0,0.24)
-    .unit-frame .main
-      background: hsla(hue, 10%, 25%, 0.5)
-    .unit-frame.active .main
-      background: hsla(hue, 60%, 30%, 1)
-
+  */
 
 /* Media Queries
 -------------------------------------------------- */
@@ -2643,7 +2367,10 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
     animation: none
     background-color: rgba(23, 23, 23, 0.5)
     background-color: color-ui-0
+    border: none
+    border-left: 1px solid rgba(255,255,255,0.05)
     border-radius: 0
+    box-shadow: 0 4px 12px rgba(0,0,0,0.24)
     //raise(2)
     display: flex !important
     margin: 0
@@ -2673,9 +2400,9 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
   #game
     flex-direction: row
   .rack
-    margin-bottom: 20px*0.5
+    margin-bottom: 8px
   .opponent-rack
-    margin-top: 20px*-1
+    margin-top: 22px*-1
   #more
     display: none
   .unit-frame
@@ -2689,7 +2416,7 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
     width: auto
     .main
       raise(2)
-      background: color-ui-0
+      background: hsla(hue, 10%, 25%, 0.5)
       border-radius: 2px
       margin-left: desktop-unit-frame-picture-size - 15px
       padding: 0
@@ -2729,7 +2456,7 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
         //background: alpha(darken(color-accent, 20%), 0.5)
         //background: alpha(desaturate(shade(color-accent, 20%), 20%), 0.5)
         //background: rgba(color-accent, 0.5)
-        background: darken(color-accent, 50%)
+        background: hsla(hue, 60%, 30%, 1)
 
   .unit-frame-picture
     raise(3)
@@ -2748,13 +2475,36 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
     bottom: desktop-unit-frame-margin-vertical
     .unit-frame-picture
       display: block
+  #player-main
+    padding-left: 10px
   #player-name
     display: none
   #opponent
     top: desktop-unit-frame-margin-vertical
+  #opponent-status
+    font-size: inherit
+    line-height: inherit
+    padding: 0 20px
+    position: static
+    right: auto
+    top: auto
   #remaining
+    background: none
+    box-shadow: none
+    color: color-text
+    font-weight: 600
     line-height: tile-size
+    position: absolute
+    right: 20px
+    text-align: left
+    text-shadow: 0 0 1px black
     top: 10px
+    width: auto
+    z-index: 20
+  #remaining-text
+    display: inline
+  #remaining-text-mobile
+    display: none
   #app-bar
     background: none
     border: none
@@ -2764,6 +2514,7 @@ theme-glass-tile-bgcolor = hsl(39, 90%, 91%)
     right: 0
     top: 0
     width: auto
+    z-index: 20
     .button
       margin: 2px 5px
   #app-bar-lobby

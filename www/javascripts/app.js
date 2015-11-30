@@ -119,13 +119,15 @@ var app = {
     var defaults = {
       mute: false,
       muteMusic: false,
-      theme: 'glass'
+      theme: 'glass',
+      vibrate: true
     };
 
     var settings = {};
     settings.mute = storage.getItem('mute');
     settings.muteMusic = storage.getItem('muteMusic');
     settings.theme = storage.getItem('theme');
+    settings.vibrate = storage.getItem('vibrate');
     settings.guestName = storage.getItem('guestName');
 
     if (!settings.guestName) {
@@ -145,6 +147,7 @@ var app = {
 
     this.setMute(settings.mute);
     this.setMuteMusic(settings.muteMusic);
+    this.setVibrate(settings.vibrate);
     this.setGuestName(settings.guestName);
     this.setTheme(settings.theme);
   },
@@ -214,6 +217,16 @@ var app = {
   },
   isInFullscreen: function() {
     return this.view.isInFullscreen();
+  },
+  setVibrate: function(value) {
+    storage.setItem('vibrate', value);
+    this.state.vibrate = value;
+    options.setVibrate(value);
+  },
+  vibrate: function() {
+    if (window.navigator.vibrate && this.state.vibrate) {
+      window.navigator.vibrate.apply(window.navigator, arguments);
+    }
   },
   checkVersion: function(version) {
     if (this.state.version != version) {
@@ -329,6 +342,7 @@ app.state = {
   clients: [],
   fullscreen: false,
   version: null,
-  host: ''
+  host: '',
+  vibrate: true
 };
 

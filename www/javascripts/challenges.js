@@ -82,7 +82,7 @@ challenges.view = {
 
       var accept = document.createElement('button');
       accept.className = 'button button-primary challenges-client-accept';
-      accept.textContent = 'Accept';
+      accept.textContent = t('Accept');
       accept.addEventListener('click', function(event) {
         this.disabled = true;
         socket.write({ type: 'acceptchallenge', targetId: data.id });

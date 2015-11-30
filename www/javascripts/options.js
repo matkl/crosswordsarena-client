@@ -11,6 +11,7 @@ var options = {
   },
   update: function() {
     this.state.fullscreenSupported = app.isFullscreenSupported();
+    this.state.vibrateSupported = !!window.navigator.vibrate;
     this.state.inFullscreen = app.isInFullscreen();
     this.view.update();
   },
@@ -22,6 +23,9 @@ var options = {
   },
   setTheme: function(value) {
     this.view.setTheme(value);
+  },
+  setVibrate: function(value) {
+    this.view.setVibrate(value);
   }
 };
 
@@ -32,6 +36,7 @@ options.view = {
 
     this.sound = document.getElementById('options-sound');
     this.music = document.getElementById('options-music');
+    this.vibrate = document.getElementById('options-vibrate');
     this.fullscreen = document.getElementById('options-fullscreen');
     this.theme = document.getElementById('options-theme');
 
@@ -52,6 +57,13 @@ options.view = {
       ga('send', 'event', 'options', 'click', 'muteMusic');
 
       app.setMuteMusic(!event.target.checked);
+    });
+
+    this.vibrate.addEventListener('change', function(event) {
+      ga('send', 'event', 'options', 'click', 'vibrate');
+
+      app.setVibrate(event.target.checked);
+      app.vibrate(100);
     });
 
     this.fullscreen.addEventListener('change', function(event) {
@@ -93,7 +105,13 @@ options.view = {
   setTheme: function(value) {
     this.theme.value = value;
   },
+  setVibrate: function(value) {
+    this.vibrate.value = value;
+  },
   update: function() {
+    this.vibrate.parentNode.classList.toggle('hide', !options.state.vibrateSupported);
+    this.vibrate.disabled = !options.state.vibrateSupported;
+
     this.fullscreen.parentNode.classList.toggle('hide', !options.state.fullscreenSupported);
     this.fullscreen.disabled = !options.state.fullscreenSupported;
     this.fullscreen.checked = options.state.inFullscreen;
