@@ -106,7 +106,7 @@ options.view = {
     this.theme.value = value;
   },
   setVibrate: function(value) {
-    this.vibrate.value = value;
+    this.vibrate.checked = value;
   },
   update: function() {
     this.vibrate.parentNode.classList.toggle('hide', !options.state.vibrateSupported);
