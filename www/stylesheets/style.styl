@@ -281,7 +281,7 @@ roundedCorners()
     transform: translateX(0)
   to
     opacity: 0
-    transform: translateX(calc(-10px - 100%))
+    transform: translateX(-10px) translateX(-100%)
 @keyframes dustWave
   from
     opacity: 1
@@ -1517,17 +1517,17 @@ tw = bonus
   &[data-position='0']
     transform: translateX(1px)
   &[data-position='1']
-    transform: translateX(calc(2em + 2px))
+    transform: translateX(2em) translateX(2px)
   &[data-position='2']
-    transform: translateX(calc(4em + 3px))
+    transform: translateX(4em) translateX(3px)
   &[data-position='3']
-    transform: translateX(calc(6em + 4px))
+    transform: translateX(6em) translateX(4px)
   &[data-position='4']
-    transform: translateX(calc(8em + 5px))
+    transform: translateX(8em) translateX(5px)
   &[data-position='5']
-    transform: translateX(calc(10em + 6px))
+    transform: translateX(10em) translateX(6px)
   &[data-position='6']
-    transform: translateX(calc(12em + 7px))
+    transform: translateX(12em) translateX(7px)
   &[data-target]
     //background-color: shade(color-tile, 15%)
     //background-image: linear-gradient(0deg, white, transparent 67%), linear-gradient(transparent, rgba(0,0,0,0.12) 33%)

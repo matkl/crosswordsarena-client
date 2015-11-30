@@ -90,11 +90,15 @@ var music = {
     this.source.connect(this.gainNode);
   },
   play: function() {
-    this.element.play();
+    if (this.element) {
+      this.element.play();
+    }
   },
   stop: function() {
-    this.element.pause();
-    this.element.currentTime = 0;
+    if (this.element) {
+      this.element.pause();
+      this.element.currentTime = 0;
+    }
   },
   setMute: function(value) {
     if (!this.gainNode) return;
