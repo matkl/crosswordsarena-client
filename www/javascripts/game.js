@@ -71,6 +71,7 @@ var game = {
     data.messages.forEach(function(message) {
       chat.addMessage(message);
     });
+    opponentChat.removeAllMessages()
 
     this.view.setPlayerDelta(0, 0);
     this.view.setPlayerDelta(1, 0);
@@ -697,6 +698,13 @@ var game = {
   },
   hidePassDialog: function() {
     this.view.hidePassDialog();
+  },
+  getOpponentClientId: function() {
+    if (this.state.players && this.state.players.length >= 2) {
+      return this.state.players[1].id;
+    } else {
+      return null;
+    }
   }
 };
 
@@ -773,6 +781,7 @@ game.view = {
     this.moreButton.addEventListener('click', function() {
       ga('send', 'event', 'button', 'click', 'more');
 
+      opponentChat.removeAllMessages();
       sideBar.show();
     });
 
@@ -864,7 +873,13 @@ game.view = {
       var x = Math.floor((lastClientX - squaresRect.left) / squaresRect.width * 15);
       var y = Math.floor((lastClientY - squaresRect.top) / squaresRect.height * 15);
 
-      if (!(x >= 0 && x < 15 && y >= 0 && y < 15)) {
+
+      if (x >= 0 && x < 15 && y >= 0 && y < 15) {
+        // over board
+        opponentChat.fadeOut();
+      } else {
+        // not over board
+
         //var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 20) / 40)));
         // TODO: test this
         var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 22) / 44)));
@@ -893,6 +908,7 @@ game.view = {
       var index = getIndex(tile);
 
       if (x >= 0 && x < 15 && y >= 0 && y < 15) {
+        opponentChat.fadeOut();
         var squareIndex = x + y * 15;
         if (game.requestPut(index, squareIndex)) {
           game.cursor.index = squareIndex;
@@ -906,6 +922,8 @@ game.view = {
     }
 
     function click(tile) {
+      opponentChat.fadeOut();
+
       var index = getIndex(tile);
       if (index == -1) return;
 
@@ -945,8 +963,9 @@ game.view = {
 
     function clickBoard(clientX, clientY) {
       var rect = squares.getBoundingClientRect();
+      var clickedBoard = rectHasPoint(rect, clientX, clientY);
 
-      if (!game.state.players[0].turn || !rectHasPoint(rect, clientX, clientY)) {
+      if (!game.state.players[0].turn || !clickedBoard) {
         self.dust.classList.add('hide');
         self.dust.style.left = clientX - self.fontSize/2 + 'px';
         self.dust.style.top = clientY - self.fontSize/2 + 'px';
@@ -992,6 +1011,7 @@ game.view = {
         window.addEventListener('mousemove', mousemoveListener);
         window.addEventListener('mouseup', mouseupListener);
       } else {
+        opponentChat.fadeOut();
         clickBoard(clientX, clientY);
       }
     });

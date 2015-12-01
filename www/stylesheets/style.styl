@@ -16,6 +16,7 @@
  * .rack .tile.dragging or :hover 11
  * .cursor 12
  * .unit-frame 20
+ * #opponent-chat 20
  * #remaining 20 // mobile: 21
  * #app-bar auto, 20 (desktop)
  * .game-message 30
@@ -882,6 +883,7 @@ option
 #start-icon
   margin-right: 20px
   img
+    display: block
     width: 76px
     height: 76px
 #start-logo
@@ -1493,6 +1495,7 @@ tw = bonus
 .unit-frame
   align-items: center
   background: color-ui-0
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05)
   display: flex
   font-size: font-size-large
   flex: 0 0 auto
@@ -1566,13 +1569,32 @@ tw = bonus
 #player-main
   padding-left: 80px
 #opponent-status
+  roundedCorners()
   font-size: font-size-small
   line-height: 20px
   padding: 0 10px
   position: fixed
-  right: 20px
-  top: 40px
-
+  right: 10px
+  top: 35px
+#opponent-chat
+  left: 70px
+  pointer-events: none
+  position: fixed
+  right: 10px
+  top: 35px
+  z-index: 20
+  &.fadeOut
+    animation: fadeOut 2s forwards
+.opponent-chat-bubble
+  animation: zoomIn 0.4s
+  font-size: font-size-small
+  margin-bottom: 5px
+  span
+    roundedCorners()
+    background: rgba(32,32,32,0.8)
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05)
+    display: inline-block
+    padding: 5px 10px
 
 #chat
   animation: zoomIn 0.4s
@@ -2264,6 +2286,8 @@ color-wood = #25201E
     width: 280px
   #menu-key-bindings
     display: block
+  #opponent-chat
+    display: none
 
 /* Larger than Desktop HD */
 @media (min-width: 1200px)

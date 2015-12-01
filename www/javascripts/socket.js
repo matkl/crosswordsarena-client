@@ -52,7 +52,7 @@ var socket = {
       case 'pass': game.pass(data); break;
       case 'turn': game.turn(data.playerIndex); break;
       case 'submit': game.submit(data); break;
-      case 'message': chat.addMessage(data); break;
+      case 'message': chat.addMessage(data); opponentChat.addMessage(data); break;
     }
   },
   onDataServer: function(data) {

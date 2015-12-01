@@ -30,6 +30,7 @@ var app = {
     challenges.init();
 
     chat.init();
+    opponentChat.init();
 
     // Load settings from local storage
     this.loadSettings();

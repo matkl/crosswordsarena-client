@@ -64,6 +64,10 @@ chat.view = {
         chat.scrollToBottom();
       }, 1000);
     });
+
+    window.addEventListener('resize', function(event) {
+      chat.scrollToBottom();
+    });
   },
   addMessage: function(data) {
     function createMessage(data) {
@@ -111,5 +115,40 @@ chat.view = {
   },
   scrollToBottom: function() {
     utils.scrollToBottom(this.messages);
+  }
+};
+
+var opponentChat = {
+  init: function() {
+    this.opponentChat = document.getElementById('opponent-chat');
+  },
+  addMessage: function(data) {
+    if (!data.text) return;
+    if (data.className) return;
+    if (game.getOpponentClientId() != data.clientId) return;
+
+    this.removeAllMessages();
+    this.opponentChat.classList.remove('fadeOut');
+
+    function createBubble(data) {
+      var bubble = document.createElement('div');
+      bubble.className = 'opponent-chat-bubble';
+
+      var span = document.createElement('span');
+      if (data.text) span.textContent = data.text;
+      bubble.appendChild(span);
+
+      return bubble;
+    }
+
+    var bubble = createBubble(data);
+
+    this.opponentChat.appendChild(bubble);
+  },
+  fadeOut: function() {
+    this.opponentChat.classList.add('fadeOut');
+  },
+  removeAllMessages: function() {
+    this.opponentChat.innerHTML = '';
   }
 };
