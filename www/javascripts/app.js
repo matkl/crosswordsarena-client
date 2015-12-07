@@ -121,7 +121,8 @@ var app = {
       mute: false,
       muteMusic: false,
       theme: 'glass',
-      vibrate: true
+      vibrate: true,
+      chatBubbles: true
     };
 
     var settings = {};
@@ -129,6 +130,7 @@ var app = {
     settings.muteMusic = storage.getItem('muteMusic');
     settings.theme = storage.getItem('theme');
     settings.vibrate = storage.getItem('vibrate');
+    settings.chatBubbles = storage.getItem('chatBubbles');
     settings.guestName = storage.getItem('guestName');
 
     if (!settings.guestName) {
@@ -149,6 +151,7 @@ var app = {
     this.setMute(settings.mute);
     this.setMuteMusic(settings.muteMusic);
     this.setVibrate(settings.vibrate);
+    this.setChatBubbles(settings.chatBubbles);
     this.setGuestName(settings.guestName);
     this.setTheme(settings.theme);
   },
@@ -223,6 +226,17 @@ var app = {
     storage.setItem('vibrate', value);
     this.state.vibrate = value;
     options.setVibrate(value);
+  },
+  setChatBubbles: function(value) {
+    storage.setItem('chatBubbles', value);
+    this.state.chatBubbles = value;
+    options.setChatBubbles(value);
+    
+    if (value) {
+      opponentChat.show();
+    } else {
+      opponentChat.hide();
+    }
   },
   vibrate: function() {
     if (window.navigator.vibrate && this.state.vibrate) {
@@ -344,6 +358,7 @@ app.state = {
   fullscreen: false,
   version: null,
   host: '',
-  vibrate: true
+  vibrate: true,
+  chatBubbles: true
 };
 

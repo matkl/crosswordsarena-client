@@ -26,6 +26,9 @@ var options = {
   },
   setVibrate: function(value) {
     this.view.setVibrate(value);
+  },
+  setChatBubbles: function(value) {
+    this.view.setChatBubbles(value);
   }
 };
 
@@ -37,6 +40,7 @@ options.view = {
     this.sound = document.getElementById('options-sound');
     this.music = document.getElementById('options-music');
     this.vibrate = document.getElementById('options-vibrate');
+    this.chatBubbles = document.getElementById('options-chat-bubbles');
     this.fullscreen = document.getElementById('options-fullscreen');
     this.theme = document.getElementById('options-theme');
 
@@ -64,6 +68,12 @@ options.view = {
 
       app.setVibrate(event.target.checked);
       app.vibrate(100);
+    });
+
+    this.chatBubbles.addEventListener('change', function(event) {
+      ga('send', 'event', 'options', 'click', 'vibrate');
+
+      app.setChatBubbles(event.target.checked);
     });
 
     this.fullscreen.addEventListener('change', function(event) {
@@ -107,6 +117,9 @@ options.view = {
   },
   setVibrate: function(value) {
     this.vibrate.checked = value;
+  },
+  setChatBubbles: function(value) {
+    this.chatBubbles.checked = value;
   },
   update: function() {
     this.vibrate.parentNode.classList.toggle('hide', !options.state.vibrateSupported);

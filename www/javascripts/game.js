@@ -985,6 +985,7 @@ game.view = {
       }
     }
 
+    // TODO: DRY. mousedown/touchstart
     this.canvas.addEventListener('mousedown', function(event) {
       if (event.button != 0) return;
 
@@ -1016,6 +1017,7 @@ game.view = {
       }
     });
 
+    // TODO: DRY. mousedown/touchstart
     this.canvas.addEventListener('touchstart', function(event) {
       event.preventDefault();
 
@@ -1048,6 +1050,7 @@ game.view = {
         window.addEventListener('touchmove', touchmoveListener);
         window.addEventListener('touchend', touchendListener);
       } else {
+        opponentChat.fadeOut();
         clickBoard(clientX, clientY);
       }
     });
@@ -1345,9 +1348,6 @@ game.view = {
     var translateX = squareRect.left - rackRect.left;
     var translateY = squareRect.top - rackRect.top;
     var transform = 'translateX(' + translateX + 'px) translateY(' + translateY + 'px)';
-    /*if (window.devicePixelRatio >= 2) {
-      transform += ' scale(0.5)';
-    }*/
     tile.style.transform = transform;
     tile.style.WebkitTransform = transform;
     tile.style.MsTransform = transform;
@@ -1444,7 +1444,6 @@ game.view = {
     // we will set these later to full pixels for better quality
     self.board.style.left = '';
     self.board.style.top = '';
-    //self.board.style.transform = '';
     self.players.forEach(function(player) {
       player.rack.style.left = '';
       player.rack.style.top = '';
@@ -1497,6 +1496,7 @@ game.view = {
       // rearrange player tiles on board
       self.players.forEach(function(player) {
         var rackRect = player.rack.getBoundingClientRect();
+
         Array.prototype.forEach.call(player.rack.children, function(tile) {
           if (tile.hasAttribute('data-target')) {
             var squareIndex = tile.getAttribute('data-target');
@@ -1504,9 +1504,7 @@ game.view = {
             var translateX = squareRect.left - rackRect.left;
             var translateY = squareRect.top - rackRect.top;
             var transform = 'translateX(' + translateX + 'px) translateY(' + translateY + 'px)';
-            /*if (window.devicePixelRatio >= 2) {
-              transform += ' scale(0.5)';
-            }*/
+            
             tile.style.transform = transform;
             tile.style.WebkitTransform = transform;
             tile.style.MsTransform = transform;

@@ -122,6 +122,12 @@ var opponentChat = {
   init: function() {
     this.opponentChat = document.getElementById('opponent-chat');
   },
+  hide: function() {
+    this.opponentChat.classList.add('hide');
+  },
+  show: function() {
+    this.opponentChat.classList.remove('hide');
+  },
   addMessage: function(data) {
     if (!data.text) return;
     if (data.className) return;
