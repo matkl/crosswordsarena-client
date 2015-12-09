@@ -1011,7 +1011,7 @@ option
 /* Lobby Page
 -------------------------------------------------- */
 #lobby
-  background: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(hsl(219, 30%, 15%), black)
+  //background: radial-gradient(circle at calc(50% - 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at calc(50% + 450px) 0, rgba(89,116,166,1), transparent 300px), radial-gradient(circle at 50% 0, rgba(89,116,166,1), transparent 300px), linear-gradient(hsl(219, 30%, 15%), black)
   display: flex
   flex-direction: column
   overflow-y: auto
@@ -2075,10 +2075,13 @@ color-wood = #25201E
     max-width: 682px
 
 .theme-glass
+  #lobby
+    background: #273349
+    background-image: linear-gradient(0deg, #614660, transparent 100%)  
   #table
     background: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent), linear-gradient(225deg, hsla(219,30%,15%,1), #000)
   .board
-    background: rgba(255,255,255,0.1)
+    background: rgba(192,192,192,0.3)
     box-shadow: 0 4px 12px rgba(0,0,0,0.48)
     border-radius: 2px
 
