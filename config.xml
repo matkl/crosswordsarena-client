@@ -51,7 +51,10 @@
     <gap:plugin name="org.crosswalk.engine" source="pgb" version="1.3.0" />
 
     <gap:config-file platform="android" parent="/manifest" mode="delete">
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         <uses-permission android:name="android.permission.RECORD_AUDIO" />
+        <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     </gap:config-file>
     
     <access origin="*" />
