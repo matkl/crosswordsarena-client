@@ -34,6 +34,10 @@ var app = {
 
     // Load settings from local storage
     this.loadSettings();
+
+    if (window.chrome) {
+      document.documentElement.classList.add('chrome');
+    }
   },
   showOverlay: function(name, pop) {
     this.hideOverlay(true);

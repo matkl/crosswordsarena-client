@@ -1751,17 +1751,14 @@ Object.defineProperty(Cursor.prototype, 'vertical', {
 });
 
 Cursor.prototype.update = function() {
-  /*
-    // Transition doesn't work correctly with Chrome 44.0.2403.155. Workaround below. This is the original code:
-    var transform = 'translateX(' + (this.state.x * 2) + 'em) translateY(' + (this.state.y * 2) + 'em)';
-
-    this.element.style.transform = transform;
-    this.element.style.WebkitTransform = transform;
-    this.element.style.MsTransform = transform;
-  */
-
-  this.element.style.left = 'calc(' + (this.state.x * 2) + 'em + ' + (this.state.x + 1) + 'px)';
-  this.element.style.top = 'calc(' + (this.state.y * 2) + 'em + ' + (this.state.y + 1) + 'px)';
+  var transform = 'translateX(' + (this.state.x * 2) + 'em) translateX(' + (this.state.x + 1) + 'px) translateY(' + (this.state.y * 2) + 'em) translateY(' + (this.state.y + 1) + 'px)';
+  this.element.style.transform = transform;
+  this.element.style.WebkitTransform = transform;
+  this.element.style.MsTransform = transform;
+  
+  // Transition doesn't work correctly with Chrome 44.0.2403.155. Workaround below:
+  //this.element.style.left = 'calc(' + (this.state.x * 2) + 'em + ' + (this.state.x + 1) + 'px)';
+  //this.element.style.top = 'calc(' + (this.state.y * 2) + 'em + ' + (this.state.y + 1) + 'px)';
 
   this.element.classList.toggle('vertical', this.state.vertical);
   this.element.classList.toggle('hide', !this.state.visible);

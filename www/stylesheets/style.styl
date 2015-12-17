@@ -642,7 +642,7 @@ option
   roundedCorners()
   animation: zoomIn 0.4s
   backface-visibility: hidden
-  background: hsla(hue, 8%, 16%,0.8)
+  background: hsla(hue, 8%, 16%,0.9)
   border: 1px solid rgba(255,255,255,0.05)
   box-sizing: border-box
   color: color-text
@@ -676,7 +676,7 @@ option
   overflow-y: auto
   padding: 20px
   padding-bottom: 0
-  user-select: auto
+  user-select: initial
 .window-actions
   margin-top: 10px
 .window-footer
@@ -690,7 +690,7 @@ option
   padding-top: 10px
 #overlay
   align-items: center
-  background: rgba(0,0,0,0.5)
+  background: rgba(0,0,0,0.7)
   bottom: 0
   display: flex
   flex-direction: column
@@ -725,7 +725,7 @@ option
 #pass-overlay
   align-items: center
   animation: fadeIn 0.2s
-  background: rgba(0,0,0,0.5)
+  background: rgba(0,0,0,0.6)
   bottom: 0
   display: flex
   flex-direction: column
@@ -785,8 +785,8 @@ option
   flex-direction: column
   height: 100vh
   width: 100vw
-  &.blur
-    filter: blur(10px)
+.chrome #main.blur
+  filter: blur(10px)
 .page
   animation: fadeIn 1s
   background-color: hsl(hue, 30%, 22%)
@@ -1187,8 +1187,8 @@ img.lobby-client-picture
   position: absolute
   right: 0
   top: 0
-  &.blur
-    filter: blur(10px)
+.chrome #table-content.blur
+  //filter: blur(10px)
 .table-top
   align-items: center
   display: flex
@@ -1650,7 +1650,7 @@ tw = bonus
   margin: 10px
   margin-bottom: 0
   position: relative
-  user-select: auto
+  user-select: initial
 #chat-messages
   bottom: 0
   left: 0
@@ -1701,7 +1701,7 @@ cursor-color = #f0f0f0
   transform: translateX(0) translateY(0)
   transition: transform 0.2s, left 0.2s, top 0.2s
   width: 2em
-  will-change: transform, left, top
+  will-change: transform //, left, top
   z-index: 12
   .cursor-angle
     background-image: url('../images/cursor.svg')
