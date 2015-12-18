@@ -315,18 +315,29 @@ var game = {
     this.view.toggleStartButtonDisabled(true);
   },
   requestConcede: function(callback) {
-    if (this.view.confirm(t('Are you sure you want to concede?'))) {
-      this.lock();
+    var self = this;
+    app.confirm(t('Concede'), t('Are you sure you want to concede?'), function() {
+      self.lock();
       socket.write({ type: 'action', action: 'concede' });
       if (callback) callback();
-    }
+    });
   },
   requestClaimVictory: function() {
     this.lock();
     socket.write({ type: 'action', action: 'claimVictory' });
   },
   requestLeave: function(callback) {
-    if (!this.state.running || this.view.confirm(t('Are you sure you want to leave this game?'))) {
+    if (!this.state.running) {
+      leave();
+      return;
+    }
+
+    app.confirm(t('Leave Game'), t('Are you sure you want to leave this game?'), function() {
+      socket.write({ type: 'action', action: 'leave' });
+      if (callback) callback();
+    });      
+
+    function leave() {
       socket.write({ type: 'action', action: 'leave' });
       if (callback) callback();
     }
@@ -1193,9 +1204,6 @@ game.view = {
   },
   focus: function() {
     this.element.focus();
-  },
-  confirm: function(message) {
-    return window.confirm(message);
   },
   createTile: function(letter, value) {
     var rack = this.rack;

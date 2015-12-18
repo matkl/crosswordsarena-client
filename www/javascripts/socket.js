@@ -59,7 +59,7 @@ var socket = {
     app.checkVersion(data.version);
   },
   onDataAlert: function(data) {
-    window.alert(data.text);
+    app.alert(t('Server'), data.text);
   },
   onDataChallenge: function(data) {
     lobby.addChallenger(data.sourceId);

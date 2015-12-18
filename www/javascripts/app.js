@@ -28,6 +28,8 @@ var app = {
     keyboard.init();
     feedback.init();
     challenges.init();
+    confirm.init();
+    alert.init();
 
     chat.init();
     opponentChat.init();
@@ -59,7 +61,7 @@ var app = {
     }*/
   },
   hideOverlay: function(pop) {
-    var overlays = [ menu, options, about, leaderboard, twoLetterWords, keyboard, feedback, challenges ];
+    var overlays = [ menu, options, about, leaderboard, twoLetterWords, keyboard, feedback, challenges, confirm, alert ];
     overlays.forEach(function(overlay) {
       overlay.hide();
     });
@@ -263,6 +265,22 @@ var app = {
       return;
     }
     console.log('Version check passed.');
+  },
+  confirm: function(title, message, callback) {
+    confirm.setTitle(title);
+    confirm.setMessage(message);
+    confirm.setOnClick(function() {
+      if (typeof callback == 'function') callback();
+    });
+    this.showOverlay('confirm');
+  },
+  alert: function(title, message, callback) {
+    alert.setTitle(title);
+    alert.setMessage(message);
+    alert.setOnClick(function() {
+      if (typeof callback == 'function') callback();
+    });
+    this.showOverlay('alert');
   }
 };
 

@@ -121,10 +121,10 @@ menu.view = {
     this.logout.addEventListener('click', function() {
       ga('send', 'event', 'menu', 'click', 'logout');
 
-      if (window.confirm(t('Are you sure?'))) {
+      app.confirm(t('Logout'), t('Are you sure you want to log out?'), function() {
         app.hideOverlay();
         app.logout();
-      }
+      });
     });
 
     var buttons = document.querySelectorAll('[data-action="openChatMenu"]');
