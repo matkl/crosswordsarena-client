@@ -35,7 +35,15 @@ var app = {
     // Load settings from local storage
     this.loadSettings();
 
-    if (window.chrome) {
+    // Enable experimental features for Google Chrome only, for example CSS
+    // blur filter. Blur filter is currently bugged on at least Edge and I
+    // don't have the possibility to test on every browser.
+    var isChromium = !!window.chrome;
+    var vendorName = window.navigator.vendor;
+    var isOpera = window.navigator.userAgent.indexOf('OPR') > -1;
+    var isIEedge = window.navigator.userAgent.indexOf('Edge') > -1;
+    if(isChromium && vendorName == 'Google Inc.' && !isOpera && !isIEedge) {
+       // is Google Chrome 
       document.documentElement.classList.add('chrome');
     }
   },
