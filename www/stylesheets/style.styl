@@ -2084,11 +2084,16 @@ color-wood = #25201E
     max-width: 682px
 
 .theme-glass
+  .page
+    background-color:  hsl(219, 40%, 25%)
   #lobby
-    background: #273349
-    background-image: linear-gradient(0deg, #614660, transparent 100%)  
+    //background: #273349
+    //background-image: linear-gradient(0deg, #614660, transparent 100%)  
+    background: hsl(219, 40%, 25%)
+    background-image: linear-gradient(0deg, hsl(302, 20%, 45%) -20%, transparent 100%)
   #table
-    background: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent), linear-gradient(225deg, hsla(219,30%,15%,1), #000)
+    //background: radial-gradient(at 0% 50%, #614660, transparent 50%), radial-gradient(at 100% 50%, #614660, transparent 50%), radial-gradient(circle closest-corner at 50% 0, #5974a6, transparent 50%), radial-gradient(circle closest-corner at 50% 50%, rgba(89,116,166,0.5), transparent), linear-gradient(225deg, hsla(219,30%,15%,1), #000)
+    background: radial-gradient(at 0% 50%, hsl(302, 20%, 33%), transparent 50%), radial-gradient(at 100% 50%, hsl(302, 20%, 33%), transparent 50%), radial-gradient(circle closest-corner at 50% 0, hsl(219, 35%, 55%), transparent 50%), radial-gradient(circle closest-corner at 50% 50%, hsla(219, 30%, 50%, 0.5), transparent), linear-gradient(225deg, hsla(219,30%,15%,1), #000 110%)
   .board
     background: rgba(192,192,192,0.3)
     box-shadow: 0 4px 12px rgba(0,0,0,0.48)
