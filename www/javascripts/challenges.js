@@ -30,9 +30,13 @@ var challenges = {
     this.state.clients = this.state.clients.filter(function(client) {
       return client.id != clientId;
     });
-    console.log('disabling', clientId);
     this.view.removeClient(clientId);
     this.view.setNumber(this.state.clients.length);
+  },
+  removeAllClients: function() {
+    this.state.clients = [];
+    this.view.removeAllClients();
+    this.view.setNumber(0);
   },
   presentChallenges: function() {
     this.view.removeAllClients();

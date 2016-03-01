@@ -17,13 +17,20 @@ var game = {
     music.stop();
   },
   load: function(data) {
-    this.view.hideMessage();
+    this.hideMessage({ force: true });
 
+    this.state.playerIndex = data.playerIndex;
+    this.state.opponentIndex = data.opponentIndex;
     this.state.running = data.running;
     this.state.values = data.values || this.state.values;
     this.state.remaining = data.remaining;
     this.state.board = data.board;
     this.state.players = data.players;
+    this.state.timeOffset = data.time - new Date().getTime();
+    this.state.rules = data.rules;
+
+    // TODO: view should not know about playerIndex
+    this.view.setPlayerIndices(this.state.playerIndex, this.state.opponentIndex);
 
     this.presentBoard();
     this.presentRacks();
@@ -31,8 +38,10 @@ var game = {
     this.view.hidePassDialog();
     this.view.setRemaining(data.remaining);
 
-    var player = this.state.players[0];
-    var opponent = this.state.players[1];
+    var player = this.state.player = this.state.players[this.state.playerIndex];
+    var opponent = this.state.opponent = this.state.players[this.state.opponentIndex];
+
+    this.lock();
 
     this.state.players.forEach(function(player, index) {
       this.view.setPlayerName(index, player.name || t('Unknown'));
@@ -47,11 +56,29 @@ var game = {
         }
       }
       this.setStatus(index, player.status || '', player.statusCode);
+
+      if (player.turn) {
+        this.turn(index, player.turn.startTime, player.turn.endTime);
+      }
     }, this);
 
+/*
     this.endTurn();
     if (player.turn) {
       this.startTurn();
+    }
+*/
+
+    if (this.state.rules) {
+      this.view.hideRulesDialog();
+    } else {
+      this.view.showRulesDialog();
+      if (player.rulesSubmitted) {
+        this.view.rulesDialog.lock();
+        this.view.rulesDialog.setRules(player.rules);
+      } else {
+        this.view.rulesDialog.setAutoStartTimer(data.autoStartTime - data.time);
+      }
     }
 
     if (this.state.running) {
@@ -60,6 +87,7 @@ var game = {
       this.view.stop();
       this.cursor.hide();
     }
+
 
     menu.setGameRunning(this.state.running);
 
@@ -95,12 +123,13 @@ var game = {
     this.state.players.forEach(function(player, playerIndex) {
       this.view.clearRack(playerIndex);
 
-      if (playerIndex == 1) {
+      if (playerIndex == this.state.opponentIndex) {
         // "hidden" tiles (opponent rack)
         for (var i = 0; i < player.rackLength; i++) {
           this.view.addTile(playerIndex);
         }
-      } else {
+      }
+      if (playerIndex == this.state.playerIndex) {
         // "visible" tiles (player rack)
         player.rack.forEach(function(tile) {
           this.view.addTile(playerIndex, tile, this.state.values[tile]);
@@ -138,31 +167,43 @@ var game = {
       self.view.setPlayerDelta(playerIndex, scores, true);
     });
   },
-  turn: function(playerIndex) {
+  turn: function(playerIndex, startTime, endTime, update) {
+    var self = this;
+
     this.state.players.forEach(function(player, index) {
-      player.targets = [];
-      player.turn = playerIndex == index;
+      var hasTurn = playerIndex == index;
+      player.turn = hasTurn;
+
+      if (playerIndex == index && endTime) {
+        self.view.startHourglass(index, startTime, endTime, startTime);
+      } else {
+        self.view.hideHourglass(index);
+      }
+
+      self.view.setTurn(index, hasTurn);
     });
 
-    var myTurn = playerIndex == 0;
-    if (myTurn) {
-      this.startTurn();
-    } else {
-      this.endTurn();
+    if (!update) {
+      var myTurn = playerIndex == this.state.playerIndex;
+      if (myTurn) {
+        this.startTurn();
+      } else {
+        this.endTurn();
+      }
     }
   },
   startTurn: function() {
     this.unlock();
-    this.view.toggleTurn(true);
     this.cursor.show();
     this.showMessage(t('Your Turn'));
     sound.play('turn');
   },
   endTurn: function() {
     this.lock();
-    this.view.toggleTurn(false);
-    this.view.setPlayerDelta(1, 0);
+    this.view.setPlayerDelta(game.state.opponentIndex, 0);
     this.cursor.hide();
+    this.hidePassDialog();
+    //this.removeAll(0);
   },
   lock: function() {
     this.state.locked = true;
@@ -173,7 +214,7 @@ var game = {
     this.view.unlock();
   },
   requestPut: function(tileIndex, squareIndex) {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
 
     if (this.state.locked) return;
     if (this.state.board[squareIndex]) return;
@@ -186,7 +227,7 @@ var game = {
     return true;
   },
   requestPutLetter: function(letter) {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
     var player = this.state.players[playerIndex];
 
     if (this.state.locked) return;
@@ -224,7 +265,7 @@ var game = {
     }
   },
   requestRemove: function(tileIndex) {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
 
     if (this.state.locked) return;
 
@@ -240,15 +281,17 @@ var game = {
     return false;
   },
   requestRemoveFrom: function(squareIndex) {
+    var playerIndex = this.state.playerIndex;
+
     if (this.state.locked) return;
-    this.state.players[0].targets.forEach(function(target, tileIndex) {
+    this.state.players[playerIndex].targets.forEach(function(target, tileIndex) {
       if (target == squareIndex) {
         this.requestRemove(tileIndex);
       }
     }, this);
   },
   requestRemoveAll: function() {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
     var player = this.state.players[playerIndex];
 
     if (!player.turn) return false;
@@ -278,19 +321,19 @@ var game = {
     return removedSomething;
   },
   requestSubmit: function() {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
     if (!this.state.players[playerIndex].turn) return;
 
-    this.lock();
+    //this.lock();
     this.view.focus();
     socket.write({ type: 'action', action: 'submit' });
   },
   requestCancel: function() {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
     if (!this.state.players[playerIndex].turn) return;
 
+    this.requestRemoveSlowpoke();
     if (!game.requestRemoveAll()) {
-      var playerIndex = 0;
       var player = this.state.players[playerIndex];
 
       this.view.clearPassDialog();
@@ -308,7 +351,7 @@ var game = {
   requestPass: function(tileIndices) {
     socket.write({ type: 'action', action: 'pass', tileIndices: tileIndices });
     game.state.remaining += tileIndices.length;
-    game.lock();
+    //game.lock();
   },
   requestStart: function() {
     socket.write({ type: 'action', action: 'ready' });
@@ -317,29 +360,30 @@ var game = {
   requestConcede: function(callback) {
     var self = this;
     app.confirm(t('Concede'), t('Are you sure you want to concede?'), function() {
-      self.lock();
+      //self.lock();
       socket.write({ type: 'action', action: 'concede' });
       if (callback) callback();
     });
   },
   requestClaimVictory: function() {
-    this.lock();
+    //this.lock();
     socket.write({ type: 'action', action: 'claimVictory' });
   },
-  requestLeave: function(callback) {
-    if (!this.state.running) {
+  requestLeave: function(callback, alwaysConfirm) {
+    if (!alwaysConfirm && !this.state.running) {
       leave();
+      if (typeof callback == 'function') callback();
       return;
     }
 
     app.confirm(t('Leave Game'), t('Are you sure you want to leave this game?'), function() {
       socket.write({ type: 'action', action: 'leave' });
-      if (callback) callback();
+      if (typeof callback == 'function') callback();
     });      
 
     function leave() {
       socket.write({ type: 'action', action: 'leave' });
-      if (callback) callback();
+      if (typeof callback == 'function') callback();
     }
   },
   put: function(playerIndex, tileIndex, squareIndex, tile) {
@@ -360,7 +404,7 @@ var game = {
     this.state.players[playerIndex].targets[tileIndex] = null;
     this.view.remove(playerIndex, tileIndex);
 
-    if (playerIndex == 1) {
+    if (playerIndex == this.state.opponentIndex) {
       this.view.hideTile(playerIndex, tileIndex);
     }
 
@@ -368,27 +412,39 @@ var game = {
     sound.play('tock');
   },
   removeAll: function(playerIndex) {
-    this.state.players[playerIndex].targets.forEach(function(squareIndex, tileIndex) {
+    console.log('removing', this.state.players[playerIndex].targets);
+
+    this.view.removeAll(playerIndex);
+    if (playerIndex == this.state.opponentIndex) {
+      this.view.hideTiles(playerIndex);
+    }
+
+/*    this.state.players[playerIndex].targets.forEach(function(squareIndex, tileIndex) {
       this.view.remove(playerIndex, tileIndex);
+      console.log('letter', this.state.players[playerIndex].rack[tileIndex]);
 
       if (playerIndex == 1) {
         this.view.hideTile(playerIndex, tileIndex);
       }
     }, this);
+*/
     this.state.players[playerIndex].targets = [];
     this.view.fanTiles(playerIndex);
   },
   submit: function(data) {
-    var playerIndex = this.state.players[0].turn ? 0 : 1;
+    //var playerIndex = this.state.players[0].turn ? 0 : 1;
+    var playerIndex = data.playerIndex;
     var player = this.state.players[playerIndex];
 
     if (data.error) {
-      this.unlock();
+      //this.unlock();
       if (data.error.message) {
         this.showMessage(data.error.message);
       }
       return;
     }
+
+    //player.targets = data.play;
 
     this.view.clearSubmitted();
 
@@ -398,7 +454,7 @@ var game = {
     var highestTarget = -1;
     var tileIndices = [];
 
-    player.targets.forEach(function(squareIndex, tileIndex) {
+    data.play.forEach(function(squareIndex, tileIndex) {
       if (squareIndex == null) return;
       if (squareIndex > highestTarget) {
         highestTarget = squareIndex;
@@ -416,7 +472,7 @@ var game = {
       squares = squares.concat(findOccupiedSquares(highestTarget, data.direction, this.state.board));
     }
     var pDirection = data.direction == HORIZONTAL ? VERTICAL : HORIZONTAL;
-    player.targets.forEach(function(target) {
+    data.play.forEach(function(target) {
       squares = squares.concat(findOccupiedSquares(target, pDirection, this.state.board));
     }, this);
 
@@ -449,18 +505,19 @@ var game = {
       return squares;
     }
 
-    this.view.moveTilesToBoard(playerIndex, player.targets);
+    this.view.moveTilesToBoard(playerIndex, data.play);
     this.view.factorInSquares(squares);
     this.cursor.index = highestTarget;
     this.cursor.vertical = data.direction == 1;
     this.cursor.next();
 
-    if (this.state.players[0].turn) {
+    if (this.state.players[this.state.playerIndex].turn) {
       sound.play('success1');
-      this.addScore(0, data.scores);
-      this.endTurn();
+      this.addScore(this.state.playerIndex, data.scores);
+      this.lock();
+      //this.endTurn();
     } else {
-      this.addScore(1, data.scores);
+      this.addScore(this.state.opponentIndex, data.scores);
 
       this.state.remaining -= data.draw;
       this.view.setRemaining(this.state.remaining);
@@ -472,16 +529,25 @@ var game = {
 
     if (data.rackLength != null) player.rackLength = data.rackLength;
   },
-  pass: function() {
-    var playerIndex = 0;
+  pass: function(playerIndex, tileIndices, draw) {
+    this.removeAll(playerIndex);
 
-    if (!this.state.players[playerIndex].turn) return;
+    this.view.removeTiles(playerIndex, tileIndices);
 
-    this.view.removeTiles(playerIndex, this.view.getPassDialogIndices());
-    this.endTurn();
+    // quick hack
+    // TODO: a better way would be to remove tiles for both player and
+    // opponent and add the new tiles afterwards.
+    if (playerIndex != this.state.playerIndex) {
+      for (var i = 0; i < draw; i++) {
+        this.view.addTile(playerIndex, '');
+      }
+      this.view.fanTiles(playerIndex);
+    }
   },
   exchange: function(tiles, rack) {
-    var playerIndex = 0;
+    var playerIndex = this.state.playerIndex;
+
+    this.removeAll(playerIndex);
 
     tiles.forEach(function(tile) {
       this.view.addTile(playerIndex, tile, this.state.values[tile]);
@@ -491,15 +557,17 @@ var game = {
     this.view.setRemaining(this.state.remaining);
     this.view.fanTiles(playerIndex);
   },
-  concede: function(playerIndex) {
+  concede: function(playerIndex, playerName) {
     // TODO
   },
   finish: function(data) {
+    this.lock();
     switch (data.outcome) {
       case 1:
         // we win
         this.showMessage(t('You win'));
         sound.play('roll3');
+        app.increaseGamesWonCounter();
         break;
       case -1:
         // we lose
@@ -512,8 +580,13 @@ var game = {
         break;
     }
 
-    this.addScore(0, -data.penalty);
-    this.addScore(1, -data.opponentPenalty);
+    this.state.players.forEach(function(player, index) {
+      this.removeAll(index);
+    }, this);
+
+    data.penalties.forEach(function(penalty, playerIndex) {
+      this.addScore(playerIndex, -penalty);
+    }, this);
     this.state.running = false;
 
     this.view.stop();
@@ -528,7 +601,7 @@ var game = {
     this.state.players[playerIndex].status = status;
     this.view.setPlayerStatus(playerIndex, status);
 
-    if (playerIndex == 1) {
+    if (playerIndex == this.state.opponentIndex) {
       menu.toggleClaimVictory(statusCode == 201); // offline
     }
   },
@@ -690,9 +763,6 @@ var game = {
       callback(null, words, scores, direction);
     }
   },
-  showMessage: function(message) {
-    this.view.showMessage(message);
-  },
   addScore: function(playerIndex, delta) {
     if (typeof delta == 'number') {
       delta = [ delta ];
@@ -711,11 +781,48 @@ var game = {
     this.view.hidePassDialog();
   },
   getOpponentClientId: function() {
-    if (this.state.players && this.state.players.length >= 2) {
-      return this.state.players[1].id;
+    if (this.state.opponent) {
+      return this.state.opponent.id;
     } else {
       return null;
     }
+  },
+  getTime: function() {
+    return new Date().getTime() + this.state.timeOffset;
+  },
+  selectPass: function(tileIndices) {
+    socket.write({ type: 'action', action: 'selectPass', tileIndices: tileIndices });
+  },
+  showMessage: function(text) {
+    this.view.showMessage(text);
+  },
+  hideMessage: function(options) {
+    options = options || {};
+    if (!options.force && !this.hasTurn()) return;
+    this.view.hideMessage();
+  },
+  hasTurn: function() {
+    if (!this.state.players) return false;
+    if (this.state.players.length == 0) return false;
+    return !!this.state.players[this.state.playerIndex].turn;
+  },
+  updateRules: function(rules, startTime) {
+    this.view.rulesDialog.setAgreedRules(rules);
+    this.view.rulesDialog.setStartTimer(startTime - this.getTime());
+  },
+  setSlowpoke: function(playerIndex, value) {
+    this.state.players[playerIndex].slowpoke = value;
+  },
+  requestRemoveSlowpoke: function() {
+    var playerIndex = this.state.playerIndex;
+    var player = this.state.players[playerIndex];
+    if (player.slowpoke) {
+      this.ping();
+      delete player.slowpoke;
+    }
+  },
+  ping: function() {
+    socket.write({ type: 'action', action: 'ping' });
   }
 };
 
@@ -737,6 +844,7 @@ game.view = {
     this.moreButton = document.getElementById('more');
     this.startButton = document.getElementById('start-game');
     this.leaveButton = document.getElementById('leave-game');
+    this.appBarLeaveButton = document.getElementById('app-bar-leave-game');
     this.squares = document.getElementById('squares');
     this.actions = document.getElementById('actions');
     this.chat = document.getElementById('chat');
@@ -747,30 +855,40 @@ game.view = {
     this.passDialogEndTurnButton = document.getElementById('pass-dialog-end-turn');
     this.passDialogCancelButton = document.getElementById('pass-dialog-cancel');
     this.passDialogCloseButton = document.getElementById('pass-dialog-close');
+    this.rulesOverlay = document.getElementById('rules-overlay');
+    this.rulesDialog = new RulesDialog();
 
     this.players = [];
-    this.players[0] = {
+    this.player = {
       rack: document.getElementById('rack'),
+      rackContainer: document.getElementById('rack-container'),
       unitFrame: document.getElementById('player'),
       name: document.getElementById('player-name'),
       score: document.getElementById('player-score'),
       delta: document.getElementById('player-delta'),
       status: document.getElementById('player-status'),
-      picture: document.getElementById('player-picture')
+      picture: document.getElementById('player-picture'),
+      hourglass: new Hourglass(document.getElementById('hourglass'), { sound: true })
     };
-    this.players[1] = {
+    this.opponent = {
       rack: document.getElementById('opponent-rack'),
+      rackContainer: document.getElementById('opponent-rack-container'),
       unitFrame: document.getElementById('opponent'),
       name: document.getElementById('opponent-name'),
       score: document.getElementById('opponent-score'),
       delta: document.getElementById('opponent-delta'),
       status: document.getElementById('opponent-status'),
-      picture: document.getElementById('opponent-picture')
+      picture: document.getElementById('opponent-picture'),
+      hourglass: new Hourglass(document.getElementById('opponent-hourglass'))
     };
 
-    this.rack = this.players[0].rack;
+    this.rack = this.player.rack;
 
     this.addEventListeners();
+  },
+  setPlayerIndices: function(playerIndex, opponentIndex) {
+    this.players[playerIndex] = this.player;
+    this.players[opponentIndex] = this.opponent;
   },
   addEventListeners: function() {
     var self = this;
@@ -807,7 +925,14 @@ game.view = {
       ga('send', 'event', 'button', 'click', 'leave');
 
       sound.play('button');
-      game.requestLeave();
+      game.requestLeave(game.onRequestLeaveSuccess, true);
+    });
+
+    this.appBarLeaveButton.addEventListener('click', function() {
+      ga('send', 'event', 'button', 'click', 'leave');
+
+      sound.play('button');
+      game.requestLeave(game.onRequestLeaveSuccess);
     });
 
     this.passDialogEndTurnButton.addEventListener('click', function() {
@@ -850,12 +975,14 @@ game.view = {
     }
 
     function translate(x, y) {
-      return 'translate(' + x + 'px,' + y + 'px)';
+      return 'translate3d(' + x + 'px,' + y + 'px, 0)';
     }
 
     function start(tile, clientX, clientY) {
+      game.requestRemoveSlowpoke();
       tile.classList.add('dragging');
       tile.setAttribute('data-dragging', true);
+      tile.style.fontSize = '';
 
       app.vibrate(20);
 
@@ -867,6 +994,9 @@ game.view = {
       var rackRect = rack.getBoundingClientRect();
       offsetX = rackRect.left + tileRect.width / 2;
       offsetY = rackRect.top + tileRect.height / 2;
+
+      // update position
+      move(tile, clientX, clientY);
     }
 
     function move(tile, clientX, clientY) {
@@ -876,9 +1006,11 @@ game.view = {
       lastClientX = clientX;
       lastClientY = clientY;
 
-      tile.style.transform = translate(clientX - offsetX, clientY - offsetY);
-      tile.style.WebkitTransform = tile.style.transform;
-      tile.style.MsTransform = tile.style.transform;
+      tile.style.fontSize = '';
+      var transform = translate(clientX - offsetX, clientY - offsetY);
+      tile.style.transform = transform;
+      tile.style.WebkitTransform = transform;
+      tile.style.MsTransform = transform;
 
       var squaresRect = squares.getBoundingClientRect();
       var x = Math.floor((lastClientX - squaresRect.left) / squaresRect.width * 15);
@@ -894,7 +1026,7 @@ game.view = {
         //var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 20) / 40)));
         // TODO: test this
         var pos = Math.max(0, Math.min(6, parseInt((clientX - offsetX + 22) / 44)));
-        self.fanTiles(0, pos);
+        self.fanTiles(game.state.playerIndex, pos);
         tile.setAttribute('data-position', pos);
       }
     }
@@ -933,12 +1065,13 @@ game.view = {
     }
 
     function click(tile) {
+      game.requestRemoveSlowpoke();
       opponentChat.fadeOut();
 
       var index = getIndex(tile);
       if (index == -1) return;
 
-      if (game.state.players[0].targets[index] != undefined) {
+      if (game.state.player.targets[index] != undefined) {
         game.requestRemove(index);
         return;
       }
@@ -973,10 +1106,11 @@ game.view = {
     }
 
     function clickBoard(clientX, clientY) {
+      game.requestRemoveSlowpoke();
       var rect = squares.getBoundingClientRect();
       var clickedBoard = rectHasPoint(rect, clientX, clientY);
 
-      if (!game.state.players[0].turn || !clickedBoard) {
+      if (!game.state.player.turn || !clickedBoard) {
         self.dust.classList.add('hide');
         self.dust.style.left = clientX - self.fontSize/2 + 'px';
         self.dust.style.top = clientY - self.fontSize/2 + 'px';
@@ -1000,7 +1134,7 @@ game.view = {
     this.canvas.addEventListener('mousedown', function(event) {
       if (event.button != 0) return;
 
-      self.hideMessage();
+      game.hideMessage();
 
       var clientX = event.clientX;
       var clientY = event.clientY;
@@ -1032,7 +1166,7 @@ game.view = {
     this.canvas.addEventListener('touchstart', function(event) {
       event.preventDefault();
 
-      self.hideMessage();
+      game.hideMessage();
 
       var touch = event.touches[0];
       var clientX = touch.clientX;
@@ -1149,7 +1283,7 @@ game.view = {
         return;
       }
 
-      self.hideMessage();
+      game.hideMessage();
 
       switch (event.keyCode) {
         case 8: onBackspace(); break;
@@ -1198,9 +1332,15 @@ game.view = {
   },
   show: function() {
     this.element.classList.remove('hide');
+    this.appBarLeaveButton.classList.remove('hide');
   },
   hide: function() {
     this.element.classList.add('hide');
+    this.appBarLeaveButton.classList.add('hide');
+
+    this.players.forEach(function(player) {
+      player.hourglass.hide();
+    });
   },
   focus: function() {
     this.element.focus();
@@ -1308,11 +1448,16 @@ game.view = {
     }, this);
   },
   shuffleTiles: function(playerIndex) {
+    /*var RACK_FONT_SIZE = 22;
+    var scale = RACK_FONT_SIZE / this.fontSize;
+    console.log(scale);*/
+    var scale = 1;
     var rack = this.players[playerIndex].rack;
     var tiles = Array.prototype.slice.call(rack.children);
     utils.shuffle(tiles);
     tiles.forEach(function(tile, index) {
       tile.setAttribute('data-position', index);
+      tile.style.transform = 'scale(' + scale + ') translateX(' + (index * 2) + 'em)';
     });
   },
   getRackOrder: function(playerIndex) {
@@ -1346,9 +1491,14 @@ game.view = {
     this.squares.children[squareIndex].appendChild(tile);
   },
   put: function(playerIndex, tileIndex, squareIndex, letter, value) {
+    //var RACK_FONT_SIZE = 22;
+    //var scale = this.fontSize / RACK_FONT_SIZE;
+
     var rack = this.players[playerIndex].rack;
     var rackRect = rack.getBoundingClientRect();
     var tile = rack.children[tileIndex];
+    if (!tile) return;
+
     var square = this.squares.children[squareIndex];
     var squareRect = square.getBoundingClientRect();
 
@@ -1377,20 +1527,34 @@ game.view = {
   remove: function(playerIndex, tileIndex) {
     var tile = this.players[playerIndex].rack.children[tileIndex];
 
+    if (!tile) return;
     tile.removeAttribute('data-target');
     tile.style.transform = '';
     tile.style.WebkitTransform = '';
     tile.style.MsTransform = '';
     tile.style.fontSize = '';
   },
+  removeAll: function(playerIndex) {
+    for (var i = 0, l = this.players[playerIndex].rack.children.length; i < l; i++) {
+      this.remove(playerIndex, i);
+    }
+  },
   hideTile: function(playerIndex, tileIndex) {
     var tile = this.players[playerIndex].rack.children[tileIndex];
     tile.querySelector('.tile-text').textContent = '';
     tile.querySelector('.tile-value').textContent = '';
   },
-  toggleTurn: function(turn) {
-    this.players[0].unitFrame.classList.toggle('active', turn);
-    this.players[1].unitFrame.classList.toggle('active', !turn);
+  hideTiles: function(playerIndex) {
+    for (var i = 0, l = this.players[playerIndex].rack.children.length; i < l; i++) {
+      this.hideTile(playerIndex, i);
+    }
+  },
+  /*toggleTurn: function(turn, data) {
+    this.player.unitFrame.classList.toggle('active', turn);
+    this.opponent.unitFrame.classList.toggle('active', !turn);
+  },*/
+  setTurn: function(playerIndex, value) {
+    this.players[playerIndex].unitFrame.classList.toggle('active', !!value);
   },
   setRemaining: function(number) {
     this.remainingNumber.textContent = number;
@@ -1405,12 +1569,21 @@ game.view = {
     this.leaveButton.classList.add('hide');
   },
   stop: function() {
+    var self = this;
+
     this.remaining.classList.add('hide');
+
+    this.players.forEach(function(player, index) {
+      player.hourglass.hide();
+      self.setTurn(index, false);
+    });
 
     this.submitButton.classList.add('hide');
     this.cancelButton.classList.add('hide');
     this.startButton.classList.remove('hide');
     this.leaveButton.classList.remove('hide');
+
+    this.hideRulesDialog();
   },
   lock: function() {
     this.table.setAttribute('data-locked', '');
@@ -1428,7 +1601,7 @@ game.view = {
     return !this.isTarget(squareIndex);
   },
   isTarget: function(squareIndex) {
-    var rack = this.players[0].rack;
+    var rack = this.player.rack;
     for (var i = 0; i < rack.children.length; i++) {
       if (rack.children[i].getAttribute('data-target') == squareIndex) return true;
     }
@@ -1440,7 +1613,7 @@ game.view = {
     var minBorderWidth = 0;
 
     // hide message element to prevent the animation
-    this.hideMessage();
+    game.hideMessage({ force: true });
 
     // disable animations for a moment so the tiles are not flying around
     self.element.classList.add('notransition');
@@ -1453,14 +1626,14 @@ game.view = {
     self.board.style.left = '';
     self.board.style.top = '';
     self.players.forEach(function(player) {
-      player.rack.style.left = '';
-      player.rack.style.top = '';
+      player.rackContainer.style.left = '';
+      player.rackContainer.style.top = '';
     });
 
     window.requestAnimationFrame(function() {
       var rect = self.boardContainer.getBoundingClientRect();
-      var width = rect.width - minBorderWidth - 15;
-      var height = rect.height - minBorderWidth - 15;
+      var width = rect.width - minBorderWidth;
+      var height = rect.height - minBorderWidth;
       var devicePixelRatio = window.devicePixelRatio || 1;
 
       self.board.classList.remove('hide');
@@ -1469,7 +1642,8 @@ game.view = {
       fontSize = Math.floor(fontSize * 2) / 2;
 
       self.board.style.fontSize = fontSize + 'px';
-      self.board.style.padding = Math.floor(fontSize / 2) + 'px';
+      /*self.rack.style.fontSize = fontSize + 'px';*/
+      self.board.style.padding = (Math.floor(fontSize / 2) + 1) + 'px';
 
       // bigger padding for larger screen sizes
       //var padding = fontSize < 20 ? Math.floor(0.75 * fontSize) : fontSize;
@@ -1492,18 +1666,18 @@ game.view = {
 
       // snap racks to full pixels
       self.players.forEach(function(player) {
-        var rack = player.rack;
-        var rackRect = rack.getBoundingClientRect();
+        var rackContainer = player.rackContainer;
+        var rackRect = rackContainer.getBoundingClientRect();
         var offsetLeft = rackRect.left % 1;
         var offsetTop = rackRect.top % 1;
-        rack.style.position = 'relative';
-        rack.style.left = -offsetLeft + 'px';
-        rack.style.top = -offsetTop + 'px';
+        rackContainer.style.position = 'relative';
+        rackContainer.style.left = -offsetLeft + 'px';
+        rackContainer.style.top = -offsetTop + 'px';
       });
 
       // rearrange player tiles on board
       self.players.forEach(function(player) {
-        var rackRect = player.rack.getBoundingClientRect();
+        var rackRect = player.rackContainer.getBoundingClientRect();
 
         Array.prototype.forEach.call(player.rack.children, function(tile) {
           if (tile.hasAttribute('data-target')) {
@@ -1595,7 +1769,22 @@ game.view = {
   hidePassDialog: function() {
     this.tableContent.classList.remove('blur');
     this.passOverlay.classList.add('hide');
-    this.focus();
+    if (!chat.hasFocus()) {
+      this.focus();
+    }
+  },
+  showRulesDialog: function() {
+    this.tableContent.classList.add('blur');
+    this.rulesOverlay.classList.remove('hide');
+  },
+  hideRulesDialog: function() {
+    this.tableContent.classList.remove('blur');
+    this.rulesOverlay.classList.add('hide');
+    this.rulesDialog.reset();
+    this.rulesDialog.stop();
+    if (!chat.hasFocus()) {
+      this.focus();
+    }
   },
   isPassDialogVisible: function() {
     return !this.passOverlay.classList.contains('hide');
@@ -1604,6 +1793,7 @@ game.view = {
     this.passDialogTiles.innerHTML = '';
   },
   addPassDialogTile: function(letter, value, position) {
+    var self = this;
     var tile = this.createTile(letter, value);
     tile.setAttribute('data-position', position);
 
@@ -1615,6 +1805,7 @@ game.view = {
         this.removeAttribute('data-selected');
       }
       this.classList.toggle('selected', selected);
+      game.selectPass(self.getPassDialogIndices());
     });
 
     this.passDialogTiles.appendChild(tile);
@@ -1640,6 +1831,8 @@ game.view = {
       tiles[tileIndex].setAttribute('data-selected', '');
       tiles[tileIndex].classList.add('selected');
     }
+
+    game.selectPass(this.getPassDialogIndices());
   },
   passDialogEnd: function() {
     sound.play('button');
@@ -1648,7 +1841,14 @@ game.view = {
   },
   passDialogCancel: function() {
     sound.play('button');
+    game.selectPass([]);
     this.hidePassDialog();
+  },
+  startHourglass: function(playerIndex, startTime, endTime) {
+    this.players[playerIndex].hourglass.start(startTime, endTime);
+  },
+  hideHourglass: function(playerIndex) {
+    this.players[playerIndex].hourglass.hide();
   }
 };
 
@@ -1702,7 +1902,9 @@ function Cursor() {
     visible: true
   };
 
-  this.element = document.createElement('div');
+  this.element = document.getElementById('cursor');
+  this.angle = document.getElementById('cursor-angle');
+  /*this.element = document.createElement('div');
   this.element.className = 'cursor';
 
   var angle = document.createElement('div');
@@ -1710,7 +1912,7 @@ function Cursor() {
   this.element.appendChild(angle);
 
   document.getElementById('squares-container').appendChild(this.element);
-
+  */
   this.update();
 }
 
@@ -1759,7 +1961,8 @@ Object.defineProperty(Cursor.prototype, 'vertical', {
 });
 
 Cursor.prototype.update = function() {
-  var transform = 'translateX(' + (this.state.x * 2) + 'em) translateX(' + (this.state.x + 1) + 'px) translateY(' + (this.state.y * 2) + 'em) translateY(' + (this.state.y + 1) + 'px)';
+  //var transform = 'translateX(' + (this.state.x * 2) + 'em) translateX(' + (this.state.x + 1) + 'px) translateY(' + (this.state.y * 2) + 'em) translateY(' + (this.state.y + 1) + 'px)';
+  var transform = 'translate3d(' + (this.state.x * 2) + 'em, ' + (this.state.y * 2) + 'em, 0)';
   this.element.style.transform = transform;
   this.element.style.WebkitTransform = transform;
   this.element.style.MsTransform = transform;
@@ -1828,4 +2031,256 @@ Cursor.prototype.show = function() {
 Cursor.prototype.hide = function() {
   this.state.visible = false;
   this.update();
+};
+
+
+function Hourglass(element, options) {
+  this.element = element;
+  this.path = this.element.querySelector('.hourglass-path');
+  this.options = options || {};
+}
+
+Hourglass.prototype.start = function(startTime, endTime) {
+  this.startTime = startTime;
+  this.endTime = endTime;
+  this.hot = false;
+  this.element.classList.remove('hide');
+  this.animate();
+  this.update();
+};
+
+Hourglass.prototype.stop = function() {
+  /*if (this.animationFrame) {
+    window.cancelAnimationFrame(this.animationFrame);
+  }*/
+
+  this.hot = false;
+
+  if (this.interval) {
+    window.clearInterval(this.interval);
+  }
+
+  if (this.options.sound) {
+    if (this.sound) this.sound.stop();
+    delete this.sound;
+  }
+};
+
+Hourglass.prototype.animate = function() {
+  var self = this;
+
+  if (this.interval) {
+    window.clearInterval(this.interval);
+  }
+
+  this.interval = window.setInterval(function() {
+    self.update();
+  }, 1000);
+/*
+  if (this.animationFrame) {
+    window.cancelAnimationFrame(this.animationFrame);
+  }
+
+  function anim() {
+    self.update();
+    self.animationFrame = window.requestAnimationFrame(anim);
+  }
+
+  self.animationFrame = window.requestAnimationFrame(anim);
+*/
+};
+
+Hourglass.prototype.update = function() {
+  var now = game.getTime();
+
+  var fraction = (now - this.startTime) / (this.endTime - this.startTime);
+  var remaining = this.endTime - now;
+
+  if (fraction < 0) {
+    fraction = 0;
+  } else if (fraction > 1) {
+    fraction = 1;
+  }
+
+  //this.path.style.strokeDashoffset = 100 - (fraction * 100) + 'px';
+  this.path.style.width = fraction * 100 + '%';
+  //this.path.style.transform = 'translateX(' + (-100 + fraction * 100) + '%)';
+
+  this.element.classList.toggle('hourglass-highlight', remaining < 30000);
+
+  if (remaining < 30000) {
+    if (!this.hot) {
+      if (this.options.sound) {
+        if (this.sound) this.sound.stop();
+        this.sound = sound.play('clock', { loop: true });
+      }
+    }
+    this.hot = true;
+  } else {
+    if (this.sound) this.sound.stop();
+  }
+};
+
+Hourglass.prototype.hide = function() {
+  this.stop();
+  this.element.classList.add('hide');
+};
+
+function RulesDialog() {
+  var self = this;
+
+  this.rules = {};
+  this.locked = false;
+  this.agreed = false;
+
+  this.element = document.getElementById('rules-dialog');
+  this.options = document.getElementById('rules-options');
+  this.standardButton = document.getElementById('rules-standard');
+  this.startButton = document.getElementById('rules-start');
+
+  this.options.addEventListener('click', function(event) {
+    if (self.locked) return;
+
+    var rule = event.target.getAttribute('data-rule');
+    if (!rule) return;
+
+    if (rule == 'standard') {
+      self.reset();
+      self.send();
+      return;
+    }
+
+    self.toggleRule(rule);
+  });
+
+  this.startButton.addEventListener('click', function(event) {
+    self.lock();
+    self.send(true);
+  });
+
+  this.update();
+}
+
+RulesDialog.prototype.reset = function() {
+  this.rules = {};
+  this.agreed = false;
+  this.locked = false;
+  this.update();
+};
+
+RulesDialog.prototype.toggleRule = function(rule) {
+  //this.rules[rule] = !this.rules[rule];
+  this.rules[rule] = true;
+  this.update();
+  this.send();
+};
+
+RulesDialog.prototype.update = function() {
+  var self = this;
+  var rulesCount = 0;
+
+  Array.prototype.forEach.call(this.options.children, function(button) {
+    var rule = button.getAttribute('data-rule');
+    if (self.rules[rule]) rulesCount += 1;
+    button.classList.toggle('rules-active', self.rules[rule]);
+  });
+
+  this.standardButton.classList.toggle('rules-active', rulesCount == 0);
+
+  this.element.classList.toggle('rules-locked', !!this.locked);
+  this.element.classList.toggle('rules-agreed', !!this.agreed);
+  this.startButton.classList.toggle('hide', !!this.locked);
+
+  document.getElementById('rules-title-select').classList.toggle('hide', !!this.locked);
+  document.getElementById('rules-title-wait').classList.toggle('hide', !(!!this.locked && !this.agreed));
+  document.getElementById('rules-title-timer-start').classList.toggle('hide', !(!!this.locked && this.agreed));
+};
+
+RulesDialog.prototype.lock = function() {
+  this.locked = true;
+  this.update();
+};
+
+RulesDialog.prototype.unlock = function() {
+  this.locked = false;
+  this.update();
+};
+
+RulesDialog.prototype.send = function(submit) {
+  socket.write({ type: 'action', action: 'rules', rules: this.rules, submit: submit });
+};
+
+RulesDialog.prototype.setRules = function(rules) {
+  this.rules = rules || {};
+  this.update();
+};
+
+RulesDialog.prototype.setAgreedRules = function(rules) {
+  this.rules = rules;
+  this.locked = true;
+  this.agreed = true;
+
+  this.update();
+};
+
+// both player selected rules
+RulesDialog.prototype.setStartTimer = function(delay) {
+  var self = this;
+
+  function updateTime() {
+    var seconds = Math.round(delay / 1000);
+    document.getElementById('rules-title-timer-start').textContent = t(seconds == 1 ? 'Game will start in %d second' : 'Game will start in %d seconds', seconds);
+  }
+
+  function start() {
+    self.reset();
+    game.view.hideRulesDialog();
+  }
+
+  this.startIntervalId = window.setInterval(function() {
+    delay -= 1000;
+    updateTime();
+
+    if (delay < 0) {
+      window.clearInterval(self.startIntervalId);
+      delete self.startIntervalId;
+      start();
+    }
+  }, 1000);
+
+  updateTime();
+};
+
+// waiting for player to select rules
+RulesDialog.prototype.setAutoStartTimer = function(delay) {
+  var self = this;
+
+  function updateTime() {
+    var seconds = Math.round(delay / 1000);
+    document.getElementById('rules-title-timer-autostart').textContent = ' (' + seconds + ')';
+  }
+
+  this.autoStartIntervalId = window.setInterval(function() {
+    delay -= 1000;
+    updateTime();
+
+    if (delay < 0) {
+      window.clearInterval(self.autoStartIntervalId);
+      delete self.autoStartIntervalId;
+    }
+  }, 1000);
+
+  updateTime();
+};
+
+RulesDialog.prototype.stop = function() {
+  if (this.startIntervalId) {
+    window.clearInterval(this.startIntervalId);
+    delete this.startIntervalId;
+  }
+
+  if (this.autoStartIntervalId) {
+    window.clearInterval(this.autoStartIntervalId);
+    delete this.autoStartIntervalId;
+  }
 };

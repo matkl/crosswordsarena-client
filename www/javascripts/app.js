@@ -3,7 +3,7 @@ var app = {
     this.view.init();
 
     window.t = translator(JSON.parse(document.getElementById('translations').innerHTML));
-    this.state.version = document.getElementById('version').textContent;
+    this.state.apiVersion = parseInt(document.getElementById('api-version').textContent);
 
     // Initialize connection to server
     socket.init();
@@ -36,18 +36,6 @@ var app = {
 
     // Load settings from local storage
     this.loadSettings();
-
-    // Enable experimental features for Google Chrome only, for example CSS
-    // blur filter. Blur filter is currently bugged on at least Edge and I
-    // don't have the possibility to test on every browser.
-    var isChromium = !!window.chrome;
-    var vendorName = window.navigator.vendor;
-    var isOpera = window.navigator.userAgent.indexOf('OPR') > -1;
-    var isIEedge = window.navigator.userAgent.indexOf('Edge') > -1;
-    if(isChromium && vendorName == 'Google Inc.' && !isOpera && !isIEedge) {
-       // is Google Chrome 
-      document.documentElement.classList.add('chrome');
-    }
   },
   showOverlay: function(name, pop) {
     this.hideOverlay(true);
@@ -104,7 +92,7 @@ var app = {
   setTheme: function(value) {
     document.body.classList.toggle('theme-glass', value == 'glass');
     document.body.classList.toggle('theme-wood', value == 'wood');
-    document.body.classList.toggle('theme-blue', value == 'blue');
+    //document.body.classList.toggle('theme-blue', value == 'blue');
     storage.setItem('theme', value);
     options.setTheme(value);
   },
@@ -152,9 +140,9 @@ var app = {
       settings.guestName = storage.getItem('guest-name');
     }
 
-    if (!settings.guestName) {
+    /*if (!settings.guestName) {
       settings.guestName = generateRandomGuestName();
-    }
+    }*/
 
     for (var i in settings) {
       if (settings[i] == null) {
@@ -176,7 +164,7 @@ var app = {
     this.state.clients.push(client);
   },
   removeClient: function(clientId) {
-    this.state.clients.filter(function(client) {
+    this.state.clients = this.state.clients.filter(function(client) {
       return client.id != clientId;
     });
   },
@@ -190,6 +178,10 @@ var app = {
     lobby.setClientId(client ? client.id : null);
     menu.setLoggedIn(!!client);
     menu.update();
+
+    if (!!client && typeof this.onLogin == 'function') {
+      this.onLogin();
+    }
   },
   getClientId: function() {
     return this.client ? this.client.id : null;
@@ -210,7 +202,7 @@ var app = {
     start.show();
     lobby.hide();
     game.hide();
-    appBar.show();
+    appBar.show('start');
   },
   showLobby: function() {
     start.hide();
@@ -257,14 +249,8 @@ var app = {
       window.navigator.vibrate.apply(window.navigator, arguments);
     }
   },
-  checkVersion: function(version) {
-    if (this.state.version != version) {
-      console.log(this.state.version, ' != ', version);
-      console.log('Version check failed.');
-      this.view.showUpdate();
-      return;
-    }
-    console.log('Version check passed.');
+  getApiVersion: function() {
+    return this.state.apiVersion;
   },
   confirm: function(title, message, callback) {
     confirm.setTitle(title);
@@ -281,6 +267,12 @@ var app = {
       if (typeof callback == 'function') callback();
     });
     this.showOverlay('alert');
+  },
+  increaseGamesWonCounter: function() {
+    var count = parseInt(storage.getItem('gamesWon'));
+    if (isNaN(count)) count = 0;
+    count += 1;
+    storage.setItem('gamesWon', count);
   }
 };
 
@@ -291,6 +283,18 @@ app.view = {
     this.appBar = document.getElementById('app-bar');
     this.appBarLobby = document.getElementById('app-bar-lobby');
     this.appBarGame = document.getElementById('app-bar-game');
+
+    // Enable experimental features for Google Chrome only, for example CSS
+    // blur filter. Blur filter is currently bugged on at least Edge and I
+    // don't have the possibility to test on every browser.
+    var isChromium = !!window.chrome;
+    var vendorName = window.navigator.vendor;
+    var isOpera = window.navigator.userAgent.indexOf('OPR') > -1;
+    var isIEedge = window.navigator.userAgent.indexOf('Edge') > -1;
+    if(isChromium && vendorName == 'Google Inc.' && !isOpera && !isIEedge) {
+       // is Google Chrome 
+      document.documentElement.classList.add('chrome');
+    }
 
     this.addEventListeners();
   },
@@ -333,12 +337,23 @@ app.view = {
       }
     });
 
-
     /*window.addEventListener('popstate', function(event) {
       console.log('popstate', event.state);
       var state = event.state || {};
 
       app.hideOverlay();
+    });*/
+
+    // Android Chrome workaround to force scroll to the active input element
+    // see: http://stackoverflow.com/questions/23757345/android-does-not-correctly-scroll-on-input-focus-if-not-body-element
+    /*window.addEventListener('resize', function() {
+      window.setTimeout(function() {
+        if (!document.activeElement) return;
+        if (document.activeElement.tagName != 'INPUT') return;
+        if (typeof document.activeElement.scrollIntoViewIfNeeded != 'function') return;
+
+        document.activeElement.scrollIntoViewIfNeeded();
+      }, 0);
     });*/
   },
   getLanguage: function() {

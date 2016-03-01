@@ -35,8 +35,11 @@ var leaderboard = {
 
     this.view.selectButton(group, table);
     this.view.hideAllTables();
+    this.state.showingUrl = url;
 
     utils.getJSON(url, function(err, data) {
+      if (url != self.state.showingUrl) return;
+      self.view.hideAllTables();
       self.view.removeAllTableRows(group, table);
 
       data.forEach(function(row, index) {
@@ -64,6 +67,7 @@ leaderboard.view = {
   init: function() {
     this.element = document.getElementById('leaderboard');
     this.closeButton = document.getElementById('leaderboard-close');
+    this.loading = document.getElementById('leaderboard-loading');
     this.groupButtons = {
       games: document.getElementById('leaderboard-show-games'),
       words: document.getElementById('leaderboard-show-words'),
@@ -128,6 +132,8 @@ leaderboard.view = {
     table.tBodies[0].innerHTML = '';
   },
   hideAllTables: function() {
+    this.loading.classList.remove('hide');
+
     for (var i in this.tables) {
       for (var j in this.tables[i]) {
         this.tables[i][j].classList.add('hide');
@@ -135,6 +141,8 @@ leaderboard.view = {
     }
   },
   showTable: function(tableGroup, tableName) {
+    this.loading.classList.add('hide');
+
     this.tables[tableGroup][tableName].classList.remove('hide');
   },
   selectButton: function(tableGroup, tableName) {
@@ -150,5 +158,6 @@ leaderboard.view = {
 
 leaderboard.state = {
   group: 'games',
-  table: 'month'
+  table: 'month',
+  showingUrl: null
 };

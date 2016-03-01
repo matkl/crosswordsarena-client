@@ -11,6 +11,7 @@ var sound = {
       { url: 'sounds/menu-click-two-tone.m4a', name: 'turn' },
       { url: 'sounds/success1.m4a', name: 'success1' },
       { url: 'sounds/button.m4a', name: 'button' },
+      { url: 'sounds/clock.m4a', name: 'clock' },
       { url: 'sounds/pizzicato-orchestral-roll-2.m4a', name: 'roll2' },
       { url: 'sounds/pizzicato-orchestral-roll-3.m4a', name: 'roll3' }
     ]);
@@ -42,6 +43,12 @@ var sound = {
       media.seekTo(0);
       media.play();
     }
+    return {
+      stop: function() {
+        media.pause();
+        media.seekTo(0);
+      }
+    };
   },
   setMute: function(value) {
     this.mute = value;

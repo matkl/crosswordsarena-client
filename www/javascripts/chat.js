@@ -26,6 +26,19 @@ var chat = {
   },
   scrollToBottom: function() {
     this.view.scrollToBottom();
+  },
+  enable: function() {
+    this.view.enable();
+    this.scrollToBottom();
+    opponentChat.enable();
+  },
+  disable: function() {
+    this.view.disable();
+    this.scrollToBottom();
+    opponentChat.disable();
+  },
+  hasFocus: function() {
+    return this.view.hasFocus();
   }
 };
 
@@ -34,7 +47,12 @@ chat.view = {
     this.messages = document.getElementById('chat-messages');
     this.form = document.getElementById('chat-form');
     this.input = document.getElementById('chat-form-input');
+    this.inputWrapper = document.getElementById('chat-form-input-wrapper');
+    this.button = document.getElementById('chat-form-button');
     this.openChatButton = document.getElementById('more');
+    this.toggleOnButton = document.getElementById('chat-toggle-on');
+    this.toggleOffButton = document.getElementById('chat-toggle-off');
+    this.chatIsOff = document.getElementById('chat-is-off');
 
     this.addEventListeners();
   },
@@ -65,6 +83,14 @@ chat.view = {
       }, 1000);
     });
 
+    this.toggleOnButton.addEventListener('click', function(event) {
+      chat.disable();
+    });
+
+    this.toggleOffButton.addEventListener('click', function(event) {
+      chat.enable();
+    });
+
     window.addEventListener('resize', function(event) {
       chat.scrollToBottom();
     });
@@ -74,6 +100,8 @@ chat.view = {
       var message = document.createElement('p');
       if (data.className) {
         message.className = data.className;
+      } else {
+        message.className = 'message';
       }
 
       var name = document.createElement('b');
@@ -106,7 +134,7 @@ chat.view = {
       this.scrollToBottom();
     }
 
-    if (!data.className && !sideBar.isVisible()) {
+    if (!data.className && !sideBar.isVisible() && !this.messages.classList.contains('chat-off')) {
       this.openChatButton.classList.add('updated');
     }
   },
@@ -115,6 +143,25 @@ chat.view = {
   },
   scrollToBottom: function() {
     utils.scrollToBottom(this.messages);
+  },
+  enable: function() {
+    this.toggleOnButton.classList.remove('hide');
+    this.toggleOffButton.classList.add('hide');
+    this.chatIsOff.classList.add('hide');
+    this.inputWrapper.classList.remove('hide');
+
+    this.messages.classList.remove('chat-off');
+  },
+  disable: function() {
+    this.toggleOnButton.classList.add('hide');
+    this.toggleOffButton.classList.remove('hide');
+    this.chatIsOff.classList.remove('hide');
+    this.inputWrapper.classList.add('hide');
+
+    this.messages.classList.add('chat-off');
+  },
+  hasFocus: function() {
+    return document.activeElement == this.input;
   }
 };
 
@@ -156,5 +203,11 @@ var opponentChat = {
   },
   removeAllMessages: function() {
     this.opponentChat.innerHTML = '';
+  },
+  enable: function() {
+    this.opponentChat.classList.remove('opponent-chat-off');
+  },
+  disable: function() {
+    this.opponentChat.classList.add('opponent-chat-off');
   }
 };

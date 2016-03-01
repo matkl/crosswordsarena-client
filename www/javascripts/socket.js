@@ -1,10 +1,12 @@
 var socket = {
   init: function() {
     var host = app.getHost() || window.location.href;
+    var apiVersion = app.getApiVersion();
+    var url = host + '?api=' + apiVersion;
 
-    console.log('Connecting to ' + host);
+    console.log('Connecting to ' + url);
 
-    this.primus = new Primus(host);
+    this.primus = new Primus(url);
     this.primus.on('data', this.onData.bind(this));
     this.primus.on('open', this.onOpen.bind(this));
     this.primus.on('end', this.onEnd.bind(this));
@@ -19,18 +21,37 @@ var socket = {
     this.primus.end();
   },
   write: function() {
-    this.primus.write.apply(this.primus, arguments);
+    var args = arguments;
+    
+    /*var self = this;
+    window.setTimeout(function() {
+      self.primus.write.apply(self.primus, args);
+    }, 350);*/
+    
+    this.primus.write.apply(this.primus, args);
   },
   onClose: function() {
     app.setClient(null);
     app.showStart();
     start.showClose();
     menu.setInGame(false);
+    challenges.removeAllClients();
+    app.hideOverlay();
   },
   onData: function(data) {
     if (!data.type) return;
 
     console.log(data.type, data.action, data);
+
+    /*
+    var self = this;
+    window.setTimeout(function() {
+      var method = 'onData' + data.type.charAt(0).toUpperCase() + data.type.slice(1);
+      if (typeof self[method] == 'function') {
+        self[method](data);
+      }
+    }, 1000);
+    */
 
     var method = 'onData' + data.type.charAt(0).toUpperCase() + data.type.slice(1);
     if (typeof this[method] == 'function') {
@@ -41,22 +62,23 @@ var socket = {
   },
   onDataAction: function(data) {
     switch (data.action) {
-      case 'concede': game.concede(data.name); break;
+      case 'concede': game.concede(data.playerIndex, data.name); break;
       case 'exchange': game.exchange(data.exchange, data.rack); break;
       case 'finish': game.finish(data); break;
-      case 'opponentConcede': game.concede(1, data.name); break;
-      case 'opponentPut': game.put(1, data.rackIndex, data.boardIndex, data.tile); break;
-      case 'opponentRemove': game.remove(1, data.rackIndex); break;
-      case 'opponentRemoveAll': game.removeAll(1); break;
-      case 'opponentStatus': game.setStatus(1, data.status, data.statusCode); break;
-      case 'pass': game.pass(data); break;
-      case 'turn': game.turn(data.playerIndex); break;
+      case 'put': game.put(data.playerIndex, data.rackIndex, data.boardIndex, data.tile); break;
+      case 'remove': game.remove(data.playerIndex, data.rackIndex); break;
+      case 'removeAll': game.removeAll(data.playerIndex); break;
+      case 'status': game.setStatus(data.playerIndex, data.status, data.statusCode); break;
+      case 'pass': game.pass(data.playerIndex, data.tileIndices, data.draw); break;
+      case 'turn': game.turn(data.playerIndex, data.startTime, data.endTime, data.update); break;
       case 'submit': game.submit(data); break;
       case 'message': chat.addMessage(data); opponentChat.addMessage(data); break;
+      case 'alert': game.showMessage(data.text); break;
+      case 'rules': game.updateRules(data.rules, data.startTime); break;
+      case 'slowpoke': game.setSlowpoke(data.playerIndex, true); break;
     }
   },
   onDataServer: function(data) {
-    app.checkVersion(data.version);
   },
   onDataAlert: function(data) {
     app.alert(t('Server'), data.text);
@@ -108,7 +130,7 @@ var socket = {
     lobby.addClient(data.client);
   },
   onDataLeave: function(data) {
-    app.removeClient(data.client);
+    app.removeClient(data.client.id);
     lobby.removeClient(data.client.id);
   },
   onDataRegister: function(data) {

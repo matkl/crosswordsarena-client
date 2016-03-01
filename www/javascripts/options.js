@@ -113,7 +113,11 @@ options.view = {
     this.music.checked = !value
   },
   setTheme: function(value) {
-    this.theme.value = value;
+    //this.theme.value = value;
+    var inputs = this.theme.querySelectorAll('input[type=radio]');
+    Array.prototype.forEach.call(inputs, function(input) {
+      input.checked = input.value == value;
+    });
   },
   setVibrate: function(value) {
     this.vibrate.checked = value;

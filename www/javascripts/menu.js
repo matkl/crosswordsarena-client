@@ -6,6 +6,10 @@ var menu = {
     this.update();
     this.view.show();
   },
+  toggle: function() {
+    this.update();
+    this.view.toggle();
+  },
   hide: function() {
     this.view.hide();
   },
@@ -32,6 +36,7 @@ var menu = {
 menu.view = {
   init: function() {
     this.element = document.getElementById('menu');
+    this.overlay = document.getElementById('menu-overlay');
 
     this.openMenu = document.getElementById('app-bar-menu');
 
@@ -53,10 +58,21 @@ menu.view = {
     this.update();
   },
   addEventListeners: function() {
-    this.openMenu.addEventListener('click', function() {
+    window.addEventListener('click', function() {
+      menu.hide();
+    });
+
+    this.element.addEventListener('click', function(event) {
+      event.stopPropagation();
+    });
+
+    this.openMenu.addEventListener('click', function(event) {
       ga('send', 'event', 'menu', 'click', 'open');
 
-      app.showOverlay('menu');
+      //app.showOverlay('menu');
+      menu.toggle();
+
+      event.stopPropagation();
     });
 
     this.options.addEventListener('click', function() {
@@ -138,9 +154,15 @@ menu.view = {
   },
   show: function() {
     this.element.classList.remove('hide');
+    this.overlay.classList.remove('hide');
   },
   hide: function() {
     this.element.classList.add('hide');
+    this.overlay.classList.add('hide');
+  },
+  toggle: function() {
+    this.element.classList.toggle('hide');
+    this.overlay.classList.toggle('hide');
   },
   update: function() {
     this.concede.classList.toggle('hide', !(menu.state.inGame && menu.state.gameRunning));

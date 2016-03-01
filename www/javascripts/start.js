@@ -4,7 +4,13 @@ var start = {
     this.view.init();
     this.view.toggleMessage(t('Connecting to server...'))
     this.view.setGuestName(storage.getItem('guest-name') || '');
-    this.fetchNewestBlogPost();
+
+    var hideCookieConsent = storage.getItem('hideCookieConsent');
+    if (hideCookieConsent) {
+      this.view.hideCookieConsent();
+    }
+
+    //this.fetchNewestBlogPost();
   },
   show: function() {
     this.hideOverlay();
@@ -137,6 +143,8 @@ start.view = {
     this.login = document.getElementById('start-login');
     this.message = document.getElementById('start-message');
     this.end = document.getElementById('start-end');
+    this.cookieConsent = document.getElementById('cookie-consent');
+    this.cookieConsentClose = document.getElementById('cookie-consent-close');
 
     this.overlay = document.getElementById('start-overlay');
     this.overlays = {
@@ -200,12 +208,20 @@ start.view = {
       start.loginAsGuest(value);
       storage.setItem('guestName', value);
     });
+
+    this.cookieConsentClose.addEventListener('click', function(event) {
+      storage.setItem('hideCookieConsent', true);
+      self.hideCookieConsent();
+    });
   },
   show: function() {
     this.element.classList.remove('hide');
   },
   hide: function() {
     this.element.classList.add('hide');
+  },
+  hideCookieConsent: function() {
+    this.cookieConsent.classList.add('hide');
   },
   setGuestName: function(name) {
     this.guestLoginForm.elements.name.value = name;

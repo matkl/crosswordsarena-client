@@ -79,8 +79,18 @@ lobby.view = {
     this.element = document.getElementById('lobby');
     this.clients = document.getElementById('clients');
     this.addEventListeners();
+
+    this.setupTimers();
   },
   addEventListeners: function() {
+  },
+  setupTimers: function() {
+    var REMOVE_OFFLINE_CLIENTS_INTERVAL = 20000;
+    var self = this;
+
+    window.setInterval(function() {
+      self.removeOfflineClients();
+    }, REMOVE_OFFLINE_CLIENTS_INTERVAL);
   },
   show: function() {
     this.element.classList.remove('hide');
@@ -107,10 +117,14 @@ lobby.view = {
       var front = document.createElement('div');
       front.className = 'lobby-client-face lobby-client-front';
 
-      var picture = document.createElement(data.picture ? 'img' : 'div');
+      //var picture = document.createElement(data.picture ? 'img' : 'div');
+      var picture = document.createElement('div');
       picture.className = 'lobby-client-picture';
+
       if (data.picture) {
-        picture.src = data.picture;
+        var img = document.createElement('img');
+        img.src = data.picture;
+        picture.appendChild(img);
       } else {
         picture.textContent = data.name.charAt(0).toUpperCase();
       }
@@ -182,10 +196,13 @@ lobby.view = {
     this.clients.appendChild(createClient(data));
   },
   getClient: function(clientId) {
-    return this.clients.querySelector('[data-id="' + clientId + '"]');
+    return this.clients.querySelector('.lobby-client[data-id="' + clientId + '"]:not(.is-offline');
   },
   removeClient: function(clientId) {
-    this.clients.removeChild(this.getClient(clientId));
+    var client = this.getClient(clientId);
+    if (!client) return;
+
+    client.classList.add('is-offline');
   },
   removeAllClients: function() {
     this.clients.innerHTML = '';
@@ -213,6 +230,12 @@ lobby.view = {
     var client = this.getClient(clientId);
     if (client) {
       client.classList.add('self');
+    }
+  },
+  removeOfflineClients: function() {
+    var clients = this.clients.querySelectorAll('.is-offline');
+    for (var i = 0; i < clients.length; i++) {
+      this.clients.removeChild(clients[i]);
     }
   }
 };

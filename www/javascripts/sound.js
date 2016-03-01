@@ -18,6 +18,7 @@ var sound = {
         { url: 'sounds/menu-click-two-tone.m4a', name: 'turn' },
         { url: 'sounds/success1.m4a', name: 'success1' },
         { url: 'sounds/button.m4a', name: 'button' },
+        { url: 'sounds/clock.m4a', name: 'clock', loop: true },
         { url: 'sounds/pizzicato-orchestral-roll-2.m4a', name: 'roll2' },
         { url: 'sounds/pizzicato-orchestral-roll-3.m4a', name: 'roll3' }
       ]);
@@ -59,14 +60,17 @@ var sound = {
 
     req.send();
   },
-  play: function(name) {
+  play: function(name, options) {
+    options = options || {};
     if (!this.context || !this.gainNode) return;
     if (!this.buffers.hasOwnProperty(name)) return;
 
     var source = this.context.createBufferSource();
     source.buffer = this.buffers[name];
     source.connect(this.gainNode);
+    source.loop = options.loop;
     source.start(0);
+    return source;
   },
   setMute: function(value) {
     if (!this.gainNode) return;
