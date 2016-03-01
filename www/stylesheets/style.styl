@@ -998,9 +998,9 @@ input[type='checkbox']
   bottom: 0
   content: ''
   left: 0
-  opacity: 0.03
+  opacity: 0.04
   pointer-events: none
-  position: absolute
+  position: fixed
   right: 0
   top: 0
   //-webkit-filter: grayscale(1) blur(5px)
@@ -1021,6 +1021,7 @@ input[type='checkbox']
   //padding: 10px 5px
   padding: 6px 5px
   width: 100%
+  z-index: 20
   li
     display: flex
     margin: 0
@@ -1112,8 +1113,11 @@ input[type='checkbox']
   .window-header
     text-align: center
   .window-content
+    display: flex
     background: color-ui-6
     //border-radius: 2px
+    flex-direction: column
+    justify-content: center
     padding: 10px
     padding-bottom: 0
     user-select: none
@@ -1160,7 +1164,7 @@ input[type='checkbox']
     font-size: 36px
     font-weight: 800
     letter-spacing: 0.1em
-    line-height: 1
+    line-height: 1.1
     text-align: center
     //text-shadow: 0 0.2em 0.6em rgba(0,0,0,0.24)
     text-transform: uppercase
@@ -1186,10 +1190,11 @@ input[type='checkbox']
   flex-direction: column
   overflow-y: auto
   h1
+    color: white
     font-size: font-size-larger
     font-weight: 800
     letter-spacing: 0.1em
-    margin: 20px auto 40px
+    margin: 40px auto
     text-align: center
     //text-shadow: 0 0.2em 1em hsla(29, 100%, 66%, 0.5)
     text-shadow: 0 2px 6px rgba(0,0,0,0.24)
@@ -2518,15 +2523,19 @@ color-wood = #25201E
   background: none
   border: none
   box-shadow: none
-  color: color-secondary-text
+  color: rgba(255,255,255,0.4)
   font-size: font-size-small
-  font-weight: 600
+  font-weight: 400
   line-height: 20px
-  margin: 10px
+  margin: 10px 0
+  outline: none
+  text-align: center
   text-decoration: none
-  text-transform: uppercase
+  width: 100%
+  &:focus
+    color: rgba(255,255,255,0.5)
   &:hover
-    color: white
+    color: rgba(255,255,255,0.8)
 #cookie-consent
   //display: none
   animation: fadeInBottom 1s 0.5s backwards
@@ -2815,6 +2824,8 @@ color-wood = #25201E
     right: 8px
     top: 64px
     //width: 280px
+    .window-content
+      display: block
   #menu-overlay
     background: none
     pointer-events: none

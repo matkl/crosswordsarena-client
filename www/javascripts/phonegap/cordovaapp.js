@@ -1,5 +1,7 @@
 var cordovaApp = {
   init: function() {
+    storage.setItem('hideCookieConsent', true);
+
     // quick and dirty: set the host for our websocket connection
     app.setHost('http://' + document.getElementById('host').innerHTML);
 

@@ -90,7 +90,7 @@ var app = {
     this.setMuteMusic(!this.getMuteMusic());
   },
   setTheme: function(value) {
-    document.body.classList.toggle('theme-glass', value == 'glass');
+    //document.body.classList.toggle('theme-glass', value == 'glass');
     document.body.classList.toggle('theme-wood', value == 'wood');
     //document.body.classList.toggle('theme-blue', value == 'blue');
     storage.setItem('theme', value);
@@ -122,7 +122,7 @@ var app = {
     var defaults = {
       mute: false,
       muteMusic: false,
-      theme: 'glass',
+      theme: 'default',
       vibrate: true,
       chatBubbles: true
     };

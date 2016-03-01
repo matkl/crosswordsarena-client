@@ -6,8 +6,8 @@ var start = {
     this.view.setGuestName(storage.getItem('guest-name') || '');
 
     var hideCookieConsent = storage.getItem('hideCookieConsent');
-    if (hideCookieConsent) {
-      this.view.hideCookieConsent();
+    if (!hideCookieConsent) {
+      this.view.showCookieConsent();
     }
 
     //this.fetchNewestBlogPost();
@@ -219,6 +219,9 @@ start.view = {
   },
   hide: function() {
     this.element.classList.add('hide');
+  },
+  showCookieConsent: function() {
+    this.cookieConsent.classList.remove('hide');
   },
   hideCookieConsent: function() {
     this.cookieConsent.classList.add('hide');
