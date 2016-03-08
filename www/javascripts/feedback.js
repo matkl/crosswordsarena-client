@@ -84,3 +84,57 @@ feedback.view = {
     this.sendButton.disabled = false;
   }
 };
+
+var rateChrome = {
+  init: function() {
+    var self = this;
+
+    this.element = document.getElementById('rate-chrome');
+    this.closeButton = document.getElementById('rate-chrome-close');
+    this.appBarButton = document.getElementById('app-bar-rate-chrome');
+    this.userName = document.getElementById('rate-chrome-user-name');
+    this.feedbackLink = document.getElementById('rate-chrome-feedback');
+    this.hideForeverButton = document.getElementById('rate-chrome-hide-forever');
+
+    if (!storage.getItem('hideRateChrome')) {
+      if (chrome && chrome.app && chrome.app.isInstalled) {
+        var gamesWon = parseInt(storage.getItem('gamesWon'));
+        if (gamesWon >= 5) {
+          this.appBarButton.classList.remove('hide');
+        }
+      }
+    }
+
+    this.appBarButton.addEventListener('click', function(event) {
+      ga('send', 'event', 'button', 'click', 'rateChrome');
+      app.showOverlay('rateChrome');
+    });
+
+    this.closeButton.addEventListener('click', function(event) {
+      app.hideOverlay();
+    });
+
+    this.feedbackLink.addEventListener('click', function(event) {
+      ga('send', 'event', 'button', 'click', 'rateChromeGotoFeedback');
+      app.showOverlay('feedback');
+      event.preventDefault();
+    });
+
+    this.hideForeverButton.addEventListener('click', function(event) {
+      ga('send', 'event', 'button', 'click', 'rateChromeHideForever');
+      app.hideOverlay();
+      self.hideAppBarButton();
+      storage.setItem('hideRateChrome', true);
+    });
+  },
+  show: function() {
+    this.element.classList.remove('hide');
+    this.userName.textContent = app.getUserName();
+  },
+  hide: function() {
+    this.element.classList.add('hide');
+  },
+  hideAppBarButton: function() {
+    this.appBarButton.classList.add('hide');
+  }
+};

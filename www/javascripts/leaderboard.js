@@ -24,6 +24,11 @@ var leaderboard = {
         month: host +'/api/games?timeframe=month&sort=score&order=-1&limit=100',
         personal: host +'/api/games?userName=' + encodeURIComponent(userName) + '&sort=score&order=-1&limit=100'
       },
+      plays: {
+        allTime: host + '/api/plays?sort=value&order=-1&limit=100',
+        month: host + '/api/plays?timeframe=month&sort=value&order=-1&limit=100',
+        personal: host + '/api/plays?userName=' + encodeURIComponent(userName) + '&sort=value&order=-1&limit=100'
+      },
       words: {
         allTime: host + '/api/words?sort=value&order=-1&limit=100',
         month: host + '/api/words?timeframe=month&sort=value&order=-1&limit=100',
@@ -45,6 +50,8 @@ var leaderboard = {
       data.forEach(function(row, index) {
         if (group == 'games') {
           self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.score ], [ null, row.name, null ]);
+        } else if (group =='plays') {
+          self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.words.join(' '), row.value ], [ null, row.name, row.words.join(' '), null ]);
         } else if (group == 'words') {
           self.view.insertTableRow(group, table, [ index+1+'.', row.name, row.text, row.value ], [ null, row.name, row.text, null ]);
         }
@@ -70,7 +77,8 @@ leaderboard.view = {
     this.loading = document.getElementById('leaderboard-loading');
     this.groupButtons = {
       games: document.getElementById('leaderboard-show-games'),
-      words: document.getElementById('leaderboard-show-words'),
+      plays: document.getElementById('leaderboard-show-plays'),
+      words: document.getElementById('leaderboard-show-words')
     };
     this.tableButtons = {
       month: document.getElementById('leaderboard-show-month'),
@@ -87,6 +95,11 @@ leaderboard.view = {
         allTime: document.getElementById('leaderboard-words-all-time'),
         month: document.getElementById('leaderboard-words-month'),
         personal: document.getElementById('leaderboard-words-personal')
+      },
+      plays: {
+        allTime: document.getElementById('leaderboard-plays-all-time'),
+        month: document.getElementById('leaderboard-plays-month'),
+        personal: document.getElementById('leaderboard-plays-personal')
       }
     }
     this.addEventListeners();

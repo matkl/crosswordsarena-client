@@ -340,6 +340,11 @@ roundedCorners()
     //background-image: radial-gradient(circle at 50% 0, hsla(39, 90%, 80%, 1), transparent 100%)
     background-color: hsl(39, 88%, 72%)
     //box-shadow: 0 0 0 1px hsl(39, 42%, 62%)
+@keyframes tileFactoredIn
+  from
+    background-color: color-tile
+  to
+    background-color: hsl(39, 64%, 78%)
 @keyframes fadeInLogo
   from
     opacity: 0
@@ -934,6 +939,37 @@ input[type='checkbox']
     &:last-child
       margin-right: 0
   
+/* Toasts
+-------------------------------------------------- */
+.toast
+  animation: fadeInBottom 1s 1s backwards
+  raise(3)
+  background: color-ui-6
+  box-sizing: border-box
+  max-width: 480px
+  margin: 0 auto
+  margin-bottom: 16px
+  position: relative
+  .button
+    margin-right: 8px
+    &:last-child
+      margin-right: 0
+.toast-header
+  background: none
+  line-height: 32px
+  text-align: center
+.toast-close
+  background: none
+  border: none
+  height: 32px
+  outline: none
+  position: absolute
+  right: 0
+  text-align: center
+  top: 0
+  width: 32px
+.toast-content
+  padding: 16px
 
 /* Lists
 -------------------------------------------------- */
@@ -1065,6 +1101,16 @@ input[type='checkbox']
   &.updated
     background-color: hsl(209, 88%, 48%)
     border: 1px solid transparent
+// TODO: fix selector
+#app-bar #app-bar-rate-chrome
+  animation: fadeIn 1s 1s backwards
+  display: none
+  font-size: 14px
+  span
+    font-size: 9px
+    margin-left: 1em
+    vertical-align: top
+
 
 /* Menu
 -------------------------------------------------- */
@@ -1591,6 +1637,9 @@ input[type='checkbox']
       right: 0
       top: 0
       z-index: 1
+    .tile
+      animation: tileFactoredIn 2s
+      background-color: hsl(39, 64%, 78%)
   &.is-submitted
     .tile
       animation: tileSubmitted 2s
@@ -1986,6 +2035,7 @@ tw = bonus
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05)
     display: inline-block
     padding: 5px 10px
+    white-space: pre-wrap
 .opponent-chat-off
   display: none
 
@@ -2090,6 +2140,8 @@ tw = bonus
     color: color-text
     display: block
     font-weight: 600
+  span
+    white-space: pre-wrap
   .result
     //background: rgba(255,255,255,0.1)
     //color: color-text
@@ -2339,6 +2391,15 @@ cursor-color = #f0f0f0
       &:nth-child(2)
       &:nth-child(3)
         width: 35%
+  .leaderboard-plays
+    th, td
+      &:nth-child(1)
+      &:nth-child(4)
+        width: 15%
+      &:nth-child(2)
+        width: 30%
+      &:nth-child(3)
+        width: 40%
   .leaderboard-games
     th, td
       width: 15%
@@ -2348,6 +2409,8 @@ cursor-color = #f0f0f0
   color: color-secondary-text
   padding: 10px 0
   text-align: center
+#leaderboard-show-plays
+  display: none
 
 /* Two-Letter-Words Window
 -------------------------------------------------- */
@@ -2607,6 +2670,8 @@ color-wood = #25201E
     margin: 0
     margin-right: 20px
     margin-bottom: 20px
+  #leaderboard-show-plays
+    display: block
 
 
 /* Larger than desktop */
@@ -2783,6 +2848,7 @@ color-wood = #25201E
     //background: none
     background: color-ui-6
     border: none
+    flex-direction: row-reverse
     //box-shadow: 0 0 2em rgba(0,0,0,0.24)
     padding: 10px 8px
     position: absolute
@@ -2815,6 +2881,8 @@ color-wood = #25201E
     flex: 1 1 auto
     flex-direction: row-reverse
   #app-bar-leave-game
+    display: block
+  #app-bar #app-bar-rate-chrome
     display: block
   #menu
     animation: fadeIn 0.2s

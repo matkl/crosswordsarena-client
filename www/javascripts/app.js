@@ -30,6 +30,7 @@ var app = {
     challenges.init();
     confirm.init();
     alert.init();
+    rateChrome.init();
 
     chat.init();
     opponentChat.init();
@@ -49,7 +50,7 @@ var app = {
     }*/
   },
   hideOverlay: function(pop) {
-    var overlays = [ menu, options, about, leaderboard, twoLetterWords, keyboard, feedback, challenges, confirm, alert ];
+    var overlays = [ menu, options, about, leaderboard, twoLetterWords, keyboard, feedback, challenges, rateChrome, confirm, alert ];
     overlays.forEach(function(overlay) {
       overlay.hide();
     });
@@ -208,7 +209,7 @@ var app = {
     start.hide();
     lobby.show();
     game.hide();
-    appBar.show();
+    appBar.show('lobby');
   },
   showGame: function() {
     start.hide();

@@ -1249,7 +1249,7 @@ game.view = {
     }
 
     function onPeriod() {
-      game.shuffleTiles(0);
+      game.shuffleTiles(game.state.playerIndex);
     }
 
     function onRightArrow() {
@@ -1457,7 +1457,7 @@ game.view = {
     utils.shuffle(tiles);
     tiles.forEach(function(tile, index) {
       tile.setAttribute('data-position', index);
-      tile.style.transform = 'scale(' + scale + ') translateX(' + (index * 2) + 'em)';
+      //tile.style.transform = 'scale(' + scale + ') translateX(' + (index * 2) + 'em)';
     });
   },
   getRackOrder: function(playerIndex) {
